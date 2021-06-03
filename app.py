@@ -71,6 +71,9 @@ class Clase(db.Model):
     vacantes        = db.Column(db.Integer      , nullable=False)
     docente         = db.Column(db.Integer      , db.ForeignKey('docente.codigo')   , nullable=True) # Null cuando aun no se sabe el docente
 
+    def __repr__(self):
+        return f'<Clase: {self.curso}, {self.tipo}, {self.seccion}, {self.numero}>'
+
 class Sesion(db.Model):
     __tablename__ = 'sesion'
     curso           = db.Column(db.String(6)    , db.ForeignKey('curso.codigo')     , primary_key=True)
@@ -83,10 +86,16 @@ class Sesion(db.Model):
     hoar_fin        = db.Column(db.Integer, nullable=False) #Cambiar formato?
     # Implementar frecuencia tambien
 
+    def __repr__(self):
+        return f'<Clase: {self.curso}, {self.clase_tipo}, {self.clase_seccion}, {self.clase_numero}, {self.id}>'
+
 class Horario(db.Model):
     __tablaname__ = 'horario'
     id              = db.Column(db.Integer      , primary_key=True)
     alumno          = db.Column(db.Integer      , db.ForeignKey('alumno.codigo')    , nullable=False)
+    def __repr__(self):
+        return f'<Clase: {self.id}>'
+
 
 class Lista(db.Model):
     __tablename__ = 'lista'
@@ -95,11 +104,15 @@ class Lista(db.Model):
     clase_tipo      = db.Column(db.Enum(TipoClaseEnum)                              , db.ForeignKey('clase.tipo')   , primary_key=True) 
     clase_seccion   = db.Column(db.String(2)    , db.ForeignKey('clase.seccion')    , primary_key=True)
     clase_numero    = db.Column(db.String(2)    , db.ForeignKey('clase.numero')     , primary_key=True)
+    def __repr__(self):
+        return f'<Lista: {self.horario} - {self.curso}, {self.clase_tipo}, {self.clase_seccion}, {self.clase_numero}>'
 
 class Favoritos(db.Model):
     __tablename__ = 'favoritos'
     horario         = db.Column(db.Integer      , db.ForeignKey('horario.id')       , primary_key=True)
     alumno          = db.Column(db.Integer      , db.ForeignKey('alumno.codigo')    , primary_key=True)
+    def __repr__(self):
+        return f'<Lista: {self.horario}, {self.alumno}>'
 
 db.create_all()
 
