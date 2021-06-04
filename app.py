@@ -1,4 +1,6 @@
 import json
+
+from sqlalchemy.orm import backref
 import config
 from enum import unique, Enum
 from flask import Flask, render_template, request, redirect, url_for
@@ -23,6 +25,7 @@ class Alumno(db.Model):
     password    = db.Column(db.String(64)   , nullable=False)
     nombre      = db.Column(db.String(64)   , nullable=False)
     apellido    = db.Column(db.String(64)   , nullable=False)
+    horarios    = db.relationship('Horario', backref='alumno', lazy=True)
 
     def __repr__(self):
         return f'<Alumno: {self.codigo} - {self.apellido}, {self.nombre}>'
@@ -33,6 +36,7 @@ class Docente(db.Model):
     correo          = db.Column(db.String(255)  , nullable=False, unique=True)
     nombre          = db.Column(db.String(64)   , nullable=False)
     apellido        = db.Column(db.String(64)   , nullable=False)
+    clases          = db.relationship('Clase', backref='docente', lazy=True)
 
     def __repr__(self):
         return f'<Docente: {self.codigo} - {self.apellido}, {self.nombre}>'
@@ -44,25 +48,27 @@ class Curso(db.Model):
     lab             = db.Column(db.Boolean      , nullable=False)
     teoria          = db.Column(db.Boolean      , nullable=False)
     teoria_virutal  = db.Column(db.Boolean      , nullable=False)
+    clases          = db.relationship('Clase', backref='curso', lazy=True)
 
     def __repr__(self):
         return f'<Docente: {self.codigo} - {self.curso}>'
 
 class Clase(db.Model):
     __tablename__ = 'clase'
-    curso           = db.Column(db.String(6)    , db.ForeignKey('curso.codigo')     , primary_key=True)
+    curso_codigo    = db.Column(db.String(6)    , db.ForeignKey('curso.codigo')     , primary_key=True)
     tipo            = db.Column(db.Enum(TipoClaseEnum)                              , primary_key=True)
     seccion         = db.Column(db.String(2)    , primary_key=True)
     numero          = db.Column(db.String(2)    , primary_key=True)
     vacantes        = db.Column(db.Integer      , nullable=False)
-    docente         = db.Column(db.Integer      , db.ForeignKey('docente.codigo')   , nullable=True) # Null cuando aun no se sabe el docente
+    docente_codigo  = db.Column(db.Integer      , db.ForeignKey('docente.codigo')   , nullable=True) # Null cuando aun no se sabe el docente
+    sesiones        = db.relationship('Sesion', backref='clase', lazy=True)
 
     def __repr__(self):
         return f'<Clase: {self.curso}, {self.tipo}, {self.seccion}, {self.numero}>'
 
 class Sesion(db.Model):
     __tablename__ = 'sesion'
-    curso           = db.Column(db.String(6)    , primary_key=True)
+    curso_codigo    = db.Column(db.String(6)    , primary_key=True)
     clase_tipo      = db.Column(db.Enum(TipoClaseEnum)                              , primary_key=True) 
     clase_seccion   = db.Column(db.String(2)    , primary_key=True)
     clase_numero    = db.Column(db.String(2)    , primary_key=True)
@@ -73,8 +79,8 @@ class Sesion(db.Model):
     # Implementar frecuencia tambien
     # Llave foranea compuesta a Clase
     __table_args__  = (db.ForeignKeyConstraint(
-                            [curso, clase_tipo, clase_seccion, clase_numero],
-                            ['clase.curso', 'clase.tipo', 'clase.seccion', 'clase.numero']
+                            [curso_codigo, clase_tipo, clase_seccion, clase_numero],
+                            ['clase.curso_codigo', 'clase.tipo', 'clase.seccion', 'clase.numero']
                         ),
                         {},
                       )
@@ -85,7 +91,7 @@ class Sesion(db.Model):
 class Horario(db.Model):
     __tablaname__ = 'horario'
     id              = db.Column(db.Integer      , primary_key=True)
-    alumno          = db.Column(db.Integer      , db.ForeignKey('alumno.codigo')    , nullable=False)
+    alumno_codigo   = db.Column(db.Integer      , db.ForeignKey('alumno.codigo')    , nullable=False)
     #Agregar talvez tmb fecha de creacion?
     def __repr__(self):
         return f'<Clase: {self.id}>'
@@ -93,15 +99,15 @@ class Horario(db.Model):
 
 class Lista(db.Model):
     __tablename__ = 'lista'
-    horario         = db.Column(db.Integer      , db.ForeignKey('horario.id')       , primary_key=True)
-    curso           = db.Column(db.String(6)    , primary_key=True)
+    horario_id      = db.Column(db.Integer      , db.ForeignKey('horario.id')       , primary_key=True)
+    curso_codigo    = db.Column(db.String(6)    , primary_key=True)
     clase_tipo      = db.Column(db.Enum(TipoClaseEnum)                              , primary_key=True) 
     clase_seccion   = db.Column(db.String(2)    , primary_key=True)
     clase_numero    = db.Column(db.String(2)    , primary_key=True)
     # Llave foranea compuesta a Clase
     __table_args__  = (db.ForeignKeyConstraint(
-                            [curso, clase_tipo, clase_seccion, clase_numero],
-                            ['clase.curso', 'clase.tipo', 'clase.seccion', 'clase.numero']
+                            [curso_codigo, clase_tipo, clase_seccion, clase_numero],
+                            ['clase.curso_codigo', 'clase.tipo', 'clase.seccion', 'clase.numero']
                         ),
                         {},
                       )
@@ -111,8 +117,8 @@ class Lista(db.Model):
 
 class Favorito(db.Model):
     __tablename__ = 'favoritos'
-    horario         = db.Column(db.Integer      , db.ForeignKey('horario.id')       , primary_key=True)
-    alumno          = db.Column(db.Integer      , db.ForeignKey('alumno.codigo')    , primary_key=True)
+    horario_id      = db.Column(db.Integer      , db.ForeignKey('horario.id')       , primary_key=True)
+    alumno_codigo   = db.Column(db.Integer      , db.ForeignKey('alumno.codigo')    , primary_key=True)
     def __repr__(self):
         return f'<Lista: {self.horario}, {self.alumno}>'
 

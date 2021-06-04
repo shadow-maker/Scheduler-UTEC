@@ -114,108 +114,108 @@ db.session.commit()
 # Clase
 clases = [
     Clase(
-        curso='CS2701',
+        curso_codigo='CS2701',
         tipo=TipoClaseEnum.teoria,
         seccion='01',
         numero='00',
         vacantes=45,
-        docente=10726,
+        docente_codigo=10726,
     ),
     Clase(
-        curso='CS2701',
+        curso_codigo='CS2701',
         tipo=TipoClaseEnum.lab,
         seccion='01',
         numero='01',
         vacantes=45,
-        docente=10726,
+        docente_codigo=10726,
     ),
     Clase(
-        curso='CS2B01',
+        curso_codigo='CS2B01',
         tipo=TipoClaseEnum.teoria,
         seccion='01',
         numero='00',
         vacantes=30,
-        docente=65323,
+        docente_codigo=65323,
     ),
     Clase(
-        curso='CS2B01',
+        curso_codigo='CS2B01',
         tipo=TipoClaseEnum.lab,
         seccion='01',
         numero='01',
         vacantes=30,
-        docente=65323,
+        docente_codigo=65323,
     ),
     Clase(
-        curso='CS2B01',
+        curso_codigo='CS2B01',
         tipo=TipoClaseEnum.teoria,
         seccion='02',
         numero='00',
         vacantes=30,
-        docente=65323,
+        docente_codigo=65323,
     ),
     Clase(
-        curso='CS2B01',
+        curso_codigo='CS2B01',
         tipo=TipoClaseEnum.lab,
         seccion='02',
         numero='01',
         vacantes=30,
-        docente=65323,
+        docente_codigo=65323,
     ),
     Clase(
-        curso='EG0006',
+        curso_codigo='EG0006',
         tipo=TipoClaseEnum.lab,
         seccion='01',
         numero='00',
         vacantes=270,
-        docente=10071,
+        docente_codigo=10071,
     ),
     Clase(
-        curso='EG0006',
+        curso_codigo='EG0006',
         tipo=TipoClaseEnum.teoria,
         seccion='01',
         numero='01',
         vacantes=45,
-        docente=10952,
+        docente_codigo=10952,
     ),
     Clase(
-        curso='EG0006',
+        curso_codigo='EG0006',
         tipo=TipoClaseEnum.teoria,
         seccion='01',
         numero='02',
         vacantes=45,
-        docente=10071,
+        docente_codigo=10071,
     ),
     Clase(
-        curso='EG0006',
+        curso_codigo='EG0006',
         tipo=TipoClaseEnum.teoria,
         seccion='01',
         numero='03',
         vacantes=45,
-        docente=10071,
+        docente_codigo=10071,
     ),
     Clase(
-        curso='EG0006',
+        curso_codigo='EG0006',
         tipo=TipoClaseEnum.teoria,
         seccion='01',
         numero='04',
         vacantes=45,
-        docente=10764,
+        docente_codigo=10764,
     ),
     Clase(
-        curso='EG0006',
+        curso_codigo='EG0006',
         tipo=TipoClaseEnum.teoria,
         seccion='01',
         numero='05',
         vacantes=45,
-        docente=10764,
+        docente_codigo=10764,
     ),
     Clase(
-        curso='EG0006',
+        curso_codigo='EG0006',
         tipo=TipoClaseEnum.teoria,
         seccion='01',
         numero='06',
         vacantes=45,
-        docente=10952,
+        docente_codigo=10952,
     ),
 ]
 # Comit
@@ -225,7 +225,7 @@ db.session.commit()
 sesiones = [
     Sesion(
         id=1,
-        curso='CS2701',
+        curso_codigo='CS2701',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='00',
@@ -235,7 +235,7 @@ sesiones = [
     ),
     Sesion(
         id=1,
-        curso='CS2701',
+        curso_codigo='CS2701',
         clase_tipo=TipoClaseEnum.lab,
         clase_seccion='01',
         clase_numero='01',
@@ -245,7 +245,7 @@ sesiones = [
     ),
     Sesion(
         id=2,
-        curso='CS2701',
+        curso_codigo='CS2701',
         clase_tipo=TipoClaseEnum.lab,
         clase_seccion='01',
         clase_numero='01',
@@ -255,7 +255,7 @@ sesiones = [
     ),
     Sesion(
         id=1,
-        curso='CS2B01',
+        curso_codigo='CS2B01',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='00',
@@ -265,7 +265,7 @@ sesiones = [
     ),
     Sesion(
         id=1,
-        curso='CS2B01',
+        curso_codigo='CS2B01',
         clase_tipo=TipoClaseEnum.lab,
         clase_seccion='01',
         clase_numero='01',
@@ -275,7 +275,7 @@ sesiones = [
     ),
     Sesion(
         id=1,
-        curso='CS2B01',
+        curso_codigo='CS2B01',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='02',
         clase_numero='00',
@@ -285,7 +285,7 @@ sesiones = [
     ),
     Sesion(
         id=1,
-        curso='CS2B01',
+        curso_codigo='CS2B01',
         clase_tipo=TipoClaseEnum.lab,
         clase_seccion='02',
         clase_numero='01',
@@ -295,7 +295,7 @@ sesiones = [
     ),
     Sesion(
         id=1,
-        curso='EG0006',
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.lab,
         clase_seccion='01',
         clase_numero='00',
@@ -305,7 +305,7 @@ sesiones = [
     ),
     Sesion(
         id=1,
-        curso='EG0006',
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='01',
@@ -315,7 +315,7 @@ sesiones = [
     ),
     Sesion(
         id=2,
-        curso='EG0006',
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='01',
@@ -325,7 +325,7 @@ sesiones = [
     ),
     Sesion(
         id=1,
-        curso='EG0006',
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='02',
@@ -335,7 +335,7 @@ sesiones = [
     ),
     Sesion(
         id=2,
-        curso='EG0006',
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='02',
@@ -345,7 +345,7 @@ sesiones = [
     ),
     Sesion(
         id=1,
-        curso='EG0006',
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='03',
@@ -355,7 +355,7 @@ sesiones = [
     ),
     Sesion(
         id=2,
-        curso='EG0006',
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='03',
@@ -365,7 +365,7 @@ sesiones = [
     ),
     Sesion(
         id=1,
-        curso='EG0006',
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='04',
@@ -375,7 +375,7 @@ sesiones = [
     ),
     Sesion(
         id=2,
-        curso='EG0006',
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='04',
@@ -385,7 +385,7 @@ sesiones = [
     ),
     Sesion(
         id=1,
-        curso='EG0006',
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='05',
@@ -395,7 +395,7 @@ sesiones = [
     ),
     Sesion(
         id=2,
-        curso='EG0006',
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='05',
@@ -405,7 +405,7 @@ sesiones = [
     ),
     Sesion(
         id=1,
-        curso='EG0006',
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='06',
@@ -415,7 +415,7 @@ sesiones = [
     ),
     Sesion(
         id=2,
-        curso='EG0006',
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='06',
@@ -430,7 +430,7 @@ db.session.commit()
 
 # Horario
 h1=Horario(
-        alumno = 202010387
+        alumno_codigo = 202010387
 )
 # Comit
 db.session.add_all([h1])
@@ -439,43 +439,43 @@ db.session.commit()
 # Lista
 listas = [
     Lista(
-        horario=h1.id,
-        curso='EG0006',
+        horario_id=h1.id,
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='05'
     ),
     Lista(
-        horario=h1.id,
-        curso='EG0006',
+        horario_id=h1.id,
+        curso_codigo='EG0006',
         clase_tipo=TipoClaseEnum.lab,
         clase_seccion='01',
         clase_numero='00'
     ),
     Lista(
-        horario=h1.id,
-        curso='CS2B01',
+        horario_id=h1.id,
+        curso_codigo='CS2B01',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='00',
     ),
     Lista(
-        horario=h1.id,
-        curso='CS2B01',
+        horario_id=h1.id,
+        curso_codigo='CS2B01',
         clase_tipo=TipoClaseEnum.lab,
         clase_seccion='01',
         clase_numero='01',
     ),
     Lista(
-        horario=h1.id,
-        curso='CS2701',
+        horario_id=h1.id,
+        curso_codigo='CS2701',
         clase_tipo=TipoClaseEnum.teoria,
         clase_seccion='01',
         clase_numero='00',
     ),
     Lista(
-        horario=h1.id,
-        curso='CS2701',
+        horario_id=h1.id,
+        curso_codigo='CS2701',
         clase_tipo=TipoClaseEnum.lab,
         clase_seccion='01',
         clase_numero='01',
@@ -488,12 +488,12 @@ db.session.commit()
 # FAVORITOS
 favoritos = [
     Favorito(
-        horario=h1.id,
-        alumno=201810312
+        horario_id=h1.id,
+        alumno_codigo=201810312
     ),
     Favorito(
-        horario=h1.id,
-        alumno=202010114
+        horario_id=h1.id,
+        alumno_codigo=202010114
     ),
 ]
 db.session.add_all(favoritos)
