@@ -1,4 +1,4 @@
-from app import Alumno, Docente, Curso, Clase, Sesion, db, TipoClaseEnum
+from app import Alumno, Docente, Curso, Clase, Sesion, Horario, Lista, Favorito, db, TipoClaseEnum
 
 # INSERTAR FILAS
 # Alumno
@@ -425,4 +425,73 @@ sesiones = [
 db.session.add_all(sesiones)
 db.session.commit()
 
-# HORARIO LISTA Y FAVORITOS PENDIENTE
+# Horario
+h1=Horario(
+        alumno = 202010387
+)
+# Comit
+db.session.add_all([h1])
+db.session.commit()
+
+# Lista
+listas = [
+    Lista(
+        horario=h1.id,
+        curso='EG0006',
+        clase_tipo=TipoClaseEnum.teoria,
+        clase_seccion='01',
+        clase_numero='05'
+    ),
+    Lista(
+        horario=h1.id,
+        curso='EG0006',
+        clase_tipo=TipoClaseEnum.lab,
+        clase_seccion='01',
+        clase_numero='00'
+    ),
+    Lista(
+        horario=h1.id,
+        curso='CS2B01',
+        clase_tipo=TipoClaseEnum.teoria,
+        clase_seccion='01',
+        clase_numero='00',
+    ),
+    Lista(
+        horario=h1.id,
+        curso='CS2B01',
+        clase_tipo=TipoClaseEnum.lab,
+        clase_seccion='01',
+        clase_numero='01',
+    ),
+    Lista(
+        horario=h1.id,
+        curso='CS2701',
+        clase_tipo=TipoClaseEnum.teoria,
+        clase_seccion='01',
+        clase_numero='00',
+    ),
+    Lista(
+        horario=h1.id,
+        curso='CS2701',
+        clase_tipo=TipoClaseEnum.lab,
+        clase_seccion='01',
+        clase_numero='01',
+    ),
+]
+# Comit
+db.session.add_all(listas)
+db.session.commit()
+
+# FAVORITOS
+favoritos = [
+    Favorito(
+        horario=h1.id,
+        alumno=201810312
+    ),
+    Favorito(
+        horario=h1.id,
+        alumno=202010114
+    ),
+]
+db.session.add_all(favoritos)
+db.session.commit()

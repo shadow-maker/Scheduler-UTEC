@@ -115,7 +115,7 @@ class Lista(db.Model):
     def __repr__(self):
         return f'<Lista: {self.horario} - {self.curso}, {self.clase_tipo}, {self.clase_seccion}, {self.clase_numero}>'
 
-class Favoritos(db.Model):
+class Favorito(db.Model):
     __tablename__ = 'favoritos'
     horario         = db.Column(db.Integer      , db.ForeignKey('horario.id')       , primary_key=True)
     alumno          = db.Column(db.Integer      , db.ForeignKey('alumno.codigo')    , primary_key=True)
