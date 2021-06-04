@@ -1,4 +1,7 @@
-from app import Alumno, Docente, Curso, Clase, Sesion, Horario, Lista, Favorito, db, TipoClaseEnum
+from app import Alumno, Docente, Curso, Clase, Sesion,\
+                Horario, Lista, Favorito, \
+                TipoClaseEnum,\
+                db
 
 # INSERTAR FILAS
 # Alumno
