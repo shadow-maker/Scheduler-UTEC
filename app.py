@@ -1,10 +1,10 @@
-from enum import unique
+from enum import unique, Enum
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import json
 
 import enum
-class TipoClaseEnum(enum.Enum):
+class TipoClaseEnum(Enum):
     lab = 0
     teoria = 1
     teoria_virtual = 2
@@ -15,17 +15,11 @@ db_host     = 'localhost'
 db_port     = '5432'
 db_name     = 'dbp10'
 db_user     = 'postgres'
-db_password = str(input('Password: '))
+db_password = input('Password: ')
 
 # Flask
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = '{db_type}://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'.format(
-    db_type     = db_type,
-    db_user     = db_user,
-    db_password = db_password,
-    db_port     = db_port,
-    db_name     = db_name
-)
+app.config['SQLALCHEMY_DATABASE_URI'] = f'{db_type}://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
