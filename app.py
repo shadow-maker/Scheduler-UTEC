@@ -130,5 +130,5 @@ def index():
 
 if __name__ == '__main__':
     app.run() #(port=5002, debug=True)
-else:
-    print('using global variables from FLASK')
+#else:
+#    print('using global variables from FLASK')
