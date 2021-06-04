@@ -12,7 +12,7 @@ class TipoClaseEnum(Enum):
 db_type     = 'postgresql'
 db_host     = 'localhost'
 db_port     = '5432'
-db_name     = 'dbp10'
+db_name     = 'utecscheduler'
 db_user     = 'postgres'
 db_password = input('Password: ')
 
@@ -48,9 +48,9 @@ class Curso(db.Model):
     __tablename__ = 'curso'
     codigo          = db.Column(db.String(6)    , primary_key=True) #CheckConstraint("codigo REGEX_LIKE '[A-Z]{2}\d{4}'")?
     curso           = db.Column(db.String(255)  , nullable=False)
-    lab             = db.Column(db.Bool         , nullable=False)
-    teoria          = db.Column(db.Bool         , nullable=False)
-    teoria_virutal  = db.Column(db.Bool         , nullable=False)
+    lab             = db.Column(db.Boolean      , nullable=False)
+    teoria          = db.Column(db.Boolean      , nullable=False)
+    teoria_virutal  = db.Column(db.Boolean      , nullable=False)
 
     def __repr__(self):
         return f'<Docente: {self.codigo} - {self.curso}>'
@@ -58,7 +58,7 @@ class Curso(db.Model):
 class Clase(db.Model):
     __tablename__ = 'clase'
     curso           = db.Column(db.String(6)    , db.ForeignKey('curso.codigo')     , primary_key=True)
-    tipo            = db.Column(db.Enum(TipoClaseEnum)                              , primary_key=False)
+    tipo            = db.Column(db.Enum(TipoClaseEnum)                              , primary_key=True)
     seccion         = db.Column(db.String(2)    , primary_key=True)
     numero          = db.Column(db.String(2)    , primary_key=True)
     vacantes        = db.Column(db.Integer      , nullable=False)
@@ -69,15 +69,22 @@ class Clase(db.Model):
 
 class Sesion(db.Model):
     __tablename__ = 'sesion'
-    curso           = db.Column(db.String(6)    , db.ForeignKey('curso.codigo')     , primary_key=True)
-    clase_tipo      = db.Column(db.Enum(TipoClaseEnum)                              , db.ForeignKey('clase.tipo')   , primary_key=True) 
-    clase_seccion   = db.Column(db.String(2)    , db.ForeignKey('clase.seccion')    , primary_key=True)
-    clase_numero    = db.Column(db.String(2)    , db.ForeignKey('clase.numero')     , primary_key=True)
+    curso           = db.Column(db.String(6)    , primary_key=True)
+    clase_tipo      = db.Column(db.Enum(TipoClaseEnum)                              , primary_key=True) 
+    clase_seccion   = db.Column(db.String(2)    , primary_key=True)
+    clase_numero    = db.Column(db.String(2)    , primary_key=True)
     id              = db.Column(db.Integer, primary_key=True)
     dia             = db.Column(db.Integer, nullable=False) #Cambiar formato?
     hora_inicio     = db.Column(db.Integer, nullable=False) #Cambiar formato?
-    hoar_fin        = db.Column(db.Integer, nullable=False) #Cambiar formato?
+    hora_fin        = db.Column(db.Integer, nullable=False) #Cambiar formato?
     # Implementar frecuencia tambien
+    # Llave foranea compuesta a Clase
+    __table_args__  = (db.ForeignKeyConstraint(
+                            [curso, clase_tipo, clase_seccion, clase_numero],
+                            ['clase.curso', 'clase.tipo', 'clase.seccion', 'clase.numero']
+                        ),
+                        {},
+                      )
 
     def __repr__(self):
         return f'<Clase: {self.curso}, {self.clase_tipo}, {self.clase_seccion}, {self.clase_numero}, {self.id}>'
@@ -93,10 +100,18 @@ class Horario(db.Model):
 class Lista(db.Model):
     __tablename__ = 'lista'
     horario         = db.Column(db.Integer      , db.ForeignKey('horario.id')       , primary_key=True)
-    curso           = db.Column(db.String(6)    , db.ForeignKey('curso.codigo')     , primary_key=True)
-    clase_tipo      = db.Column(db.Enum(TipoClaseEnum)                              , db.ForeignKey('clase.tipo')   , primary_key=True) 
-    clase_seccion   = db.Column(db.String(2)    , db.ForeignKey('clase.seccion')    , primary_key=True)
-    clase_numero    = db.Column(db.String(2)    , db.ForeignKey('clase.numero')     , primary_key=True)
+    curso           = db.Column(db.String(6)    , primary_key=True)
+    clase_tipo      = db.Column(db.Enum(TipoClaseEnum)                              , primary_key=True) 
+    clase_seccion   = db.Column(db.String(2)    , primary_key=True)
+    clase_numero    = db.Column(db.String(2)    , primary_key=True)
+    # Llave foranea compuesta a Clase
+    __table_args__  = (db.ForeignKeyConstraint(
+                            [curso, clase_tipo, clase_seccion, clase_numero],
+                            ['clase.curso', 'clase.tipo', 'clase.seccion', 'clase.numero']
+                        ),
+                        {},
+                      )
+                      
     def __repr__(self):
         return f'<Lista: {self.horario} - {self.curso}, {self.clase_tipo}, {self.clase_seccion}, {self.clase_numero}>'
 
