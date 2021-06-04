@@ -1,28 +1,21 @@
 import json
+import config
 from enum import unique, Enum
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
+# Flask
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config.SQLALCHEMY_TRACK_MODIFICATIONS
+db = SQLAlchemy(app)
+
+# Tablas
 class TipoClaseEnum(Enum):
     lab = 0
     teoria = 1
     teoria_virtual = 2
 
-# Configuracion de conexion a Base de Datos
-db_type     = 'postgresql'
-db_host     = 'localhost'
-db_port     = '5432'
-db_name     = 'utecscheduler'
-db_user     = 'postgres'
-db_password = input('Password: ')
-
-# Flask
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = f'{db_type}://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-
-# Tablas
 class Alumno(db.Model):
     __tablename__ = 'alumno'
     codigo      = db.Column(db.Integer      , primary_key=True)
@@ -46,7 +39,7 @@ class Docente(db.Model):
 
 class Curso(db.Model):
     __tablename__ = 'curso'
-    codigo          = db.Column(db.String(6)    , primary_key=True) #CheckConstraint("codigo REGEX_LIKE '[A-Z]{2}\d{4}'")?
+    codigo          = db.Column(db.String(6)    , primary_key=True)
     curso           = db.Column(db.String(255)  , nullable=False)
     lab             = db.Column(db.Boolean      , nullable=False)
     teoria          = db.Column(db.Boolean      , nullable=False)
@@ -93,6 +86,7 @@ class Horario(db.Model):
     __tablaname__ = 'horario'
     id              = db.Column(db.Integer      , primary_key=True)
     alumno          = db.Column(db.Integer      , db.ForeignKey('alumno.codigo')    , nullable=False)
+    #Agregar talvez tmb fecha de creacion?
     def __repr__(self):
         return f'<Clase: {self.id}>'
 
