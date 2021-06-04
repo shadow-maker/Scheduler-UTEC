@@ -1,9 +1,8 @@
+import json
 from enum import unique, Enum
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-import json
 
-import enum
 class TipoClaseEnum(Enum):
     lab = 0
     teoria = 1
