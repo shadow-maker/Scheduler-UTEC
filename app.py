@@ -5,13 +5,19 @@ from enum import unique, Enum
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
-# Flask
+#
+# Configuracion Flask
+#
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config.SQLALCHEMY_TRACK_MODIFICATIONS
 db = SQLAlchemy(app)
 
+#
 # Tablas
+#
+
 class TipoClaseEnum(Enum):
     lab = 0
     teoria = 1
@@ -121,9 +127,11 @@ class Favorito(db.Model):
     def __repr__(self):
         return f'<Lista: {self.horario_id}, {self.alumno_codigo}>'
 
-db.create_all()
+db.create_all() # Crear tablas en bd
 
+#
 # ROUTES
+#
 
 # Horarios
 @app.route('/horarios/list')
@@ -148,11 +156,9 @@ def horarios_delete(id):
 def horarios_view(id):
     return 'temp'
 
-
-
-
-
-
+#
+# App init
+#
 
 if __name__ == '__main__':
     app.run() #(port=5002, debug=True)
