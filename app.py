@@ -1,5 +1,4 @@
 import json
-#      dadaddddddd
 from sqlalchemy.orm import backref
 import config
 from enum import unique, Enum
@@ -64,7 +63,7 @@ class Clase(db.Model):
     sesiones        = db.relationship('Sesion', backref='clase', lazy=True)
 
     def __repr__(self):
-        return f'<Clase: {self.curso}, {self.tipo}, {self.seccion}, {self.numero}>'
+        return f'<Clase: {self.curso_codigo}, {self.tipo}, {self.seccion}, {self.numero}>'
 
 class Sesion(db.Model):
     __tablename__ = 'sesion'
@@ -86,7 +85,7 @@ class Sesion(db.Model):
                       )
 
     def __repr__(self):
-        return f'<Clase: {self.curso}, {self.clase_tipo}, {self.clase_seccion}, {self.clase_numero}, {self.id}>'
+        return f'<Clase: {self.curso_codigo}, {self.clase_tipo}, {self.clase_seccion}, {self.clase_numero}, {self.id}>'
 
 class Horario(db.Model):
     __tablaname__ = 'horario'
@@ -113,20 +112,47 @@ class Lista(db.Model):
                       )
                       
     def __repr__(self):
-        return f'<Lista: {self.horario} - {self.curso}, {self.clase_tipo}, {self.clase_seccion}, {self.clase_numero}>'
+        return f'<Lista: {self.horario_id} - {self.curso_codigo}, {self.clase_tipo}, {self.clase_seccion}, {self.clase_numero}>'
 
 class Favorito(db.Model):
     __tablename__ = 'favorito'
     horario_id      = db.Column(db.Integer      , db.ForeignKey('horario.id')       , primary_key=True)
     alumno_codigo   = db.Column(db.Integer      , db.ForeignKey('alumno.codigo')    , primary_key=True)
     def __repr__(self):
-        return f'<Lista: {self.horario}, {self.alumno}>'
+        return f'<Lista: {self.horario_id}, {self.alumno_codigo}>'
 
 db.create_all()
 
-@app.route('/')
-def index():
-    return 'Algo temporal'
+# ROUTES
+
+# Horarios
+@app.route('/horarios/list')
+def horarios_list():
+    horarios = Horario.query.all()
+    return render_template('horarios/list.html',data=horarios)
+
+@app.route('/horarios/create')
+def horarios_create():
+    info = Curso.query.all()
+    return render_template('tables.html',data=info)
+
+@app.route('/horarios/update/<id>')
+def horarios_update(id):
+    return 'temp'
+
+@app.route('/horarios/delete/<id>')
+def horarios_delete(id):
+    return 'temp'
+
+@app.route('/horarios/view/<id>')
+def horarios_view(id):
+    return 'temp'
+
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run() #(port=5002, debug=True)

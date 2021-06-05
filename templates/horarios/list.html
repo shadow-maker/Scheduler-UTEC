@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Pure CSS Table Highlight (vertical & horizontal)</title>
+  
+  
+  
+      <link rel="stylesheet" href="/static/style_table.css">
+
+  
+</head>
+
+<body>
+  <p>
+    {% for horario in data %}
+        <a href={{'/horarios/view/'}}{{horario.id}}>Horario #{{horario.id}} de {{horario.alumno.nombre}} {{horario.alumno.apellido}}</a>
+    {% endfor %}
+    </p>
+</body>
+</html>

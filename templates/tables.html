@@ -151,8 +151,31 @@
 			</tr>
 		</tbody>
 	</table>
+	
 </div>
-  
-  
+
+  <p>
+    {% for curso in data %}
+        <h3> {{ curso.curso }} </h3>
+		<ul>
+        {% for clase in curso.clases %}
+            <li>
+				<h4> {{clase.tipo }} - {{ clase.seccion }}.{{ clase.numero }} </h4>
+				<p> Docente: {{ clase.docente.apellido }}, {{ clase.docente.nombre }}  </p>
+				<p> Vacantes: {{ clase.vacantes }} </p>
+				<p> Sesiones </p>
+				{% for sesion in clase.sesiones %}
+					<p> 
+					{{ sesion.dia }} :  
+					{{ sesion.hora_inicio }} -
+					{{ sesion.hora_fin }}
+					</p>
+				{% endfor %}
+			</li>
+        {% endfor %}
+		</ul>
+    {% endfor %}
+    </p>
+
 </body>
 </html>
