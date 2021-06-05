@@ -3,6 +3,7 @@ from sqlalchemy.orm import backref
 import config
 from enum import unique, Enum
 from flask import Flask, render_template, request, redirect, url_for
+
 from flask_sqlalchemy import SQLAlchemy
 
 #
@@ -146,7 +147,7 @@ def horarios_create():
 
 @app.route('/horarios/update/<id>')
 def horarios_update(id):
-    return 'temp'
+    return render_template('update.html', id = id)
 
 @app.route('/horarios/delete/<id>')
 def horarios_delete(id):
@@ -155,6 +156,12 @@ def horarios_delete(id):
 @app.route('/horarios/view/<id>')
 def horarios_view(id):
     return 'temp'
+@app.route('/login/')
+def login():
+    return render_template('login.html')
+@app.route('/register/')
+def register():
+    return render_template('register.html')
 
 #
 # App init
