@@ -139,7 +139,7 @@ db.create_all() # Crear tablas en bd
 def horarios_list():
     horarios = Horario.query.all()
     return render_template('horarios/list.html',data=horarios)
-
+    
 @app.route('/horarios/create')
 def horarios_create():
     info = Curso.query.all()
