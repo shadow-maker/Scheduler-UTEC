@@ -161,11 +161,11 @@ def horarios_view(id):
 @app.route('/auth/login/')
 def login():
     form=loginform()
-    return render_template('login.html',form=form)
+    return render_template('auth/login.html',form=form)
 
 @app.route('/auth/register/')
 def register():
-    return render_template('register.html')
+    return render_template('auth/register.html')
 
 # Alumno
 @app.route('/alumnos/list')
