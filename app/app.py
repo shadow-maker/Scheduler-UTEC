@@ -230,14 +230,27 @@ def horarios_view(id):
         return render_template('horarios/view.html', horario=horario)
 
 # --- Authetificacion ---
-@app.route('/auth/login/')
+@app.route('/auth/login/', methods=['GET','POST'])
 def login():
     form=forms.loginform()
+    if form.validate_on_submit():
+        user = Alumno.query.filter_by(codigo=form.id_utec.data).first()
+        if user:
+            if user.password == form.password.data:
+                return "Coneccion Exitosa"
+        return "hola"
     return render_template('auth/login.html',form=form)
 
-@app.route('/auth/register/')
+@app.route('/auth/register/', methods=['GET','POST'])
 def register():
-    return render_template('auth/register.html')
+    form=forms.registerform()
+    if form.validate_on_submit():
+        new_user = Alumno(codigo=form.id_utec.data, correo=form.correo.data, password=form.password.data,
+        nombre=form.name.data, apellido=form.last_name.data )
+        db.session.add(new_user)
+        db.session.commit()
+        return "HOLA"
+    return render_template('auth/register.html', form=form)
 
 # Alumno
 @app.route('/alumnos/list')

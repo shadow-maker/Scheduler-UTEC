@@ -10,23 +10,21 @@
 <body>
   <section class="form-register">
     <h4>Loggeate: </h4>
-    <input class="controls" type="text" name="codigo" id="codigo" placeholder="Ingrese su ID Utec">
-    <input class="controls" type="password" name="passcode" id="passcode" placeholder="Ingrese su contraseña">
+    <form method='POST' action="">
+      {{form.hidden_tag()}}
+
+      {{form.id_utec(class="controls", placeholder="Ingrese su ID Utec")}}
+      {{form.password(class="controls", placeholder="Ingrese su contraseña")}}
+      
+      <div>
+          {{form.submit(class="botons")}}
+      </div>
+      </form>
     <p>No tengo una <a href="register.html">cuenta UTEC</a></p>
-    <input class="botons" type="submit" value="Loggeate">
+  
     
   </section>
   
-  <form method='POST' action="">
-    
-    {{form.hidden_tag()}}
-    <fieldset>
-      <legend class="border-bottom mb-4">Join Today</legend>
-      <div class="form-group">
-        {{form.username.label(class="form-control-label")}}
-        {{form.username(class="form-control form-control-lg")}}
-      </div>
-    </fieldset>
-  </form>
+  
 </body>
 </html>

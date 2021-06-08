@@ -10,15 +10,21 @@
 <body>
   <section class="form-register">
     <h4>Registrate: </h4>
-  
-    <input class="controls" type="text" name="nombres" id="nombres" placeholder="Ingrese su Nombre">
-    <input class="controls" type="text" name="apellidos" id="apellidos" placeholder="Ingrese sus Apellidos">
-    <input class="controls" type="email" name="correo" id="correo" placeholder="Ingrese su Correo">
-    <input class="controls" type="text" name="codigo" id="codigo" placeholder="Ingrese su ID Utec">
-    <input class="controls" type="password" name="passcode" id="passcode" placeholder="Ingrese su contraseña">
-    <input class="controls" type="password" name="confirm_passcode" id="confirm_passcode" placeholder="Confirme su contraseña">
-    <p>Ya tengo una <a href="login.html">cuenta UTEC</a></p>
-    <input class="botons" type="submit" value="Registrarse">
+    
+    <form method='POST' action="">
+      {{form.hidden_tag()}}
+      {{form.name(class="controls", placeholder="Ingrese su nombre")}}
+      {{form.last_name(class="controls", placeholder="Ingrese sus apellidos")}}
+      {{form.correo(class="controls", placeholder="Ingrese su correo utec")}}
+      {{form.id_utec(class="controls", placeholder="Ingrese su ID Utec")}}
+      {{form.password(class="controls", placeholder="Ingrese su contraseña")}}
+      {{form.repeat_password(class="controls", placeholder="Repita su contraseña")}}
+      <div>
+          {{form.submit(class="botons")}}
+      </div>
+      </form>
+    <p>No tengo una <a href="login.html">cuenta UTEC</a></p>
+
     
   </section>
 
