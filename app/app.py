@@ -216,7 +216,18 @@ def horarios_delete(id):
 
 @app.route('/horarios/view/<id>')
 def horarios_view(id):
-    return 'temp'
+    error =False
+    try:
+        horario = Horario.query.get(id)
+    except:
+        error = True
+
+    if error:
+        return 'Url no valida' # MEJORAR RESPUESTA DE ERROR
+    elif horario==None:
+        return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
+    else:
+        return render_template('horarios/view.html', horario=horario)
 
 # --- Authetificacion ---
 @app.route('/auth/login/')
