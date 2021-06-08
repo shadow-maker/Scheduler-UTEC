@@ -42,6 +42,11 @@ class Alumno(UserMixin,db.Model):
     def __repr__(self):
         return f'<Alumno: {self.codigo} - {self.apellido}, {self.nombre}>'
 
+    # Auth
+    def get_id(self):
+        return self.codigo
+
+
 #-----
 # Login Authentication
 #-----
@@ -176,6 +181,7 @@ def horarios_create():
         return redirect(  url_for('horarios_update', id=horario_id) )
 
 @app.route('/horarios/update/<id>')
+@login_required
 def horarios_update(id):
     error =False
     alumno_codigo = 202010387 # TEMPORAL: El codigo de alumno debe salir del auth actual
@@ -245,13 +251,26 @@ def horarios_view(id):
 def login():
     form=forms.loginform()
     if form.validate_on_submit():
+        # Get user
         user = Alumno.query.filter_by(codigo=form.id_utec.data).first()
+        next = request.args.get('next')
+        # Si existe
         if user:
+            # Si es valido
             if user.password == form.password.data:
                 login_user(user,remember=form.remember.data)
-                return "Coneccion Exitosa"
+                return redirect(next or url_for('menu_inicio'))
+                #return "Coneccion Exitosa"
         return "CUENTA INCORRECTA"
+
     return render_template('auth/login.html',form=form)
+
+@app.route("/auth/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(  url_for('login')  )
+
 
 @app.route('/auth/register/', methods=['GET','POST'])
 def register():
@@ -265,11 +284,6 @@ def register():
     return render_template('auth/register.html', form=form)
 
 # Alumno
-@app.route('/')
-@login_required
-def menu_inicio(id):
-    return 'Solo los registrados entran aca'
-
 @app.route('/alumnos/list')
 def alumnos_list(id):
     alumnos = Alumno.query.all()
@@ -288,4 +302,9 @@ def alumnos_update(id):
 def alumnos_delete(id):
     return 'temp'
 
+# Indice
+@app.route('/')
+@login_required
+def menu_inicio():
+    return 'Solo los registrados entran aca'
 
