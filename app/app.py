@@ -1,4 +1,5 @@
 import json
+import sys
 
 from sqlalchemy.orm import backref
 from enum import unique, Enum
@@ -144,16 +145,74 @@ def horarios_list():
     
 @app.route('/horarios/create')
 def horarios_create():
-    return 'temp' #render_template('update.html')
+    error = False
+    alumno_codigo = 202010387 # TEMPORAL: El codigo de alumno debe salir del auth actual
+    try:
+        horario = Horario(alumno_codigo=alumno_codigo)
+        db.session.add(horario)
+        db.session.commit()
+        horario_id = horario.id
+    except:
+        db.session.rollback()
+        print(sys.exc_info())
+        error = True
+    finally:
+        db.session.close()
+
+    if error:
+        return 'No se pudo crear el horario' # MEJORAR RESPUESTA DE ERROR
+    else:
+        return redirect(  url_for('horarios_update', id=horario_id) )
 
 @app.route('/horarios/update/<id>')
 def horarios_update(id):
+    error =False
+    alumno_codigo = 202010387 # TEMPORAL: El codigo de alumno debe salir del auth actual
     info = Curso.query.all()
-    return render_template('horarios/update.html', data=info, id = id)
+
+    try:
+        horario = Horario.query.get(id)
+    except:
+        error = True
+
+    if error:
+        return 'Url no valida' # MEJORAR RESPUESTA DE ERROR
+    elif horario==None:
+        return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
+    else:
+        return render_template('horarios/update.html', data=info, horario=horario)
 
 @app.route('/horarios/delete/<id>')
 def horarios_delete(id):
-    return 'temp'
+    error =False
+    alumno_codigo = 202010387 # TEMPORAL: El codigo de alumno debe salir del auth actual
+
+    try:
+        horario = Horario.query.get(id)
+    except:
+        return 'Url no valida' # MEJORAR RESPUESTA DE ERROR
+
+    if horario == None:
+        return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
+    
+    if horario.alumno_codigo != alumno_codigo:
+        return 'No tiene permisos para eliminar este horario'
+
+    try:
+        horario_id = horario.id
+        db.session.delete(horario)
+        db.session.commit()
+    except:
+        db.session.rollback()
+        print(sys.exc_info())
+        error = True
+    finally:
+        db.session.close()
+
+    if error:
+        return 'No se pudo eliminar el horario' # MEJORAR RESPUESTA DE ERROR
+    else:
+        return f'Se elimino correctamente el horario {horario_id}' # MEJORAR RESPUESTA DE EXITO
 
 @app.route('/horarios/view/<id>')
 def horarios_view(id):
