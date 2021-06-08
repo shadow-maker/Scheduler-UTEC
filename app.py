@@ -3,14 +3,14 @@ from sqlalchemy.orm import backref
 import config
 from enum import unique, Enum
 from flask import Flask, render_template, request, redirect, url_for
-
 from flask_sqlalchemy import SQLAlchemy
-
+from wtforms_fields import *
 # -------------------
 # Configuracion Flask
 # -------------------
 
 app = Flask(__name__)
+app.config['SECRET_KEY']='projectodb'
 app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config.SQLALCHEMY_TRACK_MODIFICATIONS
 db = SQLAlchemy(app)
@@ -160,7 +160,8 @@ def horarios_view(id):
 # Authetificacion
 @app.route('/auth/login/')
 def login():
-    return render_template('login.html')
+    form=loginform()
+    return render_template('login.html',form=form)
 
 @app.route('/auth/register/')
 def register():
