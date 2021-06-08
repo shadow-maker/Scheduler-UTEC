@@ -27,23 +27,34 @@ login_manager.login_view = 'login'
 
 
 
-# ------
-# Tablas
-# ------
+# ----------------
+# Modelos & Tablas
+# ----------------
 
 class TipoClaseEnum(Enum):
     lab = 0
     teoria = 1
     teoria_virtual = 2
 
+lista_clases = db.Table('lista',
+    db.Column('horario_id', db.Integer, db.ForeignKey('horario.id'), primary_key=True),
+    db.Column('clase_id', db.Integer, db.ForeignKey('clase.id'),primary_key=True)
+)
+
+lista_favoritos = db.Table('favorito',
+    db.Column('horario_id', db.Integer , db.ForeignKey('horario.id')    , primary_key=True),
+    db.Column('alumno_codigo', db.String(9), db.ForeignKey('alumno.codigo'), primary_key=True)
+)
+
 class Alumno(UserMixin,db.Model):
     __tablename__ = 'alumno'
-    codigo      = db.Column(db.Integer      , primary_key=True)
-    correo      = db.Column(db.String(255)  , nullable=False, unique=True)
-    password    = db.Column(db.String(64)   , nullable=False)
-    nombre      = db.Column(db.String(64)   , nullable=False)
-    apellido    = db.Column(db.String(64)   , nullable=False)
+    codigo      = db.Column(db.String(9)  , primary_key=True)
+    correo      = db.Column(db.String(255), nullable=False, unique=True)
+    password    = db.Column(db.String(64) , nullable=False)
+    nombre      = db.Column(db.String(64) , nullable=False)
+    apellido    = db.Column(db.String(64) , nullable=False)
     horarios    = db.relationship('Horario', backref='alumno', lazy=True)
+    favoritos   = db.relationship('Horario', secondary=lista_favoritos, lazy=True, backref=db.backref('alumnos', lazy=True) )
 
     def __repr__(self):
         return f'<Alumno: {self.codigo} - {self.apellido}, {self.nombre}>'
@@ -51,6 +62,72 @@ class Alumno(UserMixin,db.Model):
     # Auth
     def get_id(self):
         return self.codigo
+
+class Docente(db.Model):
+    __tablename__ = 'docente'
+    codigo          = db.Column(db.String(6)  , primary_key=True)
+    correo          = db.Column(db.String(255), nullable=False, unique=True)
+    nombre          = db.Column(db.String(64) , nullable=False)
+    apellido        = db.Column(db.String(64) , nullable=False)
+    clases          = db.relationship('Clase', backref='docente', lazy=True)
+
+    def __repr__(self):
+        return f'<Docente: {self.codigo} - {self.apellido}, {self.nombre}>'
+
+class Curso(db.Model):
+    __tablename__ = 'curso'
+    codigo          = db.Column(db.String(6)  , primary_key=True)
+    curso           = db.Column(db.String(255), nullable=False)
+    lab             = db.Column(db.Boolean    , nullable=False)
+    teoria          = db.Column(db.Boolean    , nullable=False)
+    teoria_virutal  = db.Column(db.Boolean    , nullable=False)
+    clases          = db.relationship('Clase', backref='curso', lazy=True)
+
+    def __repr__(self):
+        return f'<Docente: {self.codigo} - {self.curso}>'
+
+class Clase(db.Model):
+    __tablename__ = 'clase'
+    id              = db.Column(db.Integer  , primary_key=True)
+    curso_codigo    = db.Column(db.String(6), db.ForeignKey('curso.codigo'))
+    tipo            = db.Column(db.Enum(TipoClaseEnum), nullable=False)
+    seccion         = db.Column(db.String(2), nullable=False)
+    numero          = db.Column(db.String(2), nullable=False)
+    vacantes        = db.Column(db.Integer  , nullable=False)
+    docente_codigo  = db.Column(db.String(6), db.ForeignKey('docente.codigo'), nullable=True) # Null para cuando aun no se sabe el docente
+    sesiones        = db.relationship('Sesion', backref='clase', lazy=True)
+    __table_args__ = (
+        db.UniqueConstraint('curso_codigo','tipo','seccion','numero', name='unique_clase_por_curso'),
+    )
+
+    def __repr__(self):
+        return f'<Clase: {self.id} de Curso {self.curso_codigo}>'
+
+class Sesion(db.Model):
+    __tablename__ = 'sesion'
+    id              = db.Column(db.Integer      , primary_key=True)
+    clase_id        = db.Column(db.Integer , db.ForeignKey('clase.id'), nullable=False)
+    # Numeracion de sesion? #REVISAR
+    dia             = db.Column(db.Integer      , nullable=False) #Cambiar formato?
+    hora_inicio     = db.Column(db.Integer      , nullable=False) #Cambiar formato?
+    hora_fin        = db.Column(db.Integer      , nullable=False) #Cambiar formato?
+    # Implementar frecuencia tambien?
+
+    def __repr__(self):
+        return f'<Clase: {self.id} de Clase {self.clase_id}>'
+
+class Horario(db.Model):
+    __tablaname__ = 'horario'
+    id              = db.Column(db.Integer      , primary_key=True)
+    alumno_codigo   = db.Column(db.String(9)    , db.ForeignKey('alumno.codigo')    , nullable=False)
+    #Agregar talvez tmb fecha de creacion?
+    clases          = db.relationship('Clase', secondary=lista_clases, lazy='subquery', backref=db.backref('horarios', lazy=True) )
+    
+    def __repr__(self):
+        return f'<Clase: {self.id}>'
+
+
+db.create_all() # Crear tablas en bd
 
 
 #-----
@@ -61,99 +138,6 @@ class Alumno(UserMixin,db.Model):
 def load_user(user_codigo):
     return Alumno.query.get(user_codigo)
 
-class Docente(db.Model):
-    __tablename__ = 'docente'
-    codigo          = db.Column(db.Integer      , primary_key=True)
-    correo          = db.Column(db.String(255)  , nullable=False, unique=True)
-    nombre          = db.Column(db.String(64)   , nullable=False)
-    apellido        = db.Column(db.String(64)   , nullable=False)
-    clases          = db.relationship('Clase', backref='docente', lazy=True)
-
-    def __repr__(self):
-        return f'<Docente: {self.codigo} - {self.apellido}, {self.nombre}>'
-
-class Curso(db.Model):
-    __tablename__ = 'curso'
-    codigo          = db.Column(db.String(6)    , primary_key=True)
-    curso           = db.Column(db.String(255)  , nullable=False)
-    lab             = db.Column(db.Boolean      , nullable=False)
-    teoria          = db.Column(db.Boolean      , nullable=False)
-    teoria_virutal  = db.Column(db.Boolean      , nullable=False)
-    clases          = db.relationship('Clase', backref='curso', lazy=True)
-
-    def __repr__(self):
-        return f'<Docente: {self.codigo} - {self.curso}>'
-
-class Clase(db.Model):
-    __tablename__ = 'clase'
-    curso_codigo    = db.Column(db.String(6)    , db.ForeignKey('curso.codigo')     , primary_key=True)
-    tipo            = db.Column(db.Enum(TipoClaseEnum)                              , primary_key=True)
-    seccion         = db.Column(db.String(2)    , primary_key=True)
-    numero          = db.Column(db.String(2)    , primary_key=True)
-    vacantes        = db.Column(db.Integer      , nullable=False)
-    docente_codigo  = db.Column(db.Integer      , db.ForeignKey('docente.codigo')   , nullable=True)        # Null para cuando aun no se sabe el docente
-    sesiones        = db.relationship('Sesion', backref='clase', lazy=True)
-
-    def __repr__(self):
-        return f'<Clase: {self.curso_codigo}, {self.tipo}, {self.seccion}, {self.numero}>'
-
-class Sesion(db.Model):
-    __tablename__ = 'sesion'
-    curso_codigo    = db.Column(db.String(6)    , primary_key=True)
-    clase_tipo      = db.Column(db.Enum(TipoClaseEnum)                              , primary_key=True) 
-    clase_seccion   = db.Column(db.String(2)    , primary_key=True)
-    clase_numero    = db.Column(db.String(2)    , primary_key=True)
-    id              = db.Column(db.Integer      , primary_key=True)
-    dia             = db.Column(db.Integer      , nullable=False) #Cambiar formato?
-    hora_inicio     = db.Column(db.Integer      , nullable=False) #Cambiar formato?
-    hora_fin        = db.Column(db.Integer      , nullable=False) #Cambiar formato?
-    # Implementar frecuencia tambien
-    # Llave foranea compuesta a Clase
-    __table_args__  = (db.ForeignKeyConstraint(
-                            [curso_codigo, clase_tipo, clase_seccion, clase_numero],
-                            ['clase.curso_codigo', 'clase.tipo', 'clase.seccion', 'clase.numero']
-                        ),
-                        {},
-                      )
-
-    def __repr__(self):
-        return f'<Clase: {self.curso_codigo}, {self.clase_tipo}, {self.clase_seccion}, {self.clase_numero}, {self.id}>'
-
-class Horario(db.Model):
-    __tablaname__ = 'horario'
-    id              = db.Column(db.Integer      , primary_key=True)
-    alumno_codigo   = db.Column(db.Integer      , db.ForeignKey('alumno.codigo')    , nullable=False)
-    #Agregar talvez tmb fecha de creacion?
-    def __repr__(self):
-        return f'<Clase: {self.id}>'
-
-
-class Lista(db.Model):
-    __tablename__ = 'lista'
-    horario_id      = db.Column(db.Integer      , db.ForeignKey('horario.id')       , primary_key=True)
-    curso_codigo    = db.Column(db.String(6)    , primary_key=True)
-    clase_tipo      = db.Column(db.Enum(TipoClaseEnum)                              , primary_key=True) 
-    clase_seccion   = db.Column(db.String(2)    , primary_key=True)
-    clase_numero    = db.Column(db.String(2)    , primary_key=True)
-    # Llave foranea compuesta a Clase
-    __table_args__  = (db.ForeignKeyConstraint(
-                            [curso_codigo, clase_tipo, clase_seccion, clase_numero],
-                            ['clase.curso_codigo', 'clase.tipo', 'clase.seccion', 'clase.numero']
-                        ),
-                        {},
-                      )
-                      
-    def __repr__(self):
-        return f'<Lista: {self.horario_id} - {self.curso_codigo}, {self.clase_tipo}, {self.clase_seccion}, {self.clase_numero}>'
-
-class Favorito(db.Model):
-    __tablename__ = 'favorito'
-    horario_id      = db.Column(db.Integer      , db.ForeignKey('horario.id')       , primary_key=True)
-    alumno_codigo   = db.Column(db.Integer      , db.ForeignKey('alumno.codigo')    , primary_key=True)
-    def __repr__(self):
-        return f'<Lista: {self.horario_id}, {self.alumno_codigo}>'
-
-db.create_all() # Crear tablas en bd
 
 # ------
 # ROUTES
@@ -250,6 +234,7 @@ def horarios_view(id):
     elif horario==None:
         return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
     else:
+        print(horario.listas)
         return render_template('horarios/view.html', horario=horario)
 
 # --- Authetificacion ---
