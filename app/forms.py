@@ -4,5 +4,5 @@ from wtforms.validators import InputRequired, Email
 from wtforms.widgets.core import Input
 
 class loginform(FlaskForm):
-    username=StringField('username', validators=[InputRequired()])
+    username = StringField('username', validators=[InputRequired()])
     password = PasswordField('password', validators=[InputRequired()])

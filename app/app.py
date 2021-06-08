@@ -1,10 +1,12 @@
 import json
+
 from sqlalchemy.orm import backref
-import config
 from enum import unique, Enum
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from wtforms_fields import *
+
+from . import config
+from . import forms
 # -------------------
 # Configuracion Flask
 # -------------------
@@ -134,7 +136,7 @@ db.create_all() # Crear tablas en bd
 # ROUTES
 # ------
 
-# Horarios
+# --- Horarios ---
 @app.route('/horarios/list')
 def horarios_list():
     horarios = Horario.query.all()
@@ -157,10 +159,10 @@ def horarios_delete(id):
 def horarios_view(id):
     return 'temp'
 
-# Authetificacion
+# --- Authetificacion ---
 @app.route('/auth/login/')
 def login():
-    form=loginform()
+    form=forms.loginform()
     return render_template('auth/login.html',form=form)
 
 @app.route('/auth/register/')
@@ -187,11 +189,3 @@ def alumnos_delete(id):
     return 'temp'
 
 
-#
-# APP EXECUTION
-#
-
-if __name__ == '__main__':
-    app.run() #(port=5002, debug=True)
-#else:
-#    print('using global variables from FLASK')
