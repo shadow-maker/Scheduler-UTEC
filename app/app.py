@@ -5,6 +5,7 @@ from sqlalchemy.orm import backref
 from enum import unique, Enum
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 from . import config
 from . import forms
@@ -17,7 +18,9 @@ app.config['SECRET_KEY']='projectodb'
 app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config.SQLALCHEMY_TRACK_MODIFICATIONS
 db = SQLAlchemy(app)
-
+login_manager =LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 # ------
 # Tablas
 # ------
@@ -27,7 +30,7 @@ class TipoClaseEnum(Enum):
     teoria = 1
     teoria_virtual = 2
 
-class Alumno(db.Model):
+class Alumno(UserMixin,db.Model):
     __tablename__ = 'alumno'
     codigo      = db.Column(db.Integer      , primary_key=True)
     correo      = db.Column(db.String(255)  , nullable=False, unique=True)
@@ -38,6 +41,14 @@ class Alumno(db.Model):
 
     def __repr__(self):
         return f'<Alumno: {self.codigo} - {self.apellido}, {self.nombre}>'
+
+#-----
+# Login Authentication
+#-----
+
+@login_manager.user_loader
+def load_user(user_codigo):
+    return Alumno.query.get(user_codigo)
 
 class Docente(db.Model):
     __tablename__ = 'docente'
@@ -237,8 +248,9 @@ def login():
         user = Alumno.query.filter_by(codigo=form.id_utec.data).first()
         if user:
             if user.password == form.password.data:
+                login_user(user,remember=form.remember.data)
                 return "Coneccion Exitosa"
-        return "hola"
+        return "CUENTA INCORRECTA"
     return render_template('auth/login.html',form=form)
 
 @app.route('/auth/register/', methods=['GET','POST'])
@@ -253,6 +265,11 @@ def register():
     return render_template('auth/register.html', form=form)
 
 # Alumno
+@app.route('/')
+@login_required
+def menu_inicio(id):
+    return 'Solo los registrados entran aca'
+
 @app.route('/alumnos/list')
 def alumnos_list(id):
     alumnos = Alumno.query.all()

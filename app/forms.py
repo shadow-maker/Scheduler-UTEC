@@ -1,12 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField
+from wtforms import StringField, PasswordField
+from wtforms.fields.core import BooleanField
 from wtforms.fields.simple import SubmitField
-from wtforms.validators import EqualTo, InputRequired, Email, Length
-from wtforms.widgets.core import Input
+from wtforms.validators import EqualTo, InputRequired, Length
 
 class loginform(FlaskForm):
     id_utec = StringField('id_utec', validators=[InputRequired(),Length(min=4, max=20)])
     password = PasswordField('password', validators=[InputRequired(),Length(min=4, max=20)])
+    remember = BooleanField('Remember me')
     submit = SubmitField('Submit')
 
 class registerform(FlaskForm):
