@@ -144,12 +144,12 @@ def horarios_list():
     
 @app.route('/horarios/create')
 def horarios_create():
-    info = Curso.query.all()
-    return render_template('tables2.html',data=info)
+    return 'temp' #render_template('update.html')
 
 @app.route('/horarios/update/<id>')
 def horarios_update(id):
-    return render_template('update.html', id = id)
+    info = Curso.query.all()
+    return render_template('horarios/update.html', data=info, id = id)
 
 @app.route('/horarios/delete/<id>')
 def horarios_delete(id):
