@@ -174,7 +174,7 @@ def horarios_create():
 @login_required
 def horarios_update(id):
     error =False
-    alumno_codigo = 202010387 # TEMPORAL: El codigo de alumno debe salir del auth actual
+    alumno_codigo = str(202010387) # TEMPORAL: El codigo de alumno debe salir del auth actual
     info = Curso.query.all()
 
     try:
@@ -186,6 +186,8 @@ def horarios_update(id):
         return 'Url no valida' # MEJORAR RESPUESTA DE ERROR
     elif horario==None:
         return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
+    elif horario.alumno_codigo != alumno_codigo:
+        return 'No tiene permisos para eliminar este horario'
     else:
         return render_template('horarios/update.html', data=info, horario=horario)
 

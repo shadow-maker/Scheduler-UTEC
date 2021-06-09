@@ -14,7 +14,7 @@
 <body>
   <p>
     {% for horario in data %}
-        <a href={{'/horarios/view/'}}{{horario.id}}>Horario #{{horario.id}} de {{horario.alumno.nombre}} {{horario.alumno.apellido}}</a>
+        <a href={{'/horarios/view/'}}{{horario.id}}>Horario #{{horario.id}} de {{horario.alumno.nombre}} {{horario.alumno.apellido}}</a> <br>
     {% endfor %}
     </p>
 </body>
