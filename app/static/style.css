@@ -6,12 +6,12 @@
 }
 
 body {
-  background-image: url('fondo.jpg');
+  background-image: url('fondo2.jpg');
 }
 
 .form-register {
   width: 400px;
-  background: #4f325a;
+  background: #2b252e;
   padding: 30px;
   margin: auto;
   margin-top: 100px;
