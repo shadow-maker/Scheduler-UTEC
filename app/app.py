@@ -298,8 +298,12 @@ def alumnos_delete(id):
     return 'temp'
 
 # Indice
-@app.route('/')
+@app.route('/auth')
 @login_required
-def menu_inicio():
+def menu_registered():
     return 'Solo los registrados entran aca'
+
+@app.route('/')
+def menu_inicio():
+    return render_template('menu.html')
 
