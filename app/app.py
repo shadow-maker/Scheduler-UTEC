@@ -194,7 +194,7 @@ def horarios_update(id):
 @app.route('/horarios/delete/<id>')
 def horarios_delete(id):
     error =False
-    alumno_codigo = 202010387 # TEMPORAL: El codigo de alumno debe salir del auth actual
+    alumno_codigo = str(202010387) # TEMPORAL: El codigo de alumno debe salir del auth actual
 
     try:
         horario = Horario.query.get(id)
