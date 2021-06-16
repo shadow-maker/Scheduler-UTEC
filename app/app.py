@@ -286,20 +286,29 @@ def menu_inicio():
 def explore():
     return render_template('home/explore.html')
 
-
-
-
-
-
-
-
-
-
 # --- Horarios ---
 @app.route('/horarios/list')
 def horarios_list():
     horarios = Horario.query.all()
     return render_template('horarios/list.html',data=horarios)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 @app.route('/horarios/create')
 def horarios_create():
