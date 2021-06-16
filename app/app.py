@@ -523,6 +523,49 @@ def horarios_update_add(id):
         response["table_horario"] = table_horario
     return jsonify(response)
 
+
+@app.route('/horarios/update/<id>/delete', methods=['DELETE'])
+def horarios_update_delete(id):
+    error = False
+    response = {}
+    alumno_codigo = str(202010387) # TEMPORAL: El codigo de alumno debe salir del auth actual
+    
+    # Get de objetos
+    try:
+        clase_id = request.get_json()['clase_id']
+        clase = Clase.query.get(int(clase_id))
+    except:
+        print(sys.exc_info())
+        error = True
+        response["error_message"] = "Error inesperado de backend (C)"
+    try:
+        horario = Horario.query.get(id)
+    except:
+        print(sys.exc_info())
+        error = True
+        response["error_message"] = "Error inesperado de backend (H)"
+
+    if not error:
+        # Logica de validacion
+        try:
+            horario.clases.remove(clase)
+            db.session.commit()
+            #response["success_message"] = "Se agrego correctamente la clase"
+        except:
+            db.session.rollback()
+            print(sys.exc_info())
+            response["error_message"] = "Error inesperado de backend"
+            error = True
+
+        # Status del horario
+        status, table_horario = status_horario(horario)
+        db.session.close()
+        # Return
+        response["success"] = not error
+        response["status_horario"] = status
+        response["table_horario"] = table_horario
+    return jsonify(response)
+
 # Indice
 #@app.route('/auth')
 #@login_required
