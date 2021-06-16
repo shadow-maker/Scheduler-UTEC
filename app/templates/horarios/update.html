@@ -14,6 +14,7 @@
 </head>
 <body>
     <h1> Actualizar Horario #{{horario.id}} </h1>
+    <p> Generado por <a href={{url_for('alumnos_view',id=horario.alumno.codigo)}}> {{horario.alumno.nombre}} {{horario.alumno.apellido}} </a> </p>
     <table id="table_horario">
         <thead>
         <tr>
@@ -183,13 +184,17 @@
     </table>
 
     <h1> STATUS: <alert id="status">{{status}}</alert> </h1>
+    <alert class="{%if not pending_cursos%}hidden{%endif%}" id="pending-alert"> Cursos incompletos:  <div id="pending-container"> {{pending_cursos}} </div> </alert>
     <alert class="hidden" id="error-alert"> ERROR: <div id="error"> </div> </alert>
     <br>
+
+    <h2> Vista </h2>
+    <a href={{url_for('horarios_view', id=horario.id)}}> Retornar a vista normal </a>
 
     <h1> Cursos: </h1>
     <p>
         {% for curso in data %}
-            <h3> {{ curso.curso }} </h3>
+            <h3> {{curso.codigo}} - {{ curso.curso }} </h3>
             {% if curso.clases %}
                 {% for secciones in curso.clases | groupby("seccion") %}
                     <p> SECCION {{ secciones.grouper }} : </p>
@@ -197,7 +202,7 @@
                         <p> {{ tipos.grouper.name }} : </p>
                         <ul>
                         {% for c in tipos.list %}
-                            <li> <a href={{url_for('clases_view',id=c.id)}}> {{c.seccion}}.{{c.numero}} - {{c.tipo.name}} por {{c.docente.nombre}} {{c.docente.apellido}} </a> <button class="add-button" data-id="{{c.id}}" data-action="{% if c in horario.clases%}delete{%else%}add{%endif%}"> {% if c in horario.clases%}Quitar{%else%}Agregar{%endif%} </button>
+                            <li> <a href={{url_for('clases_view',id=c.id)}}> {{c.seccion}}.{{c.numero}} - {{c.tipo.name}} por {{c.docente.nombre}} {{c.docente.apellido}} </a> <button class="clases-buttons" data-id="{{c.id}}" data-action="{% if c in horario.clases%}delete{%else%}add{%endif%}"> {% if c in horario.clases%}Quitar{%else%}Agregar{%endif%} </button>
                         {% endfor %}
                         </ul>
                     {% endfor %}
@@ -211,8 +216,6 @@
 </body>
 
     <script>
-        const init_table = {{horario_table|tojson}}
-
         function UpdateTable(data){
             for (let i = 0; i < data.length; i++) {
                 const subdata = data[i]
@@ -222,76 +225,57 @@
                 }
             }
         }
-
+        
+        const init_table = {{table_horario|tojson}}
         UpdateTable(init_table)
 
-        const class_buttons = document.querySelectorAll('.add-button')
-        for (let i=0; i < class_buttons.length; i++){
-            const button = class_buttons[i]
+        const clases_buttons = document.querySelectorAll('.clases-buttons')
+        for (let i=0; i < clases_buttons.length; i++){
+            const button = clases_buttons[i]
             button.onclick = function(e){
-                const clase_id = e.target.dataset['id']
-                const clase_action = e.target.dataset['action']
-                if (clase_action==="add"){
-                    /* Handeling de Agregar*/
-                    fetch( "{{url_for('horarios_update_add',id=horario.id)}}", {
-                        method: 'UPDATE',
-                        body: JSON.stringify({
-                            'clase_id': clase_id
-                        }),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(function(response){
-                        return response.json()
-                    }).then(function(jsonResponse) {
-                        console.log(jsonResponse)
-                        document.getElementById("status").innerHTML = jsonResponse['status_horario']
-                        if (jsonResponse['success'] === true){
-                            /*Actualizacion*/
-                            document.getElementById("error-alert").className='hidden'
-                            UpdateTable(jsonResponse['table_horario'])
-                            e.target.dataset['action'] = "delete" 
-                            e.target.innerHTML = "Quitar"
-                        }
-                        else {
-                            /*Error Handeling*/
-                            document.getElementById("error-alert").className=''
-                            document.getElementById("error").innerHTML = jsonResponse['error_message']
-                        }
-                    })
-                }
-                else{
-                    /* Handeling de Quitar*/
-                    fetch( "{{url_for('horarios_update_delete',id=horario.id)}}", {
-                        method: 'DELETE',
-                        body: JSON.stringify({
-                            'clase_id': clase_id
-                        }),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(function(response){
-                        return response.json()
-                    }).then(function(jsonResponse) {
-                        console.log(jsonResponse)
-                        document.getElementById("status").innerHTML = jsonResponse['status_horario']
-                        if (jsonResponse['success'] === true){
-                            /*Actualizacion*/
-                            document.getElementById("error-alert").className='hidden'
-                            UpdateTable(jsonResponse['table_horario'])
-                            e.target.dataset['action'] = "add" 
-                            e.target.innerHTML = "Agregar"
-                        }
-                        else {
-                            /*Error Handeling*/
-                            document.getElementById("error-alert").className=''
-                            document.getElementById("error").innerHTML = jsonResponse['error_message']
-                        }
-                    })
-                }
-                
-                
-                
+                const clase_action      = e.target.dataset['action']
+                // Request constants
+                const clase_id          = e.target.dataset['id']
+                const request_url       = (clase_action==="add") ? "{{url_for('horarios_update_add',id=horario.id)}}" : "{{url_for('horarios_update_delete',id=horario.id)}}"
+                const request_method    = (clase_action==="add") ? "UPDATE" : "DELETE"
+                // Result constants
+                const alternate_action  = (clase_action==="add") ?  "delete" : "add"
+                const alternate_html    = (clase_action==="add") ?  "Quitar" :"Agregar"
+
+                // Handeling Request
+                fetch( request_url, {
+                    method: request_method,
+                    body: JSON.stringify({
+                        'clase_id': clase_id
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function(response){
+                    return response.json()
+                }).then(function(jsonResponse) {
+                    console.log(jsonResponse)
+                    document.getElementById("status").innerHTML = jsonResponse['status_horario']
+                    document.getElementById("pending-container").innerHTML = jsonResponse['pending_cursos']
+                    if(jsonResponse['status_horario'] === "Pending"){
+                        document.getElementById("pending-alert").className=''
+                    }
+                    else{
+                        document.getElementById("pending-alert").className='hidden'
+                    }
+                    if (jsonResponse['success'] === true){
+                        /*Actualizacion*/
+                        document.getElementById("error-alert").className='hidden'
+                        UpdateTable(jsonResponse['table_horario'])
+                        e.target.dataset['action'] = alternate_action 
+                        e.target.innerHTML = alternate_html
+                    }
+                    else {
+                        /*Error Handeling*/
+                        document.getElementById("error-alert").className=''
+                        document.getElementById("error").innerHTML = jsonResponse['error_message']
+                    }
+                })
             }
         }
 

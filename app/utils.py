@@ -44,8 +44,9 @@ def status_horario(horario):
         else:
             horario_dict[c.curso.codigo] = [2**c.tipo.value, c.curso.lab * 2**TipoClaseEnum.lab.value + c.curso.teoria * 2**TipoClaseEnum.teoria.value + c.curso.teoria_virtual * 2**TipoClaseEnum.teoria_virtual.value]
     status = "Complete"
+    cursos_pendientes = []
     for c in horario_dict:
         if horario_dict[c][0] != horario_dict[c][1]:
             status = "Pending"
-            break
-    return status, horario_table
+            cursos_pendientes.append(c)
+    return status, horario_table, ",".join(cursos_pendientes)

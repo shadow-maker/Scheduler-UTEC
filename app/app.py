@@ -388,8 +388,8 @@ def horarios_update(id):
     elif horario.alumno_codigo != alumno_codigo:
         return 'No tiene permisos para eliminar este horario'
     else:
-        status, horario_table = status_horario(horario)
-        return render_template('horarios/update.html', data=info, horario=horario, status = status, horario_table=horario_table)
+        status, table_horario, pending_cursos = status_horario(horario)
+        return render_template('horarios/update.html', data=info, horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos)
 
 @app.route('/horarios/<id>/delete')
 @login_required
@@ -437,8 +437,8 @@ def horarios_view(id):
     elif horario==None:
         return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
     else:
-        print(horario.clases)
-        return render_template('horarios/view.html', horario=horario)
+        status, table_horario, pending_cursos = status_horario(horario)
+        return render_template('horarios/view.html', horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos)
 
 
 
@@ -455,7 +455,7 @@ def horarios_view(id):
 
 
 
-####
+#### CRUD - Corregir AUTH
 
 @app.route('/horarios/update/<id>/add', methods=['UPDATE'])
 def horarios_update_add(id):
@@ -515,12 +515,13 @@ def horarios_update_add(id):
                     error = True
 
         # Status del horario
-        status, table_horario = status_horario(horario)
+        status, table_horario, pending_cursos = status_horario(horario)
         db.session.close()
         # Return
         response["success"] = not error
         response["status_horario"] = status
         response["table_horario"] = table_horario
+        response["pending_cursos"] = pending_cursos
     return jsonify(response)
 
 
@@ -558,15 +559,16 @@ def horarios_update_delete(id):
             error = True
 
         # Status del horario
-        status, table_horario = status_horario(horario)
+        status, table_horario, pending_cursos = status_horario(horario)
         db.session.close()
         # Return
         response["success"] = not error
         response["status_horario"] = status
         response["table_horario"] = table_horario
+        response["pending_cursos"] = pending_cursos
     return jsonify(response)
 
-# Indice
+# Test
 #@app.route('/auth')
 #@login_required
 #def menu_registered():
