@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorar</title>
+</head>
+<body>
+  <h1> Horarios </h1>
+    {% if horarios%}
+        <ul>
+        {% for horario in horarios %}
+            <li> <a href={{url_for('horarios_view',id=horario.id)}}> Horario #{{horario.id}} de {{horario.alumno.nombre}} {{horario.alumno.apellido}}</a> <br>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p> No hay horarios </p>
+    {% endif %}
+</body>
+</html>

@@ -12,7 +12,7 @@
 ## Frontend
 * Representacion de horarios en forma de tabla (bonito)
   * Dado una lista de secciones y sus sesiones
-* Pagina de perfil - publico
+* Pagina de perfil - publico [~]
   * Lista de likes (de otros usuarios)
   * Lista de horarios (tuyos)
     * Si es tuyo mostrar opcion de EDIT -> Redirecciona a pagina de update
@@ -22,7 +22,7 @@
     * Codigo
     * Email
   * Pagina de edicion de informacion personal
-* Vista por cursos / secciones
+* Vista por cursos / secciones [~]
 * Opcion / Pagina de crear horario [✓]
 * Feed de horarios
   * Opciones de sorting
@@ -44,5 +44,6 @@
 # Estructura general
 * Flujo de register/login/logout [✓]
 * Flujo de busqueda y vista de usuarios [✓] *(Falta filtros)
+* Flujo de exploracion [~]
 * Flujo de creacion de horarios
 * Flujo de busqueda y vista de horarios

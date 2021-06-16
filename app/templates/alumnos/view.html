@@ -22,6 +22,14 @@
         <p> Este alumno aun no tiene horarios </p>
     {% endif %}
     
+    {% if current_user.is_authenticated %}
+        {% if current_user.codigo == alumno.codigo %}
+            <form action="{{url_for('horarios_create')}}">
+            <button class="btn-3" type="submit">Nuevo Horario</button>
+            </form>
+        {% endif %}
+    {% endif %}
+
     <h2> Favoritos: </h2>
     {% if alumno.favoritos %}
         <ul>

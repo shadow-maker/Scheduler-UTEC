@@ -12,12 +12,21 @@
     <h1>Bienvenidos al generador de horarios UTEC!!</h1>
     
         <div class="container">
-            <form action="{{url_for('login')}}">
-            <button class="btn-1" type="submit">Loggeate</button>
-            </form>
-            <form action="{{url_for('register')}}">
-            <button class="btn-2" type="submit">Crea tu cuenta</button>
-            </form>
+            {% if current_user.is_authenticated %}
+                <form action="{{url_for('alumnos_view', id=current_user.codigo)}}">
+                <button class="btn-1" type="submit">Perfil</button>
+                </form>
+                <form action="{{url_for('logout')}}">
+                <button class="btn-2" type="submit">Logout</button>
+                </form>
+            {% else %}
+                <form action="{{url_for('login')}}">
+                <button class="btn-1" type="submit">Loggeate</button>
+                </form>
+                <form action="{{url_for('register')}}">
+                <button class="btn-2" type="submit">Crea tu cuenta</button>
+                </form>
+            {% endif %}
         </div>
         <div class="container">
             <form action="{{url_for('explore')}}">
