@@ -43,3 +43,28 @@ class registerform(FlaskForm):
         EqualTo('password', message="Las contraseñas ingresadas no son iguales")
         ])
     submit = SubmitField('Submit')
+
+
+class updatealumnoform(FlaskForm):
+    name = StringField('name', validators=[
+        Length(min=1, max=64, message="Longitud de nombre invaldia (<=64)")
+        ])
+    last_name = StringField('last_name', validators=[
+        Length(min=1, max=64, message="Longitud de apellido invaldia (<=64)")
+        ])
+    correo = StringField('correo', validators=[
+        Email(message="El correo ingresado no es un correo valido"),
+        Length(min=1, max=255, message="Longitud de correo invaldia (<=255)")
+        ])
+    submit = SubmitField('Submit')
+
+    def from_alumno(self, alumno):
+        self.name.data = alumno.nombre
+        self.last_name.data = alumno.apellido
+        self.correo.data = alumno.correo
+
+    def populate_alumno(self, alumno):
+        alumno.nombre = self.name.data
+        alumno.apellido = self.last_name.data
+        alumno.correo = self.correo.data
+

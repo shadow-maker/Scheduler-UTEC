@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Eliminar Alumno</title>
+</head>
+<body>
+  <section class="form-register">
+    <h4>Eliminar: </h4>
+
+    <form method='POST' action="">
+      <div>
+          <input class="button" name="delete_confirm" type="submit" value="submit"> Si, quiere borra mi cuenta </input>
+      </div>
+    </form>
+
+    <a href={{url_for('alumnos_view', id=alumno.codigo)}}> Regresar a mi perfil </a>
+  </section>
+</body>
+</html>

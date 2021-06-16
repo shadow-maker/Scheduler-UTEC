@@ -1,15 +1,18 @@
-<!DOCTYPE html>
-<html >
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Alumnos</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumnos</title>
 </head>
+<body>
 
 <body>
+  <h1> Alumnos </h1>
   <p>
     {% for alumno in alumnos %}
-        <a href={{'/horarios/view/'}}{{horario.id}}>Horario #{{horario.id}} de {{horario.alumno.nombre}} {{horario.alumno.apellido}}</a> <br>
+        <a href={{url_for('alumnos_view', id=alumno.codigo)}}> {{alumno.codigo}}:  {{alumno.nombre}} {{alumno.apellido}}</a> <br>
     {% endfor %}
-    </p>
+  </p>
 </body>
 </html>

@@ -38,3 +38,11 @@
 * Vista por favoritos
 * Agregar tabla de cursos likes para los alumnos
 * Posibilitar que el usuario cambie su contraseña
+
+
+
+# Estructura general
+* Flujo de register/login/logout [✓]
+* Flujo de busqueda y vista de usuarios [✓] *(Falta filtros)
+* Flujo de creacion de horarios
+* Flujo de busqueda y vista de horarios

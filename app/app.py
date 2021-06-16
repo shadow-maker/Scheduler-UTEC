@@ -187,11 +187,97 @@ def login():
             error = "Credenciales no validas"
     return render_template('auth/login.html',form=form, error=error)
 
-@app.route("/auth/logout")
+@app.route("/auth/logout", methods=['GET'])
 @login_required
 def logout():
     logout_user()
     return redirect(  url_for('login')  )
+
+# --- Alumno ---
+@app.route('/alumnos/<id>', methods=['GET'])
+def alumnos_view(id):
+    try:
+        alumno = Alumno.query.get(id)
+    except:
+        return 'Error de backend' # MEJORAR RESPUESTA DE ERROR
+
+    if not alumno:
+        return 'El alumno que busca no existe' # MEJORAR RESPUESTA DE ERROR
+    else:
+        return render_template('alumnos/view.html', alumno=alumno)
+
+@app.route('/alumnos/list', methods=['GET'])
+def alumnos_list():
+    alumnos = Alumno.query.all()
+    return render_template('alumnos/list.html', alumnos=alumnos)
+
+@login_required
+@app.route('/alumnos/<id>/update', methods=['GET','POST'])
+def alumnos_update(id):
+    if current_user.codigo!=id:
+        return 'No tiene permisos para modificar este perfil' # MEJORAR RESPUESTA DE ERROR
+    try:
+        alumno = Alumno.query.get(id)
+    except:
+        return 'Error de backend' # MEJORAR RESPUESTA DE ERROR
+
+    if not alumno:
+        return 'El alumno que busca no existe' # MEJORAR RESPUESTA DE ERROR
+    
+    form=forms.updatealumnoform()
+    error=False
+    if form.validate_on_submit():
+        same_email = Alumno.query.filter_by(correo=form.correo.data).first()
+        if not same_email or same_email==alumno:
+            form.populate_alumno(alumno)
+            db.session.add(alumno)
+            db.session.commit()
+            return redirect( url_for('alumnos_view', id=alumno.codigo) )
+        else:
+            error ="Ya existe otro usuario con este correo"
+    else:
+        form.from_alumno(alumno)
+    
+    return render_template('alumnos/update.html', alumno=alumno, form=form, error=error)
+
+# CORREGIR PARA QUE FUNCIONE CON METODO DELETE
+@app.route('/alumnos/<id>/delete', methods=['GET', 'POST'])
+def alumnos_delete(id):
+    if current_user.codigo!=id:
+        return 'No tiene permisos para modificar este perfil' # MEJORAR RESPUESTA DE ERROR
+    try:
+        alumno = Alumno.query.get(id)
+    except:
+        return 'Error de backend' # MEJORAR RESPUESTA DE ERROR
+
+    if not alumno:
+        return 'El alumno que busca no existe' # MEJORAR RESPUESTA DE ERROR
+
+    if request.method == 'POST':
+        error = False
+        try:
+            alumno_id = alumno.codigo
+            db.session.delete(alumno)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            print(sys.exc_info())
+            error = True
+        finally:
+            db.session.close()
+        
+
+        if error:
+            return 'No se pudo eliminar el alumno' # MEJORAR RESPUESTA DE ERROR
+        else:
+            return redirect( url_for('menu_inicio') )
+            #return f'Se elimino correctamente el alumno {alumno_id}' # MEJORAR RESPUESTA DE EXITO
+    else:
+        return render_template('alumnos/delete.html', alumno=alumno)
+
+
+
+
 
 # --- Horarios ---
 @app.route('/horarios/list')
@@ -289,24 +375,7 @@ def horarios_view(id):
         print(horario.clases)
         return render_template('horarios/view.html', horario=horario)
 
-# Alumno
-@app.route('/alumnos/list')
-def alumnos_list():
-    alumnos = Alumno.query.all()
-    return 'Alumnos List'
 
-@app.route('/alumnos/view/<id>')
-def alumnos_view(id):
-    alumno = Alumno.query.get(id)
-    return 'temp'
-
-@app.route('/alumnos/update/<id>')
-def alumnos_update(id):
-    return 'temp'
-
-@app.route('/alumnos/delete/<id>')
-def alumnos_delete(id):
-    return 'temp'
 
 # Indice
 @app.route('/auth')

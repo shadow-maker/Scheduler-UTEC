@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+</head>
+<body>
+    
+    <h1> Perfil de {{alumno.nombre}} {{alumno.apellido}}</h1>
+    <p> Codigo: {{alumno.codigo}} </p>
+    
+    <h2> Horarios: </h2>
+    {% if alumno.horarios %}
+        <ul>
+        {% for horario in alumno.horarios %}
+            <il> <a href={{url_for('horarios_view', id=horario.id)}}> Horario #{{horario.id}}</a> </il>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p> Este alumno aun no tiene horarios </p>
+    {% endif %}
+    
+    <h2> Favoritos: </h2>
+    {% if alumno.favoritos %}
+        <ul>
+        {% for horario in alumno.favoritos %}
+            <il> <a href={{url_for('horarios_view', id=horario.id)}}> Horario #{{horario.id}}</a> </il>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p> Este alumno aun no tiene horarios favoritos </p>
+    {% endif %}
+
+    {% if current_user.is_authenticated %}
+        {% if current_user.codigo == alumno.codigo %}
+            <h2> Modificar </h2>
+            <a href={{url_for('alumnos_update', id=alumno.codigo)}}> Modifica tu informacion </a>
+            <h2> Eliminar </h2>
+            <a href={{url_for('alumnos_delete', id=alumno.codigo)}}> Eliminar tu cuenta </a>
+        {% endif %}
+    {% endif %}
+</body>
+</html>
