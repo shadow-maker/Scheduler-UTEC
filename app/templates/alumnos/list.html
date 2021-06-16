@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Alumnos</title>
+</head>
+
+<body>
+  <p>
+    {% for alumno in alumnos %}
+        <a href={{'/horarios/view/'}}{{horario.id}}>Horario #{{horario.id}} de {{horario.alumno.nombre}} {{horario.alumno.apellido}}</a> <br>
+    {% endfor %}
+    </p>
+</body>
+</html>

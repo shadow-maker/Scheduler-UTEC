@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/style/single_form.css">
   <title>Generador horarios utec</title>
 </head>
 <body>
@@ -12,6 +12,19 @@
     <h4>Registrate: </h4>
     
     <form method='POST' action="">
+      {% if error %}
+        <div class="alert-error">
+          <strong>{{error}}!</strong>
+        </div>
+      {% endif %}
+      {% for field in form.errors %}
+        {% for error in form.errors[field] %}
+            <div class="alert-error">
+                <strong>Error!</strong> {{error}}
+            </div>
+        {% endfor %}
+      {% endfor %}
+
       {{form.hidden_tag()}}
       {{form.name(class="controls", placeholder="Ingrese su nombre")}}
       {{form.last_name(class="controls", placeholder="Ingrese sus apellidos")}}
@@ -22,8 +35,9 @@
       <div>
           {{form.submit(class="botons")}}
       </div>
-      </form>
-    <p>No tengo una <a href="http://127.0.0.1:5000/auth">cuenta UTEC</a></p>
+    </form>
+
+    <p>Ya tengo una <a href="/auth/login">cuenta UTEC</a></p>
 
     
   </section>

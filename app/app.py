@@ -143,6 +143,56 @@ def load_user(user_codigo):
 # ROUTES
 # ------
 
+# --- Authetificacion ---
+@app.route('/auth/register/', methods=['GET','POST'])
+def register():
+    form=forms.registerform()
+    error=False
+    if form.validate_on_submit():
+        same_id = Alumno.query.get(form.id_utec.data)
+        if not same_id:
+            same_email = Alumno.query.filter_by(correo=form.correo.data).first()
+            if not same_email:
+                new_user = Alumno(codigo=form.id_utec.data, correo=form.correo.data, password=form.password.data,
+                nombre=form.name.data, apellido=form.last_name.data )
+                db.session.add(new_user)
+                db.session.commit()
+                return redirect(url_for('login'))
+            else:
+                error = "Ya existe un usuario con este correo"
+        else:
+            error = "Ya existe un usuario con esta ID UTEC"
+    return render_template('auth/register.html', form=form, error=error)
+
+@app.route('/auth/login/', methods=['GET','POST'])
+def login():
+    form=forms.loginform()
+    error=False 
+    if form.validate_on_submit():
+        # Get user
+        user = Alumno.query.get(form.id_utec.data)
+        next = request.args.get('next')
+        if not is_safe_url(next):
+            # Por fines de seguridad cancela si el redirect no es seguro
+            return abort(400)
+        # Si existe
+        if user:
+            # Si es valido
+            if user.password == form.password.data:
+                login_user(user,remember=form.remember.data)
+                return redirect(next or url_for('menu_inicio'))
+            else:
+                error = "Credenciales no validas"
+        else:
+            error = "Credenciales no validas"
+    return render_template('auth/login.html',form=form, error=error)
+
+@app.route("/auth/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(  url_for('login')  )
+
 # --- Horarios ---
 @app.route('/horarios/list')
 def horarios_list():
@@ -236,53 +286,14 @@ def horarios_view(id):
     elif horario==None:
         return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
     else:
-        print(horario.listas)
+        print(horario.clases)
         return render_template('horarios/view.html', horario=horario)
-
-# --- Authetificacion ---
-@app.route('/auth/login/', methods=['GET','POST'])
-def login():
-    form=forms.loginform()
-    if form.validate_on_submit():
-        # Get user
-        user = Alumno.query.filter_by(codigo=form.id_utec.data).first()
-        next = request.args.get('next')
-        if not is_safe_url(next):
-            return abort(400)
-        # Si existe
-        if user:
-            # Si es valido
-            if user.password == form.password.data:
-                login_user(user,remember=form.remember.data)
-                return redirect(next or url_for('menu_inicio'))
-                #return "Coneccion Exitosa"
-        return "CUENTA INCORRECTA"
-
-    return render_template('auth/login.html',form=form)
-
-@app.route("/auth/logout")
-@login_required
-def logout():
-    logout_user()
-    return redirect(  url_for('login')  )
-
-
-@app.route('/auth/register/', methods=['GET','POST'])
-def register():
-    form=forms.registerform()
-    if form.validate_on_submit():
-        new_user = Alumno(codigo=form.id_utec.data, correo=form.correo.data, password=form.password.data,
-        nombre=form.name.data, apellido=form.last_name.data )
-        db.session.add(new_user)
-        db.session.commit()
-        return "HOLA"
-    return render_template('auth/register.html', form=form)
 
 # Alumno
 @app.route('/alumnos/list')
-def alumnos_list(id):
+def alumnos_list():
     alumnos = Alumno.query.all()
-    return 'temp'
+    return 'Alumnos List'
 
 @app.route('/alumnos/view/<id>')
 def alumnos_view(id):
