@@ -276,6 +276,22 @@ def alumnos_delete(id):
         return render_template('alumnos/delete.html', alumno=alumno)
 
 
+# --- Home & Explore ---
+
+@app.route('/')
+def menu_inicio():
+    return render_template('home/menu.html')
+
+@app.route('/explore')
+def explore():
+    return render_template('home/explore.html')
+
+
+
+
+
+
+
 
 
 
@@ -378,12 +394,9 @@ def horarios_view(id):
 
 
 # Indice
-@app.route('/auth')
-@login_required
-def menu_registered():
+#@app.route('/auth')
+#@login_required
+#def menu_registered():
     return 'Solo los registrados entran aca'
 
-@app.route('/')
-def menu_inicio():
-    return render_template('menu.html')
 
