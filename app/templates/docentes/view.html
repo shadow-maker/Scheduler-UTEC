@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docente</title>
+</head>
+<body>
+    
+    <h1> Datos de Docente: {{docente.nombre}}. {{docente.apellido}} </h1>
+    <p> Codigo: {{docente.codigo}} </p>
+    <p> Correo: {{docente.correo}} </p>
+
+    <h2> Clases: </h2>
+    {% if docente.clases%}
+        {% for curso in docente.clases | groupby("curso.curso") %}
+            <p> {{ curso.grouper }} : </p>
+            <ul>
+            {% for c in curso.list %}
+                <li> <a href={{url_for('clases_view',id=c.id)}}> {{c.seccion}}.{{c.numero}} - {{c.tipo.name}} por {{c.docente.nombre}} {{c.docente.apellido}} </a> <br>
+            {% endfor %}
+            </ul>
+            <br>
+        {% endfor %}
+    {% else %}
+        Este docente no tiene clases
+    {% endif %}
+</body>
+</html>

@@ -2,7 +2,7 @@ import json
 import sys
 
 from sqlalchemy.orm import backref
-from enum import unique, Enum
+from enum import IntEnum #unique
 from flask import Flask, render_template, request, redirect, url_for, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -31,7 +31,7 @@ login_manager.login_view = 'login'
 # Modelos & Tablas
 # ----------------
 
-class TipoClaseEnum(Enum):
+class TipoClaseEnum(IntEnum):
     lab = 0
     teoria = 1
     teoria_virtual = 2
@@ -77,7 +77,7 @@ class Docente(db.Model):
 class Curso(db.Model):
     __tablename__ = 'curso'
     codigo          = db.Column(db.String(6)  , primary_key=True)
-    curso           = db.Column(db.String(255), nullable=False)
+    curso           = db.Column(db.String(255), nullable=False, unique=True)
     lab             = db.Column(db.Boolean    , nullable=False)
     teoria          = db.Column(db.Boolean    , nullable=False)
     teoria_virutal  = db.Column(db.Boolean    , nullable=False)
@@ -290,14 +290,56 @@ def explore():
 @app.route('/horarios/list')
 def horarios_list():
     horarios = Horario.query.all()
-    return render_template('horarios/list.html',data=horarios)
+    return render_template('horarios/list.html',horarios=horarios)
     
+# --- Curso ---
+@app.route('/cursos/<id>', methods=['GET'])
+def cursos_view(id):
+    try:
+        curso = Curso.query.get(id)
+    except:
+        return 'Error de backend' # MEJORAR RESPUESTA DE ERROR
 
+    if not curso:
+        return 'El curso que busca no existe' # MEJORAR RESPUESTA DE ERROR
+    else:
+        return render_template('cursos/view.html', curso=curso)
 
+@app.route('/cursos/list', methods=['GET'])
+def cursos_list():
+    cursos = Curso.query.all()
+    return render_template('cursos/list.html', cursos=cursos)
 
+# --- Clases ---
+@app.route('/clases/<id>', methods=['GET'])
+def clases_view(id):
+    try:
+        clase = Clase.query.get(id)
+    except:
+        return 'Error de backend' # MEJORAR RESPUESTA DE ERROR
 
+    if not clase:
+        return 'El curso que busca no existe' # MEJORAR RESPUESTA DE ERROR
+    else:
+        return render_template('clases/view.html', clase=clase)
 
+# --- Docentes ---
+@app.route('/docentes/<id>', methods=['GET'])
+def docentes_view(id):
+    try:
+        docente = Docente.query.get(id)
+    except:
+        return 'Error de backend' # MEJORAR RESPUESTA DE ERROR
 
+    if not docente:
+        return 'El curso que busca no existe' # MEJORAR RESPUESTA DE ERROR
+    else:
+        return render_template('docentes/view.html', docente=docente)
+
+@app.route('/docentes/list', methods=['GET'])
+def docentes_list():
+    docentes = Docente.query.all()
+    return render_template('docentes/list.html', docentes=docentes)
 
 
 

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase</title>
+</head>
+<body>
+    
+    <h1> Datos de Clase: {{clase.id}} </h1>
+    <p> Curso: <a href={{url_for('cursos_view',id=clase.curso.codigo)}}>{{clase.curso.curso}}</a> </p>
+    <p> Identificacion: {{clase.seccion}}.{{clase.numero}} </p>
+    <p> Tipo: {{clase.tipo.name}} </p>
+    <p> Vacantes: {{clase.vacantes}} </p>
+    <p> Docente: <a href={{url_for('docentes_view',id=clase.docente.codigo)}}> {{clase.docente.nombre}} {{clase.docente.apellido}} </a> </p>
+
+    <h2> Sessiones: </h2>
+    {% for sesion in clase.sesiones %}
+        {{['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'][sesion.dia-1]}} => {{sesion.hora_inicio}}:00 - {{sesion.hora_fin}}:00
+    {% endfor %}
+
+    <h2> Horarios: </h2>
+    {% if clase.horarios %}
+        <ul>
+        {% for horario in clase.horarios %}
+            <li> <a href={{url_for('horarios_view', id=horario.id)}}> Horario #{{horario.id}} por {{horario.alumno.nombre}} {{horario.alumno.apellido}}</a>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p> Esta clase no aparece en nigun horario </p>
+    {% endif %}
+</body>
+</html>

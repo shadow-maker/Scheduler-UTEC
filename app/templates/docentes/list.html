@@ -3,20 +3,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alumnos</title>
+    <title>Docentes</title>
 </head>
 <body>
 
 <body>
-  <h1> Alumnos </h1>
-  {% if alumnos %}
+  <h1> Docentes </h1>
+  {% if docentes %}
     <ul>
-    {% for alumno in alumnos %}
-        <li> <a href={{url_for('alumnos_view', id=alumno.codigo)}}> {{alumno.codigo}}:  {{alumno.nombre}} {{alumno.apellido}}</a> <br>
+    {% for docente in docentes %}
+        <li> <a href={{url_for('docentes_view', id=docente.codigo)}}> {{docente.codigo}}:  {{docente.nombre}} {{docente.apellido}}</a> <br>
     {% endfor %}
     </ul>
   {% else %}
-    <p> No hay alumnos actualmente </p>
+    <p> No hay docentes </p>
   {% endif %}
 </body>
 </html>

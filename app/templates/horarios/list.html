@@ -8,10 +8,14 @@
 </head>
 <body>
   <h1> Horarios </h1>
-   <p>
-    {% for horario in data %}
-        <a href={{url_for('horarios_view',id=horario.id)}}> Horario #{{horario.id}} de {{horario.alumno.nombre}} {{horario.alumno.apellido}}</a> <br>
-    {% endfor %}
-    </p>
+    {% if horarios%}
+        <ul>
+        {% for horario in horarios %}
+            <li> <a href={{url_for('horarios_view',id=horario.id)}}> Horario #{{horario.id}} de {{horario.alumno.nombre}} {{horario.alumno.apellido}}</a> <br>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p> No hay horarios </p>
+    {% endif %}
 </body>
 </html>
