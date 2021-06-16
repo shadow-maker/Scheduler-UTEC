@@ -389,7 +389,7 @@ def horarios_update(id):
         return 'No tiene permisos para eliminar este horario'
     else:
         status, horario_table = status_horario(horario)
-        return render_template('horarios/update.html', data=info, horario=horario, status = status)
+        return render_template('horarios/update.html', data=info, horario=horario, status = status, horario_table=horario_table)
 
 @app.route('/horarios/<id>/delete')
 @login_required

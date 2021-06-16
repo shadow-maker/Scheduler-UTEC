@@ -211,7 +211,20 @@
 </body>
 
     <script>
-        console.log('test1')
+        const init_table = {{horario_table|tojson}}
+
+        function UpdateTable(data){
+            for (let i = 0; i < data.length; i++) {
+                const subdata = data[i]
+                for (let j = 0; j < subdata.length; j++) {
+                    const cell_content = subdata[j]
+                    document.getElementById("table_horario").rows[i+1].cells[j+1].innerHTML = cell_content
+                }
+            }
+        }
+
+        UpdateTable(init_table)
+
         const add_buttons = document.querySelectorAll('.add-button')
         for (let i=0; i < add_buttons.length; i++){
             const button = add_buttons[i]
@@ -232,7 +245,7 @@
                     document.getElementById("status").innerHTML = jsonResponse['status_horario']
                     if (jsonResponse['success'] === true){
                         document.getElementById("error-alert").className='hidden'
-                        /* implementar actualizacon */
+                        UpdateTable(jsonResponse['table_horario'])
                     }
                     else {
                         document.getElementById("error-alert").className=''
@@ -241,6 +254,6 @@
                 })
             }
         }
-        console.log('test2')
+
     </script>
 </html>
