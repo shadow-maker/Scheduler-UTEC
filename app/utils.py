@@ -15,8 +15,30 @@ def is_safe_url(target):
            ref_url.netloc == test_url.netloc
 
 def status_horario(horario):
-    horario_dict = {} 
+    horario_dict = {}
+    horario_table = [
+        #L ,M ,M ,J ,V ,S ,D
+        ['','','','','','',''], #7-8
+        ['','','','','','',''], #8-8
+        ['','','','','','',''], #9-9
+        ['','','','','','',''], #10-10
+        ['','','','','','',''], #11-12
+        ['','','','','','',''], #12-13
+        ['','','','','','',''], #13-14
+        ['','','','','','',''], #14-15
+        ['','','','','','',''], #15-16
+        ['','','','','','',''], #16-17
+        ['','','','','','',''], #17-18
+        ['','','','','','',''], #18-19
+        ['','','','','','',''], #19-20
+        ['','','','','','',''], #20-21
+        ['','','','','','',''], #21-22
+    ] 
     for c in horario.clases:
+        for s in c.sesiones:
+            for hora in range(s.hora_inicio, s.hora_fin):
+                horario_table[hora-7][s.dia-1] = c.curso.codigo
+
         if c.curso.codigo in horario_dict:
             horario_dict[c.curso.codigo][0] += 2**c.tipo.value
         else:
@@ -26,4 +48,4 @@ def status_horario(horario):
         if horario_dict[c][0] != horario_dict[c][1]:
             status = "Pending"
             break
-    return status
+    return status, horario_table

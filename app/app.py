@@ -388,7 +388,7 @@ def horarios_update(id):
     elif horario.alumno_codigo != alumno_codigo:
         return 'No tiene permisos para eliminar este horario'
     else:
-        status = status_horario(horario)
+        status, horario_table = status_horario(horario)
         return render_template('horarios/update.html', data=info, horario=horario, status = status)
 
 @app.route('/horarios/<id>/delete')
@@ -515,11 +515,12 @@ def horarios_update_add(id):
                     error = True
 
         # Status del horario
-        status = status_horario(horario)
+        status, table_horario = status_horario(horario)
         db.session.close()
         # Return
         response["success"] = not error
         response["status_horario"] = status
+        response["table_horario"] = table_horario
     return jsonify(response)
 
 # Indice
