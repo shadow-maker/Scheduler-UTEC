@@ -1,16 +1,17 @@
 import json
 import sys
+from flask.globals import session
 
 from sqlalchemy.orm import backref
-from enum import IntEnum #unique
-from flask import Flask, render_template, request, redirect, url_for, abort
+from enum import unique
+from flask import Flask, render_template, request, redirect, url_for, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 from . import config
 from . import forms
 
-from .utils import is_safe_url
+from .utils import is_safe_url, status_horario, TipoClaseEnum
 # -------------------
 # Configuracion Flask
 # -------------------
@@ -30,11 +31,6 @@ login_manager.login_view = 'login'
 # ----------------
 # Modelos & Tablas
 # ----------------
-
-class TipoClaseEnum(IntEnum):
-    lab = 0
-    teoria = 1
-    teoria_virtual = 2
 
 lista_clases = db.Table('lista',
     db.Column('horario_id', db.Integer, db.ForeignKey('horario.id'), primary_key=True),
@@ -80,7 +76,7 @@ class Curso(db.Model):
     curso           = db.Column(db.String(255), nullable=False, unique=True)
     lab             = db.Column(db.Boolean    , nullable=False)
     teoria          = db.Column(db.Boolean    , nullable=False)
-    teoria_virutal  = db.Column(db.Boolean    , nullable=False)
+    teoria_virtual  = db.Column(db.Boolean    , nullable=False)
     clases          = db.relationship('Clase', backref='curso', lazy=True)
 
     def __repr__(self):
@@ -351,11 +347,11 @@ def docentes_list():
 
 
 
-    
 @app.route('/horarios/create')
+@login_required
 def horarios_create():
     error = False
-    alumno_codigo = 202010387 # TEMPORAL: El codigo de alumno debe salir del auth actual
+    alumno_codigo = current_user.codigo
     try:
         horario = Horario(alumno_codigo=alumno_codigo)
         db.session.add(horario)
@@ -373,11 +369,11 @@ def horarios_create():
     else:
         return redirect(  url_for('horarios_update', id=horario_id) )
 
-@app.route('/horarios/update/<id>')
+@app.route('/horarios/<id>/update')
 @login_required
 def horarios_update(id):
     error =False
-    alumno_codigo = str(202010387) # TEMPORAL: El codigo de alumno debe salir del auth actual
+    alumno_codigo = current_user.codigo
     info = Curso.query.all()
 
     try:
@@ -392,12 +388,14 @@ def horarios_update(id):
     elif horario.alumno_codigo != alumno_codigo:
         return 'No tiene permisos para eliminar este horario'
     else:
-        return render_template('horarios/update.html', data=info, horario=horario)
+        status = status_horario(horario)
+        return render_template('horarios/update.html', data=info, horario=horario, status = status)
 
-@app.route('/horarios/delete/<id>')
+@app.route('/horarios/<id>/delete')
+@login_required
 def horarios_delete(id):
     error =False
-    alumno_codigo = str(202010387) # TEMPORAL: El codigo de alumno debe salir del auth actual
+    alumno_codigo = current_user.codigo
 
     try:
         horario = Horario.query.get(id)
@@ -426,7 +424,7 @@ def horarios_delete(id):
     else:
         return f'Se elimino correctamente el horario {horario_id}' # MEJORAR RESPUESTA DE EXITO
 
-@app.route('/horarios/view/<id>')
+@app.route('/horarios/<id>')
 def horarios_view(id):
     error =False
     try:
@@ -443,6 +441,86 @@ def horarios_view(id):
         return render_template('horarios/view.html', horario=horario)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+####
+
+@app.route('/horarios/update/<id>/add', methods=['UPDATE'])
+def horarios_update_add(id):
+    error = False
+    response = {}
+    alumno_codigo = str(202010387) # TEMPORAL: El codigo de alumno debe salir del auth actual
+    
+    # Get de objetos
+    try:
+        clase_id = request.get_json()['clase_id']
+        clase = Clase.query.get(int(clase_id))
+    except:
+        print(sys.exc_info())
+        error = True
+        response["error_message"] = "Error inesperado de backend (C)"
+    try:
+        horario = Horario.query.get(id)
+    except:
+        print(sys.exc_info())
+        error = True
+        response["error_message"] = "Error inesperado de backend (H)"
+
+    if not error:
+        # Logica de validacion
+        if clase in horario.clases:
+            error=True
+            response["error_message"] = "El curso ya se enceuntra en el horario"
+        else:
+            for c in horario.clases:
+                if c.curso.curso == clase.curso.curso:
+                    if c.tipo == clase.tipo:
+                        error = True
+                        response["error_message"] = f'Ya existe otra clase de {c.tipo.name} del mismo curso con otra clase: {c.curso.curso} - {c.tipo.name} - {c.seccion}.{c.numero}'
+                        break
+                    elif c.seccion != clase.seccion:
+                        error = True
+                        response["error_message"] = f'Ya esta suscrito a otra seccion en el curso {c.curso}: {c.curso.curso} - {c.tipo.name} - {c.seccion}.{c.numero}'
+                        break
+                for s in c.sesiones:
+                    for sesion in clase.sesiones:
+                        if s.dia == sesion.dia:
+                            if (s.hora_inicio<=sesion.hora_inicio and s.hora_fin>sesion.hora_fin) or (sesion.hora_inicio<=s.hora_inicio and sesion.hora_fin>s.hora_fin):
+                                error = True
+                                response["error_message"] = f'Colision con otra clase: {c.curso.curso} - {c.tipo.name} - {c.seccion}.{c.numero}'
+                                break
+                if error:
+                    break
+            if not error:
+                try:
+                    horario.clases.append(clase)
+                    db.session.commit()
+                    #response["success_message"] = "Se agrego correctamente la clase"
+                except:
+                    db.session.rollback()
+                    print(sys.exc_info())
+                    response["error_message"] = "Error inesperado de backend"
+                    error = True
+
+        # Status del horario
+        status = status_horario(horario)
+        db.session.close()
+        # Return
+        response["success"] = not error
+        response["status_horario"] = status
+    return jsonify(response)
 
 # Indice
 #@app.route('/auth')

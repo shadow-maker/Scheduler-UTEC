@@ -88,21 +88,21 @@ cursos = [
         curso = 'Desarrollo basado en plataformas',
         lab=True,
         teoria=True,
-        teoria_virutal=False
+        teoria_virtual=False
     ),
     Curso(
         codigo = 'CS2701',
         curso = 'Base de datos I',
         lab=True,
         teoria=True,
-        teoria_virutal=False
+        teoria_virtual=False
     ),
     Curso(
         codigo = 'EG0006',
         curso = 'Matemáticas III',
         lab=True,
         teoria=True,
-        teoria_virutal=False
+        teoria_virtual=False
     ),
 ]
 # Commit actuales
@@ -407,3 +407,4 @@ a2.favoritos.append(h1)
 db.session.add(a1)
 db.session.add(a2)
 db.session.commit()
+db.session.close()

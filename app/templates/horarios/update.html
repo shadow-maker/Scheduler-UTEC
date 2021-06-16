@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu</title>
+
+    <style>
+            .hidden {
+                display: none;
+            }
+    </style>
 </head>
 <body>
     <h1> Actualizar Horario #{{horario.id}} </h1>
@@ -176,11 +182,9 @@
         </tbody>
     </table>
 
-    <form method='' action="">
-      <div>
-          <input class="button" name="commit" type="submit" value="submit"> Guardar </input>
-      </div>
-    </form>
+    <h1> STATUS: <alert id="status">{{status}}</alert> </h1>
+    <alert class="hidden" id="error-alert"> ERROR: <div id="error"> </div> </alert>
+    <br>
 
     <h1> Cursos: </h1>
     <p>
@@ -193,7 +197,7 @@
                         <p> {{ tipos.grouper.name }} : </p>
                         <ul>
                         {% for c in tipos.list %}
-                            <li> <a href={{url_for('clases_view',id=c.id)}}> {{c.seccion}}.{{c.numero}} - {{c.tipo.name}} por {{c.docente.nombre}} {{c.docente.apellido}} </a>
+                            <li> <a href={{url_for('clases_view',id=c.id)}}> {{c.seccion}}.{{c.numero}} - {{c.tipo.name}} por {{c.docente.nombre}} {{c.docente.apellido}} </a> <button class="add-button" data-id="{{c.id}}"> Agregar </button>
                         {% endfor %}
                         </ul>
                     {% endfor %}
@@ -205,4 +209,38 @@
         {% endfor %}   
     </p>
 </body>
+
+    <script>
+        console.log('test1')
+        const add_buttons = document.querySelectorAll('.add-button')
+        for (let i=0; i < add_buttons.length; i++){
+            const button = add_buttons[i]
+            button.onclick = function(e){
+                const clase_id = e.target.dataset['id']
+                fetch( "{{url_for('horarios_update_add',id=horario.id)}}", {
+                    method: 'UPDATE',
+                    body: JSON.stringify({
+                        'clase_id': clase_id
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function(response){
+                    return response.json()
+                }).then(function(jsonResponse) {
+                    console.log(jsonResponse)
+                    document.getElementById("status").innerHTML = jsonResponse['status_horario']
+                    if (jsonResponse['success'] === true){
+                        document.getElementById("error-alert").className='hidden'
+                        /* implementar actualizacon */
+                    }
+                    else {
+                        document.getElementById("error-alert").className=''
+                        document.getElementById("error").innerHTML = jsonResponse['error_message']
+                    }
+                })
+            }
+        }
+        console.log('test2')
+    </script>
 </html>
