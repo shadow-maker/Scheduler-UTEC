@@ -1,73 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horarios</title>
-    <style>
-            .hidden {
-                display: none;
-            }
-    </style>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Explorar</title>
+	<style>
+		.hidden {
+			display: none;
+		}
+	</style>
+
+	<link rel="stylesheet" href="../../static/style/main.css">
 </head>
+
 <body>
-  <h1> Horarios </h1>
-    <alert class="hidden" id="error-alert-filter"> ERROR: <div id="error-filter"> </div> </alert>
-    <br>
-    <form id="form-filter">
-        <label for="filter-titulo"> Titulo </label>
-        <input type='texto' id="filter-titulo" name='filter-titulo' value=""/>
-        <input type="submit" id="submit-filter" value="Submit" />
-    </form>
-    <p class="{% if horarios%}hidden{%endif%}" id="empty-message"> No hay horarios </p>
-    <ul id="horarios-list">
-    {% for horario in horarios %}
-        <li> <a href={{url_for('horarios_view',id=horario.id)}}> Horario {{horario.titulo}} (#{{horario.id}}) de {{horario.alumno.nombre}} {{horario.alumno.apellido}}</a> <br>
-    {% endfor %}
-    </ul>
+	<h1> Horarios </h1>
+	<alert class="hidden" id="error-alert-filter"> ERROR: <div id="error-filter"> </div>
+	</alert>
+	<br>
+	<form id="form-filter">
+		<label for="filter-titulo"> Titulo </label>
+		<input type='texto' id="filter-titulo" name='filter-titulo' value="" />
+		<input type="submit" id="submit-filter" value="Submit" />
+	</form>
+	<p class="{% if horarios%}hidden{%endif%}" id="empty-message"> No hay horarios </p>
+	<ul id="horarios-list">
+		{% for horario in horarios %}
+		<li> <a href={{url_for('horarios_view',id=horario.id)}}> Horario {{horario.titulo}} (#{{horario.id}}) de
+				{{horario.alumno.nombre}} {{horario.alumno.apellido}}</a> <br>
+			{% endfor %}
+	</ul>
 </body>
+
 <script>
-    document.getElementById("form-filter").onsubmit = function(e){
-        e.preventDefault();
-        // Handeling Request
-        const filter_titulo = document.getElementById("filter-titulo").value
-        const request_url = "{{url_for('api_horarios_read_filter')}}"
-        fetch( request_url + '?' +new URLSearchParams({horario_titulo:filter_titulo}), {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(function(response){
-            return response.json()
-        }).then(function(jsonResponse) {
-            console.log(jsonResponse)                    
-            if (jsonResponse['success'] === true){
-                // Actualizar mensajes
-                document.getElementById("error-alert-filter").className='hidden'
-                if (jsonResponse['empty'] === true){
-                    document.getElementById("empty-message").className=''
-                }
-                else{
-                    document.getElementById("empty-message").className='hidden'
-                }
-                // Poblar lu
-                document.getElementById("horarios-list").innerHTML = ''
-                const horarios_list = jsonResponse['horarios']
-                for (let i=0; i < horarios_list.length; i++){
-                    const horario = horarios_list[i]
-                    const liItem = document.createElement('li')
-                    liItem.innerHTML = 
-                     '<a href='+horario['horario_url']+'> Horario '+horario['horario_titulo']+' (#'+horario['horario_id']+') de '+horario['horario_alumno_nombre']+' '+horario['horario_alumno_apellido']+'</a>'
-                     document.getElementById("horarios-list").appendChild(liItem)
-                }
-            }
-            else {
-                /*Error Handeling*/
-                document.getElementById("error-alert-filter").className=''
-                document.getElementById("error-filter").innerHTML = jsonResponse['error_message']
-            }
-        })
-    }
+	document.getElementById("form-filter").onsubmit = function (e) {
+		e.preventDefault();
+		// Handeling Request
+		const filter_titulo = document.getElementById("filter-titulo").value
+		const request_url = "{{url_for('api_horarios_read_filter')}}"
+		fetch(request_url + '?' + new URLSearchParams({
+			horario_titulo: filter_titulo
+		}), {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}).then(function (response) {
+			return response.json()
+		}).then(function (jsonResponse) {
+			console.log(jsonResponse)
+			if (jsonResponse['success'] === true) {
+				// Actualizar mensajes
+				document.getElementById("error-alert-filter").className = 'hidden'
+				if (jsonResponse['empty'] === true) {
+					document.getElementById("empty-message").className = ''
+				} else {
+					document.getElementById("empty-message").className = 'hidden'
+				}
+				// Poblar lu
+				document.getElementById("horarios-list").innerHTML = ''
+				const horarios_list = jsonResponse['horarios']
+				for (let i = 0; i < horarios_list.length; i++) {
+					const horario = horarios_list[i]
+					const liItem = document.createElement('li')
+					liItem.innerHTML =
+						'<a href=' + horario['horario_url'] + '> Horario ' + horario['horario_titulo'] +
+						' (#' + horario['horario_id'] + ') de ' + horario['horario_alumno_nombre'] + ' ' +
+						horario['horario_alumno_apellido'] + '</a>'
+					document.getElementById("horarios-list").appendChild(liItem)
+				}
+			} else {
+				/*Error Handeling*/
+				document.getElementById("error-alert-filter").className = ''
+				document.getElementById("error-filter").innerHTML = jsonResponse['error_message']
+			}
+		})
+	}
 </script>
+
 </html>

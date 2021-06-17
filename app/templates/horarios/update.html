@@ -1,326 +1,346 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Horario Actualizar</title>
 
-    <style>
-            .hidden {
-                display: none;
-            }
-    </style>
+	<style>
+		.hidden {
+			display: none;
+		}
+	</style>
+
+	<link rel="stylesheet" href="../../static/style/main.css">
+	<link rel="stylesheet" href="../../static/style/style_table.css">
 </head>
+
 <body>
-    <h1> Visualizar Horario <div id="horario-titulo">{{horario.titulo}}</div> </h1>
-    <p> ID: #{{horario.id}}
-    <p> Generado por <a href={{url_for('alumnos_view',id=horario.alumno.codigo)}}> {{horario.alumno.nombre}} {{horario.alumno.apellido}} </a> </p>
+	<h1>Editar horario</h1>
+	<h2>Titulo del horario: 
+		<span id="horario-titulo">{{horario.titulo}}</span>
+	</h2>
+	<p>Generado por: 
+		<a href={{url_for('alumnos_view',id=horario.alumno.codigo)}}>
+			{{horario.alumno.nombre}}
+			{{horario.alumno.apellido}}
+		</a>
+	</p>
 
-    <alert class="hidden" id="error-alert-rename"> ERROR: <div id="error-rename"> </div> </alert>
-    <br>
-    <form id="form-rename">
-        <label for="new-titulo"> Renombrar </label>
-        <input type='texto' id="new-titulo" name='new-titulo' value="{{horario.titulo}}"/>
-        <input type="submit" id="submit-rename" value="Submit" />
-    </form>
+	<alert class="hidden" id="error-alert-rename"> ERROR:
+		<div id="error-rename"></div>
+	</alert>
 
-    <table id="table_horario">
-        <thead>
-        <tr>
-            <th scope="col">Hora</th>
-            <th scope="col">Lunes</th>
-            <th scope="col">Martes</th>
-            <th scope="col">Miercoles</th>
-            <th scope="col">Jueves</th>
-            <th scope="col">Viernes</th>
-            <th scope="col">Sabado</th>
-            <th scope="col">Domingo</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">7:00 - 8:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr>
-            <th scope="row">8:00 - 9:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr>
-            <th scope="row">9:00 - 10:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        
-        </tr>
-        <tr>
-            <th scope="row">10:00 - 11:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr>
-            <th scope="row">11:00 - 12:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr>
-            <th scope="row">12:00 - 13:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr>
-            <th scope="row">13:00 - 14:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr>
-            <th scope="row">14:00 - 15:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr>
-            <th scope="row">15:00 - 16:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr>
-            <th scope="row">16:00 - 17:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr>
-            <th scope="row">17:00 - 18:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr>
-            <th scope="row">18:00 - 19:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr>
-            <th scope="row">19:00 - 20:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr>
-            <th scope="row">20:00 - 21:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr>
-            <th scope="row">21:00 - 22:00</th>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        </tbody>
-    </table>
+	<br>
 
-    <h1> STATUS: <alert id="status">{{status}}</alert> </h1>
-    <alert class="{%if not pending_cursos%}hidden{%endif%}" id="pending-alert"> Cursos incompletos:  <div id="pending-container"> {{pending_cursos}} </div> </alert>
-    <alert class="hidden" id="error-alert"> ERROR: <div id="error"> </div> </alert>
-    <br>
+	<form id="form-rename">
+		<label for="new-titulo">Renombrar</label>
+		<input type='texto' id="new-titulo" name='new-titulo' value="{{horario.titulo}}"/>
+		<input type="submit" id="submit-rename" value="Submit"/>
+	</form>
 
-    <h2> Vista </h2>
-    <a href={{url_for('horarios_view', id=horario.id)}}> Retornar a vista normal </a>
+	<table id="table_horario">
+		<thead>
+			<tr>
+				<th scope="col">Hora</th>
+				<th scope="col">Lunes</th>
+				<th scope="col">Martes</th>
+				<th scope="col">Miercoles</th>
+				<th scope="col">Jueves</th>
+				<th scope="col">Viernes</th>
+				<th scope="col">Sabado</th>
+				<th scope="col">Domingo</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th scope="row">7:00 - 8:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+			</tr>
+			<tr>
+				<th scope="row">8:00 - 9:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+			</tr>
+			<tr>
+				<th scope="row">9:00 - 10:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
 
-    <h1> Cursos: </h1>
-    <p>
-        {% for curso in data %}
-            <h3> {{curso.codigo}} - {{ curso.curso }} </h3>
-            {% if curso.clases %}
-                {% for secciones in curso.clases | groupby("seccion") %}
-                    <p> SECCION {{ secciones.grouper }} : </p>
-                    {% for tipos in secciones.list | groupby("tipo") %}
-                        <p> {{ tipos.grouper.name }} : </p>
-                        <ul>
-                        {% for c in tipos.list %}
-                            <li> <a href={{url_for('clases_view',id=c.id)}}> {{c.seccion}}.{{c.numero}} - {{c.tipo.name}} por {{c.docente.nombre}} {{c.docente.apellido}} </a> <button class="clases-buttons" data-id="{{c.id}}" data-action="{% if c in horario.clases%}delete{%else%}add{%endif%}"> {% if c in horario.clases%}Quitar{%else%}Agregar{%endif%} </button>
-                        {% endfor %}
-                        </ul>
-                    {% endfor %}
-                    <br>
-                {% endfor %}
-            {% else %}
-                <p> Este curso no tiene clases </p>
-            {% endif %}
-        {% endfor %}   
-    </p>
+			</tr>
+			<tr>
+				<th scope="row">10:00 - 11:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+			</tr>
+			<tr>
+				<th scope="row">11:00 - 12:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+			</tr>
+			<tr>
+				<th scope="row">12:00 - 13:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+			</tr>
+			<tr>
+				<th scope="row">13:00 - 14:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+			</tr>
+			<tr>
+				<th scope="row">14:00 - 15:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+			</tr>
+			<tr>
+				<th scope="row">15:00 - 16:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+			</tr>
+			<tr>
+				<th scope="row">16:00 - 17:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+			</tr>
+			<tr>
+				<th scope="row">17:00 - 18:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+			</tr>
+			<tr>
+				<th scope="row">18:00 - 19:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+			</tr>
+			<tr>
+				<th scope="row">19:00 - 20:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+			</tr>
+			<tr>
+				<th scope="row">20:00 - 21:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+			</tr>
+			<tr>
+				<th scope="row">21:00 - 22:00</th>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+				<td>Cell</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<h1> STATUS: <alert id="status">{{status}}</alert>
+	</h1>
+	<alert class="{%if not pending_cursos%}hidden{%endif%}" id="pending-alert"> Cursos incompletos:
+		<div id="pending-container">{{pending_cursos}}</div>
+	</alert>
+	<alert class="hidden" id="error-alert"> ERROR: <div id="error"> </div>
+	</alert>
+	<br>
+
+	<a href={{url_for('horarios_view', id=horario.id)}}> Retornar a vista normal </a>
+
+	<h1> Cursos: </h1>
+	<p>
+		{% for curso in data %}
+		<h3> {{curso.codigo}} - {{ curso.curso }} </h3>
+		{% if curso.clases %}
+		{% for secciones in curso.clases | groupby("seccion") %}
+		<p> SECCION {{ secciones.grouper }} : </p>
+		{% for tipos in secciones.list | groupby("tipo") %}
+		<p> {{ tipos.grouper.name }} : </p>
+		<ul>
+			{% for c in tipos.list %}
+			<li> <a href={{url_for('clases_view',id=c.id)}}> {{c.seccion}}.{{c.numero}} - {{c.tipo.name}} por
+					{{c.docente.nombre}} {{c.docente.apellido}} </a> <button class="clases-buttons" data-id="{{c.id}}"
+					data-action="{% if c in horario.clases%}delete{%else%}add{%endif%}">
+					{% if c in horario.clases%}Quitar{%else%}Agregar{%endif%} </button>
+				{% endfor %}
+		</ul>
+		{% endfor %}
+		<br>
+		{% endfor %}
+		{% else %}
+		<p> Este curso no tiene clases </p>
+		{% endif %}
+		{% endfor %}
+	</p>
 </body>
-    <script>
-        document.getElementById("form-rename").onsubmit = function(e){
-            e.preventDefault();
-            // Handeling Request
-            const new_titulo = document.getElementById("new-titulo").value
-            const request_url = "{{url_for('api_horarios_update_rename',id=horario.id)}}"
-            fetch( request_url, {
-                method: 'PUT',
-                body: JSON.stringify({
-                    'new_titulo': new_titulo
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(function(response){
-                return response.json()
-            }).then(function(jsonResponse) {
-                console.log(jsonResponse)                    
-                if (jsonResponse['success'] === true){
-                    document.getElementById("error-alert-rename").className='hidden'
-                    document.getElementById("horario-titulo").innerHTML = new_titulo
-                }
-                else {
-                    /*Error Handeling*/
-                    document.getElementById("error-alert-rename").className=''
-                    document.getElementById("error-rename").innerHTML = jsonResponse['error_message']
-                }
-            })
-        }
-    </script>
-    <script>
-        function UpdateTable(data){
-            for (let i = 0; i < data.length; i++) {
-                const subdata = data[i]
-                for (let j = 0; j < subdata.length; j++) {
-                    const cell_content = subdata[j]
-                    document.getElementById("table_horario").rows[i+1].cells[j+1].innerHTML = cell_content
-                }
-            }
-        }
-        
-        const init_table = {{table_horario|tojson}}
-        UpdateTable(init_table)
+<script>
+	document.getElementById("form-rename").onsubmit = function (e) {
+		e.preventDefault();
+		// Handeling Request
+		const new_titulo = document.getElementById("new-titulo").value
+		const request_url = "{{url_for('api_horarios_update_rename',id=horario.id)}}"
+		fetch(request_url, {
+			method: 'PUT',
+			body: JSON.stringify({
+				'new_titulo': new_titulo
+			}),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}).then(function (response) {
+			return response.json()
+		}).then(function (jsonResponse) {
+			console.log(jsonResponse)
+			if (jsonResponse['success'] === true) {
+				document.getElementById("error-alert-rename").className = 'hidden'
+				document.getElementById("horario-titulo").innerHTML = new_titulo
+			} else {
+				/*Error Handeling*/
+				document.getElementById("error-alert-rename").className = ''
+				document.getElementById("error-rename").innerHTML = jsonResponse['error_message']
+			}
+		})
+	}
+</script>
+<script>
+	function UpdateTable(data) {
+		for (let i = 0; i < data.length; i++) {
+			const subdata = data[i]
+			for (let j = 0; j < subdata.length; j++) {
+				const cell_content = subdata[j]
+				document.getElementById("table_horario").rows[i + 1].cells[j + 1].innerHTML = cell_content
+			}
+		}
+	}
 
-        const clases_buttons = document.querySelectorAll('.clases-buttons')
-        for (let i=0; i < clases_buttons.length; i++){
-            const button = clases_buttons[i]
-            button.onclick = function(e){
-                const clase_action      = e.target.dataset['action']
-                // Request constants
-                const clase_id          = e.target.dataset['id']
-                const request_url       = (clase_action==="add") ? "{{url_for('api_horarios_update_add',id=horario.id)}}" : "{{url_for('api_horarios_update_delete',id=horario.id)}}"
-                const request_method    = "PUT"
-                // Result constants (para update del html)
-                const alternate_action  = (clase_action==="add") ?  "delete" : "add"
-                const alternate_html    = (clase_action==="add") ?  "Quitar" :"Agregar"
+	const init_table = {{table_horario | tojson}}
+	UpdateTable(init_table)
 
-                // Handeling Request
-                fetch( request_url, {
-                    method: request_method,
-                    body: JSON.stringify({
-                        'clase_id': clase_id
-                    }),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(function(response){
-                    return response.json()
-                }).then(function(jsonResponse) {
-                    console.log(jsonResponse)                    
-                    if (jsonResponse['success'] === true){
-                        /*Actualizacion de Datos*/
-                        // Eliminacion de error
-                        document.getElementById("error-alert").className='hidden'
-                        // Update de tabla
-                        UpdateTable(jsonResponse['table_horario'])
-                        // Actualizacion de botones
-                        e.target.dataset['action'] = alternate_action 
-                        e.target.innerHTML = alternate_html
-                        // Actualizacion de status
-                        document.getElementById("status").innerHTML = jsonResponse['status_horario']
-                        document.getElementById("pending-container").innerHTML = jsonResponse['pending_cursos']
-                        if(jsonResponse['status_horario'] === "Pending"){
-                            document.getElementById("pending-alert").className=''
-                        }
-                        else{
-                            document.getElementById("pending-alert").className='hidden'
-                        }
-                    }
-                    else {
-                        /*Error Handeling*/
-                        document.getElementById("error-alert").className=''
-                        document.getElementById("error").innerHTML = jsonResponse['error_message']
-                    }
-                })
-            }
-        }
+	const clases_buttons = document.querySelectorAll('.clases-buttons')
+	for (let i = 0; i < clases_buttons.length; i++) {
+		const button = clases_buttons[i]
+		button.onclick = function (e) {
+			const clase_action = e.target.dataset['action']
+			// Request constants
+			const clase_id = e.target.dataset['id']
+			const request_url = (clase_action === "add") ? "{{url_for('api_horarios_update_add',id=horario.id)}}" :
+				"{{url_for('api_horarios_update_delete',id=horario.id)}}"
+			const request_method = "PUT"
+			// Result constants (para update del html)
+			const alternate_action = (clase_action === "add") ? "delete" : "add"
+			const alternate_html = (clase_action === "add") ? "Quitar" : "Agregar"
 
-    </script>
+			// Handeling Request
+			fetch(request_url, {
+				method: request_method,
+				body: JSON.stringify({
+					'clase_id': clase_id
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}).then(function (response) {
+				return response.json()
+			}).then(function (jsonResponse) {
+				console.log(jsonResponse)
+				if (jsonResponse['success'] === true) {
+					/*Actualizacion de Datos*/
+					// Eliminacion de error
+					document.getElementById("error-alert").className = 'hidden'
+					// Update de tabla
+					UpdateTable(jsonResponse['table_horario'])
+					// Actualizacion de botones
+					e.target.dataset['action'] = alternate_action
+					e.target.innerHTML = alternate_html
+					// Actualizacion de status
+					document.getElementById("status").innerHTML = jsonResponse['status_horario']
+					document.getElementById("pending-container").innerHTML = jsonResponse['pending_cursos']
+					if (jsonResponse['status_horario'] === "Pending") {
+						document.getElementById("pending-alert").className = ''
+					} else {
+						document.getElementById("pending-alert").className = 'hidden'
+					}
+				} else {
+					/*Error Handeling*/
+					document.getElementById("error-alert").className = ''
+					document.getElementById("error").innerHTML = jsonResponse['error_message']
+				}
+			})
+		}
+	}
+</script>
+
 </html>
