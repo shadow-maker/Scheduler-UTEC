@@ -352,7 +352,12 @@ def horarios_view(id):
         return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
     else:
         status, table_horario, pending_cursos = horario.get_status()
-        return render_template('horarios/view.html', horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos)
+        if current_user.is_authenticated:
+            in_favoritos = horario in current_user.favoritos
+        else:
+            in_favoritos = False
+
+        return render_template('horarios/view.html', horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos, in_favoritos=in_favoritos)
 
 @app.route('/horarios/list')
 def horarios_list():
@@ -828,6 +833,93 @@ def api_horarios_update_delete(id):
     # Return
     response["success"] = not error
     return jsonify(response)
+
+@app.route('/api/favoritos/add/<id>', methods=['POST'])
+@login_required
+def api_favoritos_add(id):
+    error = False
+    response = {}
+    alumno = current_user
+
+    # Get de objetos
+    try:
+        horario = Horario.query.get(id)
+    except:
+        print(sys.exc_info())
+        error = True
+        response["error_message"] = "Error inesperado de backend (H)"
+
+    # Validar
+    if not error:
+        # Validar existencia de horario
+        if not horario:
+            error = True
+            response["error_message"] = "No se pudo encontrar el horario que desea agregar"
+        # Validar si ya existe relacion
+        elif horario in alumno.favoritos:
+            error = True
+            response["error_message"] = "Horario ya esta en tus favoritos"
+        
+    # Insercion y actualizacion de datos
+    if not error:
+        try:
+            alumno.favoritos.append(horario)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            print(sys.exc_info())
+            response["error_message"] = "No se pudo agregar a favoritos el horario"
+            error = True
+        finally:
+            db.session.close()
+
+    # Return
+    response["success"] = not error
+    return jsonify(response)
+
+@app.route('/api/favoritos/delete/<id>', methods=['DELETE'])
+@login_required
+def api_favoritos_delete(id):
+    error = False
+    response = {}
+    alumno = current_user
+
+    # Get de objetos
+    try:
+        horario = Horario.query.get(id)
+    except:
+        print(sys.exc_info())
+        error = True
+        response["error_message"] = "Error inesperado de backend (H)"
+
+    # Validar
+    if not error:
+        # Validar existencia de horario
+        if not horario:
+            error = True
+            response["error_message"] = "No se pudo encontrar el horario que desea quitar"
+        # Validar si ya existe relacion
+        elif horario not in alumno.favoritos:
+            error = True
+            response["error_message"] = "Horario no esta en tus favoritos"
+        
+    # Delicion y actualizacion de datos
+    if not error:
+        try:
+            alumno.favoritos.remove(horario)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            print(sys.exc_info())
+            response["error_message"] = "No se pudo eliminar de tus favoritos el horario"
+            error = True
+        finally:
+            db.session.close()
+
+    # Return
+    response["success"] = not error
+    return jsonify(response)
+
 
 # Test
 #@app.route('/auth')

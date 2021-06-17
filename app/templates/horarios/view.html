@@ -195,8 +195,53 @@
             <a href={{url_for('horarios_delete', id=horario.id)}}> Eliminar tu horario </a>
         {% endif %}
     {% endif %}
-</body>
 
+    {% if current_user.is_authenticated %}
+        <h2 id="favoritos-title"> {% if in_favoritos%}Quitar de tus Favoritos{%else%}Agregar a tus Favoritos{%endif%} </h3>
+            <button id="update-favoritos-boton" data-action="{% if in_favoritos%}delete{%else%}add{%endif%}">{% if in_favoritos%}Quitar{%else%}Agregar{%endif%}</button>
+            <alert class="hidden" id="error-alert-favoritos"> ERROR: <div id="error-favoritos"> </div> </alert>
+            <br>
+    {% endif %}
+</body>
+    {% if current_user.is_authenticated %}
+    <script>
+        document.getElementById("update-favoritos-boton").onclick = function(e){
+            // Request constants
+            const favoritos_action  = e.target.dataset['action']
+            const request_url       = (favoritos_action==="add") ? "{{url_for('api_favoritos_add',id=horario.id)}}" : "{{url_for('api_favoritos_delete',id=horario.id)}}"
+            const request_method    = (favoritos_action==="add") ? "POST" : "DELETE"
+            // Result constants (para update del html)
+            const alternate_action  = (favoritos_action==="add") ?  "delete" : "add"
+            const alternate_html    = (favoritos_action==="add") ?  "Quitar" :"Agregar"
+            const alternate_titulo  = (favoritos_action==="add") ?  "Quitar de tus Favoritos" :"Agregar a tus Favoritos "
+            // Handeling Request
+            fetch( request_url, {
+                method: request_method,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function(response){
+                return response.json()
+            }).then(function(jsonResponse) {
+                console.log(jsonResponse)                    
+                if (jsonResponse['success'] === true){
+                    /*Actualizacion de Datos*/
+                    // Eliminacion de error
+                    document.getElementById("error-alert-favoritos").className='hidden'
+                    // Actualizacion de botones y texto
+                    e.target.dataset['action'] = alternate_action 
+                    e.target.innerHTML = alternate_html
+                    document.getElementById("favoritos-title").innerHTML=alternate_titulo
+                }
+                else {
+                    /*Error Handeling*/
+                    document.getElementById("error-alert-favoritos").className=''
+                    document.getElementById("error-favoritos").innerHTML = jsonResponse['error_message']
+                }
+            })
+        }
+    </script>
+    {% endif %}
     <script>
         function UpdateTable(data){
             for (let i = 0; i < data.length; i++) {
