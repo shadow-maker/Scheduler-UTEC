@@ -4,19 +4,75 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Docentes</title>
+    <style>
+            .hidden {
+                display: none;
+            }
+    </style>
 </head>
 <body>
 
 <body>
   <h1> Docentes </h1>
-  {% if docentes %}
-    <ul>
-    {% for docente in docentes %}
-        <li> <a href={{url_for('docentes_view', id=docente.codigo)}}> {{docente.codigo}}:  {{docente.nombre}} {{docente.apellido}}</a> <br>
-    {% endfor %}
-    </ul>
-  {% else %}
-    <p> No hay docentes </p>
-  {% endif %}
+    <alert class="hidden" id="error-alert-filter"> ERROR: <div id="error-filter"> </div> </alert>
+    <br>
+    <form id="form-filter">
+        <label for="filter-nombre"> Nombre </label>
+        <input type='texto' id="filter-nombre" name='filter-nombre' value=""/>
+        <label for="filter-apellido"> Apellido </label>
+        <input type='texto' id="filter-apellido" name='filter-apellido' value=""/>
+        <input type="submit" id="submit-filter" value="Submit" />
+    </form>
+
+  <p class="{% if docentes%}hidden{%endif%}" id="empty-message"> No hay docentes actualmente </p>
+  <ul id='docentes-list'>
+  {% for docente in docentes %}
+      <li> <a href={{url_for('docentes_view', id=docente.codigo)}}> {{docente.codigo}}:  {{docente.nombre}} {{docente.apellido}}</a> <br>
+  {% endfor %}
+  </ul>
 </body>
+<script>
+    document.getElementById("form-filter").onsubmit = function(e){
+        e.preventDefault();
+        // Handeling Request
+        const filter_nombre = document.getElementById("filter-nombre").value
+        const filter_apellido = document.getElementById("filter-apellido").value
+        const request_url = "{{url_for('api_docentes_read_filter')}}"
+        fetch( request_url + '?' +new URLSearchParams({docente_nombre:filter_nombre,docente_apellido:filter_apellido}), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response){
+            return response.json()
+        }).then(function(jsonResponse) {
+            console.log(jsonResponse)                    
+            if (jsonResponse['success'] === true){
+                // Actualizar mensajes
+                document.getElementById("error-alert-filter").className='hidden'
+                if (jsonResponse['empty'] === true){
+                    document.getElementById("empty-message").className=''
+                }
+                else{
+                    document.getElementById("empty-message").className='hidden'
+                }
+                // Poblar lu
+                document.getElementById("docentes-list").innerHTML = ''
+                const docentes_list = jsonResponse['docentes']
+                for (let i=0; i < docentes_list.length; i++){
+                    const docente = docentes_list[i]
+                    const liItem = document.createElement('li')
+                    liItem.innerHTML = 
+                     '<a href='+docente['docente_url']+'> '+docente['docente_codigo']+': ' + docente['docente_nombre'] + ' ' + docente['docente_apellido']+'</a>'
+                     document.getElementById("docentes-list").appendChild(liItem)
+                }
+            }
+            else {
+                /*Error Handeling*/
+                document.getElementById("error-alert-filter").className=''
+                document.getElementById("error-filter").innerHTML = jsonResponse['error_message']
+            }
+        })
+    }
+</script>
 </html>

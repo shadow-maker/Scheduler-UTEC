@@ -16,9 +16,11 @@
     <p> Docente: <a href={{url_for('docentes_view',id=clase.docente.codigo)}}> {{clase.docente.nombre}} {{clase.docente.apellido}} </a> </p>
 
     <h2> Sessiones: </h2>
+    <ul>
     {% for sesion in clase.sesiones %}
-        {{['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'][sesion.dia-1]}} => {{sesion.hora_inicio}}:00 - {{sesion.hora_fin}}:00
+        <li> {{['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'][sesion.dia-1]}} => {{sesion.hora_inicio}}:00 - {{sesion.hora_fin}}:00
     {% endfor %}
+    </ul>
 
     <h2> Horarios: </h2>
     {% if clase.horarios %}

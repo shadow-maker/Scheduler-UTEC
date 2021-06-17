@@ -338,11 +338,49 @@ def explore():
     return render_template('home/explore.html')
 
 # --- Horarios ---
+@app.route('/horarios/<id>')
+def horarios_view(id):
+    error =False
+    try:
+        horario = Horario.query.get(id)
+    except:
+        error = True
+
+    if error:
+        return 'Url no valida' # MEJORAR RESPUESTA DE ERROR
+    elif horario==None:
+        return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
+    else:
+        status, table_horario, pending_cursos = horario.get_status()
+        return render_template('horarios/view.html', horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos)
+
 @app.route('/horarios/list')
 def horarios_list():
     horarios = Horario.query.all()
     return render_template('horarios/list.html',horarios=horarios)
-    
+
+@app.route('/horarios/<id>/update')
+@login_required
+def horarios_update(id):
+    error =False
+    alumno_codigo = current_user.codigo
+    info = Curso.query.all()
+
+    try:
+        horario = Horario.query.get(id)
+    except:
+        error = True
+
+    if error:
+        return 'Url no valida' # MEJORAR RESPUESTA DE ERROR
+    elif horario==None:
+        return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
+    elif horario.alumno_codigo != alumno_codigo:
+        return 'No tiene permisos para eliminar este horario'
+    else:
+        status, table_horario, pending_cursos = horario.get_status()
+        return render_template('horarios/update.html', data=info, horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos)
+
 # --- Curso ---
 @app.route('/cursos/<id>', methods=['GET'])
 def cursos_view(id):
@@ -401,7 +439,7 @@ def docentes_list():
 
 
 
-
+"""
 @app.route('/horarios/create')
 @login_required
 def horarios_create():
@@ -423,28 +461,7 @@ def horarios_create():
         return 'No se pudo crear el horario' # MEJORAR RESPUESTA DE ERROR
     else:
         return redirect(  url_for('horarios_update', id=horario_id) )
-
-@app.route('/horarios/<id>/update')
-@login_required
-def horarios_update(id):
-    error =False
-    alumno_codigo = current_user.codigo
-    info = Curso.query.all()
-
-    try:
-        horario = Horario.query.get(id)
-    except:
-        error = True
-
-    if error:
-        return 'Url no valida' # MEJORAR RESPUESTA DE ERROR
-    elif horario==None:
-        return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
-    elif horario.alumno_codigo != alumno_codigo:
-        return 'No tiene permisos para eliminar este horario'
-    else:
-        status, table_horario, pending_cursos = horario.get_status()
-        return render_template('horarios/update.html', data=info, horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos)
+"""
 
 @app.route('/horarios/<id>/delete')
 @login_required
@@ -479,25 +496,33 @@ def horarios_delete(id):
     else:
         return f'Se elimino correctamente el horario {horario_id}' # MEJORAR RESPUESTA DE EXITO
 
-@app.route('/horarios/<id>')
-def horarios_view(id):
-    error =False
-    try:
-        horario = Horario.query.get(id)
-    except:
-        error = True
-
-    if error:
-        return 'Url no valida' # MEJORAR RESPUESTA DE ERROR
-    elif horario==None:
-        return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
-    else:
-        status, table_horario, pending_cursos = horario.get_status()
-        return render_template('horarios/view.html', horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos)
-
-
 
 #### ---CRUD api ----
+@app.route('/api/docentes/read', methods=['GET'])
+def api_docentes_read_filter():
+    error = False
+    response = {}
+
+    # Data de parametros
+    docente_nombre = request.args.get(key='docente_nombre', default="")
+    docente_apellido = request.args.get(key='docente_apellido', default="")
+
+    # Query
+    if not error:
+        docentes = Docente.query.filter(Docente.nombre.startswith(docente_nombre)).filter(Docente.apellido.startswith(docente_apellido)).all()
+        response["docentes"] = [
+            {
+                "docente_codigo":d.codigo,
+                "docente_nombre":d.nombre,
+                "docente_apellido":d.apellido,
+                "docente_url":url_for('docentes_view',id=d.codigo)
+            } for d in docentes]
+        response["empty"] = False if docentes else True
+
+    # Return
+    response["success"] = not error
+    return jsonify(response)
+
 @app.route('/api/alumnos/read', methods=['GET'])
 def api_alumnos_read_filter():
     error = False
