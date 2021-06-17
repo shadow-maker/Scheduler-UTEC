@@ -2,7 +2,9 @@
 
 :root {
 	--blue: #55c0e1;
+	--blueD: #1f8cad;
 	--red: #d93e26;
+	--redD: #9c2d1c;
 	--dark: #121f2b;
 	--light: #EBEFF2;
 }
@@ -11,6 +13,7 @@
 	margin: 0;
 	padding: 0;
 	font-family: 'Source Sans Pro', sans-serif;
+	color: var(--light);
 }
 
 body {
