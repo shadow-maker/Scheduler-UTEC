@@ -1,31 +1,79 @@
 # Scheduler-UTEC
 ## Integrantes:
-- Mauro Bobadilla -
+- Mauro Bobadilla - 202010114
 - Carlos Andrés Montoro - 202010324
 - Rodrigo Salazar - 202010387
 - Eduardo Arróspide González - 202010442
 
 ## Descripción del proyecto
-Una web app para generar horarios para la matricula de la universidad UTEC.
+Una web app para crear y compartir horarios para la matricula de la universidad UTEC.
 
-## Objetivos Principales:
-- Garantizar una forma fácil y rápida para gestionar tu propio horario con los cursos que elijas
-- Mostrar todas las posibles combinaciones de horarios para que puedas ver y elegir la que te acomode
-- Incluye un sistema para ver los horarios de las demás personas
-- Puedes guardar los horarios de tus amigos con un sistema de favoritos
+## Objetivos:
 
-## Front-end
-Se uso bastante CSS para dar una buena apareriencia al login/register, botones con personalizados con implementación de hovering en el menú de inicio para poder ir a las diversas paginas y una tabla personalizada para mostrar los diversos horarios.
-## Back-end
-Se uso las librerías comunes como SQLAlchemy, Flask y Psycopg2, también se incluyeron librerías bastante útiles en el sistema de loggeo como FLASK-WTForms y Flask-Login.
-## Nombre del script
+### Objetivo General:
+- Crear un sistema que le ofrezca a los alumnos una forma fácil y rapida de gestionar sus horarios
 
-## Info del API
+### Objetivos especificos:
+- Emplear cookies para la implementacion de un sistema de autenticacion de los usuarios
+- Crear una API CRUD que le permita a los alumnos gestionar sus horarios, cuenta y explorar los recursos del sistema.
+- Diseñar e implementar una interfaz grafica web para la exploracion de recursos y gestion de horarios
+- Implementar un sistema de seguimiento de horarios mediante su seleccion como favoritos (propios y de otros)
+
+## Tecnologias
+### Front-end
+#### CSS
+Esta tecnologia consiste en un lenguaje de hojas de estilo en cascada que permite la personalizacion del estilo dado a los documentos HTML.
+
+En este proyecto se hace un uso extensivo de CSS para el styling de la interfaz web del sistema.
+
+De esto se destaca especialmente su uso para la creacion de botones personalizados con implementación de hovering en el menú de inicio y la creacion de un estilo personalizada para las tablas empleadas para la representacion de los diversos horarios. Asimismo, mediante el CSS se ha añadido fondos a todos los documentos HTML.
+
+#### JS y Web API's
+JavaScript(JS) es un lenguaje de scripting de lado del cliente que permite la actualizacion de contenidos de una pagina de forma dinamica. Para este fin, cuenta con multiples Web API's que ofrecen funciones diversas de utilidad.
+
+Durante el desarollo de este proyecto se ha realizado un amplio uso de JavaScript para la interfaz web del sistema.
+
+Esta tecnologia se ha usado para poder hacer requests a la API CRUD del sistema y actualizar el docuemnto HTML actual al recibir la response, permitiendo una ejecuccion asincrona que hace mas comoda la experiencia del usuario y previene la necesidad de recargar la pagina.
+
+Para el manejo de las Request y Response se ha usado especificamente la Fetch API, especialmente su metodo fetch(). Adicionalmente, para el manejo de algunas requests tambien se ha complementaod con la API URLSearchParams para la construccion de las urls requeridas.
+
+### Back-end
+#### Flask
+Flask es un framework de backend que provee una estructura basica para implementar servidores con la estructura MVC. Este framework utiliza la libreria Jinja para la creacion de templates y SQLAlchemy para la comunicacion con la base de datos.
+
+Esta es la tecnologia principal usada para la implementacion del backend del sistema.
+
+#### Flask-Login
+Es una extesnsion del framework Flask que permite la autenticacion de usuarios mediante Cookies.
+
+Esta es la tecnologia empleada para la autenticacion de los Alumnos utilizando los campos codigo y password para este fin. Para la restriccion de vistas para unicamente usuarios que tiene una sesion activa se emplea el decorador @login_required en la funcion controlador associada.
+
+#### WTForms
+Es una extension del framework Flask que permite la abstraccion y automatizacion de creacion de forms mediante su abstraccion en clases y objetos.
+
+Esta tecnologia se emplea especialmente en los forms de Login y Register para validar sus inputs y extraer la informacion en el back-end con facilidad.
+
+### Base de datos
+
+#### PostgreSQL
+El gestor de base de datos utilizado en este proyecto es PostgreSQL. Para la comunicacion entre la base de datos y el backend se usa el modulo de psycopg2 abstraido mediante SQLAlchemy.
+
+
+## Script de inicializacion de base de datos
+La informacion para la conexion con la base de datos se encuentra especificada en el archivo config.py. Por defecto, este sistema trabaja en la base de datos postgres local 'utecscheduler' con el usuario postgres.
+
+Para poblar la base de datos se debe ejecutar la script sample.py que la inicializa y rellena con los datos de ejemplo
 
 ## Hosts
+El host y configuracion de deployment se encuentra definida al inicio del archivo run.py. Por defecto, la aplicacion se correa en el host local en el puerto 8888 pero es posible modificar esto editando las variables de acuerdo a la necesidad
 
-## Forma de autenticación
-Se utilizó la librería Flask-Login, esta nos brinda acceso para poder administrar las sesiones de Flask, nos da la opción de implementar un loggin in, loggin out y poder recordar las secciones de los usuarios que se han loggeado. Esta librería guarda las ID de los usuarios activos en la sesión, dar restricciones para algunas paginas (útil para los que no se han loggeado), facilita el uso del “Remember me” que se utiliza mucho en sitios web y proteje las sesiones de los usuarios a ser robados por “cookie thieves”.
-## Manejo de errores HTTP
+## Forma de Auteticacion
 
-## Cómo ejecutar el sistema
+En esta aplicacion web los usuarios son definidos por el modelo Alumno con su contraseña siendo la columna password y su identificador la columna codigo. 
+
+El metodo de autenticacion empleado es basado en cookies. Esto se ha implementado mediante la extension Flask-Login que maneja las sesiones con el objeto LoginManager() guardando las ID de los usuarios activos en la sesión, da restricciones para algunas paginas (útil para los que no se han loggeado) mediante el decorador @login_required, facilita el uso del “Remember me” que se utiliza mucho en sitios web y proteje las sesiones de los usuarios a ser robados por “cookie thieves”. Asimismo, facilita la identificacion del usuario actual en el backend mediante la variable current_user y prove funciones varias para la gestion de sesion (login, logout, etc.).
+
+Para poder autenticarse el cuenta con las vistas: Login, Register y Logout.
+
+## Ejecuccion del sistema
+La deployment script del sistema es run.py
