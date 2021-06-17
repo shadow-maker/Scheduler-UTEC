@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../../static/style/style_menu.css">
 	<title>Explorar</title>
 
 	<link rel="stylesheet" href="../../static/style/main.css">
@@ -13,18 +14,22 @@
 <body>
 
 	<h1>Explorar</h1>
-
-	<h2>Alumnos</h2>
-	<a href={{url_for('alumnos_list')}}>Lista de alumnos</a>
-
-	<h2>Horarios</h2>
-	<a href={{url_for('horarios_list')}}>Lista de horarios</a>
-
-	<h2>Docentes</h2>
-	<a href={{url_for('docentes_list')}}>Lista de docentes</a>
-
-	<h2>Cursos</h2>
-	<a href={{url_for('cursos_list')}}>Lista de cursos</a>
+	<div class="container">
+	<a href={{url_for('alumnos_list')}}>
+		<button class="btn-1">Alumnos</button>
+	</a>
+	<a href={{url_for('horarios_list')}}>
+		<button class="btn-2">Horarios</button>
+	</a>
+	</div>
+	<div class="container">
+		<a href={{url_for('docentes_list')}}>
+			<button class="btn-1">Docentes</button>
+		</a>
+		<a href={{url_for('cursos_list')}}>
+			<button class="btn-3">Cursos</button>
+		</a>
+	</div>
 
 </body>
 

@@ -20,7 +20,9 @@ h1{
   font-style: italic;
 }
 a{
-  
+  size: 70px;
+  padding: 20px;
+  padding-top: 10%;
 }
 .form-register {
   width: 400px;
