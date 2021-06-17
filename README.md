@@ -6,7 +6,7 @@
 - Eduardo Arróspide González - 202010442
 
 ## Descripción del proyecto
-Una web app para crear y compartir horarios para la matricula de la universidad UTEC.
+Una web app para crear y compartir horarios mediante un sistema de favoritos para la matricula de la universidad UTEC. Permite visualizar los alumnos, docentes, cursos y clases, aparte de poder mirar los horarios de otros usuarios para guardarlos en favoritos. Incluye sistema de autentificacion y una interfaz web amigable para la edicion de horarios.
 
 ## Objetivos:
 
