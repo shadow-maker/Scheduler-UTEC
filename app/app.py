@@ -291,7 +291,8 @@ def alumnos_update(id):
     
     return render_template('alumnos/update.html', alumno=alumno, form=form, error=error)
 
-@app.route('/alumnos/<id>/delete', methods=['GET', 'POST'])
+@app.route('/alumnos/<id>/delete', methods=['GET'])
+@login_required
 def alumnos_delete(id):
     if current_user.codigo!=id:
         return 'No tiene permisos para modificar este perfil' # MEJORAR RESPUESTA DE ERROR
@@ -884,3 +885,45 @@ def api_favoritos_delete(id):
     # Return
     response["success"] = not error
     return jsonify(response)
+
+@app.route('/api/alumnos/delete/<id>', methods=['DELETE'])
+@login_required
+def api_alumnos_delete(id):
+    error = False
+    response = {}
+    alumno = current_user
+
+    if current_user.codigo!=id:
+        error = True
+        response["error_message"] = 'No tiene permisos para modificar este perfil'
+    
+    if not error:
+        try:
+            alumno = Alumno.query.get(id)
+        except:
+            error = True
+            response["error_message"] ='Error de backend'
+
+    if not error:
+        if not alumno:
+            error = True
+            response["error_message"] = 'El alumno no existe'
+
+    if not error:
+        try:
+            db.session.delete(alumno)
+            db.session.commit()
+            response["redirect"] = url_for('menu_inicio')
+        except:
+            db.session.rollback()
+            print(sys.exc_info())
+            error = True
+            response["error_message"] = 'No se pudo eliminar el alumno'
+        finally:
+            db.session.close()
+        
+
+    # Return
+    response["success"] = not error
+    return jsonify(response)
+

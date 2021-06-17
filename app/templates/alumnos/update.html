@@ -30,7 +30,9 @@
       {{form.last_name(class="controls", placeholder="Ingrese sus apellidos")}}
       {{form.correo(class="controls", placeholder="Ingrese su correo utec")}}
       
-      <button class="botons" href={{url_for('alumnos_delete', id=alumno.codigo)}}> Eliminar tu cuenta </button>
+      <div>
+          {{form.submit(class="botons")}}
+      </div>
     </form>
 
     
