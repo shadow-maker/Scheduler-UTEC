@@ -524,22 +524,31 @@ def api_horarios_create():
     error = False
     alumno_codigo = current_user.codigo
     response = {}
+
+    # Data de json
     try:
         horario_titulo = request.get_json()['horario_titulo']
-        horario = Horario(titulo=horario_titulo, alumno_codigo=alumno_codigo)
-        db.session.add(horario)
-        db.session.commit()
-        horario_id = horario.id
-        response["horario_url"] = url_for('horarios_view', id=horario_id)
-        response["horario_id"] = horario_id
-        response["horario_titulo"] = horario_titulo
     except:
-        db.session.rollback()
-        print(sys.exc_info())
         error = True
-        response["error_message"] = "No se pudo crear el Horario"
-    finally:
-        db.session.close()
+        response["error_message"] = "JSON incompleto"
+
+    # Creacion
+    if not error:
+        try:
+            horario = Horario(titulo=horario_titulo, alumno_codigo=alumno_codigo)
+            db.session.add(horario)
+            db.session.commit()
+            horario_id = horario.id
+            response["horario_url"] = url_for('horarios_view', id=horario_id)
+            response["horario_id"] = horario_id
+            response["horario_titulo"] = horario_titulo
+        except:
+            db.session.rollback()
+            print(sys.exc_info())
+            error = True
+            response["error_message"] = "No se pudo crear el Horario"
+        finally:
+            db.session.close()
 
     response["success"] = not error
     return jsonify(response)
@@ -550,25 +559,38 @@ def api_horarios_update_rename(id):
     error = False
     response = {}
     alumno = current_user
-    new_titulo = request.get_json()['new_titulo']
+
+    # Data de json
+    try:
+        new_titulo = request.get_json()['new_titulo']
+    except:
+        error = True
+        response["error_message"] = "JSON incompleto"
 
     # Get de objetos
-    try:
-        horario = Horario.query.get(id)
-    except:
-        print(sys.exc_info())
-        error = True
-        response["error_message"] = "Error inesperado de backend (H)"
+    if not error:
+        try:
+            horario = Horario.query.get(id)
+        except:
+            print(sys.exc_info())
+            error = True
+            response["error_message"] = "Error inesperado de backend (H)"
 
     # Validar
-    if not horario:
-        error = True
-        response["error_message"] = "No se pudo encontrar el horario que desea editar"
-
-    if not new_titulo:
-        error = True
-        response["error_message"] = "Titulo Invalido"
-
+    if not error:
+        # Validar existencia de horario
+        if not horario:
+            error = True
+            response["error_message"] = "No se pudo encontrar el horario que desea editar"
+        # Validar permisos
+        elif alumno != horario.alumno:
+            error = True
+            response["error_message"] = "No tiene los permisos necesarios para modificar este horario"
+        # Validar input
+        elif not new_titulo:
+            error = True
+            response["error_message"] = "Titulo Invalido"
+        
     # Insercion y actualizacion de datos
     if not error:
         try:
@@ -594,20 +616,36 @@ def api_horarios_update_add(id):
     response = {}
     alumno = current_user
     
-    # Get de objetos
+    # Data de json
     try:
         clase_id = request.get_json()['clase_id']
-        clase = Clase.query.get(int(clase_id))
     except:
-        print(sys.exc_info())
         error = True
-        response["error_message"] = "Error inesperado de backend (C)"
-    try:
-        horario = Horario.query.get(id)
-    except:
-        print(sys.exc_info())
-        error = True
-        response["error_message"] = "Error inesperado de backend (H)"
+        response["error_message"] = "JSON incompleto"
+
+    # Get de objetos
+    if not error:
+        try:
+            clase = Clase.query.get(int(clase_id))
+        except:
+            print(sys.exc_info())
+            error = True
+            response["error_message"] = "Error inesperado de backend (C)"
+        try:
+            horario = Horario.query.get(id)
+        except:
+            print(sys.exc_info())
+            error = True
+            response["error_message"] = "Error inesperado de backend (H)"
+
+    # Validacion
+    if not error:
+        if not horario:
+            error = True
+            response["error_message"] = "No se pudo encontrar el horario que desea editar"
+        elif not clase:
+            error = True
+            response["error_message"] = "No se pudo encontrar la clase que desea agregar"
 
     # Logica de permisos
     if not error:
@@ -654,20 +692,28 @@ def api_horarios_update_delete(id):
     response = {}
     alumno = current_user
     
-    # Get de objetos
+    # Data de json
     try:
         clase_id = request.get_json()['clase_id']
-        clase = Clase.query.get(int(clase_id))
     except:
-        print(sys.exc_info())
         error = True
-        response["error_message"] = "Error inesperado de backend (C)"
-    try:
-        horario = Horario.query.get(id)
-    except:
-        print(sys.exc_info())
-        error = True
-        response["error_message"] = "Error inesperado de backend (H)"
+        response["error_message"] = "JSON incompleto"
+
+
+    # Get de objetos
+    if not error:
+        try:
+            clase = Clase.query.get(int(clase_id))
+        except:
+            print(sys.exc_info())
+            error = True
+            response["error_message"] = "Error inesperado de backend (C)"
+        try:
+            horario = Horario.query.get(id)
+        except:
+            print(sys.exc_info())
+            error = True
+            response["error_message"] = "Error inesperado de backend (H)"
 
     # Logica de permisos
     if not error:

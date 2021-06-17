@@ -28,8 +28,8 @@
     </ul>
 
     {% if current_user.is_authenticated %}
-        <h3> Nuevo Horario </h3>
         {% if current_user.codigo == alumno.codigo %}
+        <h3> Nuevo Horario </h3>
             <alert class="hidden" id="error-alert-create"> ERROR: <div id="error-create"> </div> </alert>
             <br>
             <form id="form-create-horario">
