@@ -38,6 +38,9 @@ Esta tecnologia se ha usado para poder hacer requests a la API CRUD del sistema 
 Para el manejo de las Request y Response se ha usado especificamente la Fetch API, especialmente su metodo fetch(). Adicionalmente, para el manejo de algunas requests tambien se ha complementaod con la API URLSearchParams para la construccion de las urls requeridas.
 
 ### Back-end
+
+[Diagrama modelo entidad-relación de la base de datos](https://drive.google.com/file/d/11JkNTHSAbAOZf8_7-TSd_0hAK1-1RmMO/view)
+
 #### Flask
 Flask es un framework de backend que provee una estructura basica para implementar servidores con la estructura MVC. Este framework utiliza la libreria Jinja para la creacion de templates y SQLAlchemy para la comunicacion con la base de datos.
 
