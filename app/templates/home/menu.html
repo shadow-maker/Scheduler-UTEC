@@ -1,41 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style_menu.css">
-    <title>Menu</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../../static/style/main.css">
+	<link rel="stylesheet" href="../../static/style/style_menu.css">
+
+	<title>Scheduler UTEC</title>
 </head>
+
 <body>
-    
-    <h1>Bienvenidos al generador de horarios UTEC!!</h1>
-    
-        <div class="container">
-            {% if current_user.is_authenticated %}
-                <form action="{{url_for('alumnos_view', id=current_user.codigo)}}">
-                <button class="btn-1" type="submit">Perfil</button>
-                </form>
-                <form action="{{url_for('logout')}}">
-                <button class="btn-2" type="submit">Logout</button>
-                </form>
-            {% else %}
-                <form action="{{url_for('login')}}">
-                <button class="btn-1" type="submit">Loggeate</button>
-                </form>
-                <form action="{{url_for('register')}}">
-                <button class="btn-2" type="submit">Crea tu cuenta</button>
-                </form>
-            {% endif %}
-        </div>
-        <div class="container">
-            <form action="{{url_for('explore')}}">
-            <button class="btn-3" type="submit">Explorar</button>
-            </form>
-        </div>
-    
-    <img src="../static/aprobado.png" alt="Imagen" class="center">
-    <div> </div>
-    <div> </div>
+
+	<h1>Bienvenido a Scheduler UTEC</h1>
+
+	<div class="container">
+		{% if current_user.is_authenticated %}
+		<form action="{{url_for('alumnos_view', id=current_user.codigo)}}">
+			<button class="btn-1" type="submit">Perfil</button>
+		</form>
+		<form action="{{url_for('logout')}}">
+			<button class="btn-2" type="submit">Logout</button>
+		</form>
+		{% else %}
+		<form action="{{url_for('login')}}">
+			<button class="btn-1" type="submit">Loggeate</button>
+		</form>
+		<form action="{{url_for('register')}}">
+			<button class="btn-2" type="submit">Crea tu cuenta</button>
+		</form>
+		{% endif %}
+	</div>
+	<div class="container">
+		<form action="{{url_for('explore')}}">
+			<button class="btn-3" type="submit">Explorar</button>
+		</form>
+	</div>
+
+	<img src="../static/aprobado.png" alt="Imagen" class="center">
 </body>
 </html>
