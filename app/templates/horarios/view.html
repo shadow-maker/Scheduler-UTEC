@@ -22,9 +22,17 @@
 </head>
 
 <body>
+    <div class="navbar">
+        <a class="active" href="/">Menú Principal</a>
+        <a href="/explore">Explorar</a>
+        <a href="/alumnos/list">Alumnos</a>
+        <a href="/horarios/list">Horarios</a>
+        <a href="/docentes/list">Docentes</a>
+        <a href="/cursos/list">Cursos</a>
+    </div>
 	<center><u><i><h1>Vista de horario</h1></i></u></center>
 	<h2>Nombre de horario: <span id="horario-titulo">{{horario.titulo}}</span></h2>
-	<p>Por: 
+	<p>Por:
 		<a href={{url_for('alumnos_view',id=horario.alumno.codigo)}}>
 			{{horario.alumno.nombre}}
 			{{horario.alumno.apellido}}
@@ -75,7 +83,7 @@
 					<td>Cell</td>
 					<td>Cell</td>
 					<td>Cell</td>
-		
+
 				</tr>
 				<tr>
 					<th scope="row">10:00</th>
@@ -199,7 +207,7 @@
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<h1>STATUS:<alert id="status">{{status}}</alert>
 		</h1>
 		<alert class="{%if not pending_cursos%}hidden{%endif%}" id="pending-alert"> Cursos incompletos: <div
@@ -210,10 +218,10 @@
     {% if current_user.is_authenticated %}
 		<h1 type="hidden">-------------------------</h1>
         {% if current_user.codigo == horario.alumno.codigo %}
-	
+
             <a class="botons" type="button" href={{url_for('horarios_update', id=horario.id)}}>Editar horario</a>
             <a class="botons" type="button" href={{url_for('horarios_delete', id=horario.id)}}>Eliminar horario</a>
-        
+
 			{% endif %}
 			<h1 type="hidden">-------------------------</h1>
     {% endif %}
@@ -245,13 +253,13 @@
             }).then(function(response){
                 return response.json()
             }).then(function(jsonResponse) {
-                console.log(jsonResponse)                    
+                console.log(jsonResponse)
                 if (jsonResponse['success'] === true){
                     /*Actualizacion de Datos*/
                     // Eliminacion de error
                     document.getElementById("error-alert-favoritos").className='hidden'
                     // Actualizacion de botones y texto
-                    e.target.dataset['action'] = alternate_action 
+                    e.target.dataset['action'] = alternate_action
                     e.target.innerHTML = alternate_html
                     document.getElementById("favoritos-title").innerHTML=alternate_titulo
                 }

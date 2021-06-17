@@ -17,11 +17,19 @@
 </head>
 
 <body>
+    <div class="navbar">
+        <a class="active" href="/">Menú Principal</a>
+        <a href="/explore">Explorar</a>
+        <a href="/alumnos/list">Alumnos</a>
+        <a href="/horarios/list">Horarios</a>
+        <a href="/docentes/list">Docentes</a>
+        <a href="/cursos/list">Cursos</a>
+    </div>
 	<h1 class="fondo">Editar horario</h1>
-	<h2>Titulo del horario: 
+	<h2>Titulo del horario:
 		<span id="horario-titulo">{{horario.titulo}}</span>
 	</h2>
-	<p>Generado por: 
+	<p>Generado por:
 		<a href={{url_for('alumnos_view',id=horario.alumno.codigo)}}>
 			{{horario.alumno.nombre}}
 			{{horario.alumno.apellido}}

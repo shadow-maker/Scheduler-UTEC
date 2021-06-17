@@ -12,9 +12,17 @@
 </head>
 
 <body>
+	<div class="navbar">
+        <a class="active" href="/">Menú Principal</a>
+        <a href="/explore">Explorar</a>
+        <a href="/alumnos/list">Alumnos</a>
+        <a href="/horarios/list">Horarios</a>
+        <a href="/docentes/list">Docentes</a>
+        <a href="/cursos/list">Cursos</a>
+    </div>
 
 	<h1>Datos de Clase: {{clase.id}}</h1>
-	<p>Curso: 
+	<p>Curso:
 		<a href={{url_for('cursos_view',id=clase.curso.codigo)}}>
 			{{clase.curso.curso}}
 		</a>
@@ -22,7 +30,7 @@
 	<p>Identificacion: {{clase.seccion}}.{{clase.numero}}</p>
 	<p>Tipo: {{clase.tipo.name}}</p>
 	<p>Vacantes: {{clase.vacantes}}</p>
-	<p>Docente: 
+	<p>Docente:
 		<a href={{url_for('docentes_view',id=clase.docente.codigo)}}>
 		{{clase.docente.nombre}}
 			{{clase.docente.apellido}}

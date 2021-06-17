@@ -16,6 +16,14 @@
 </head>
 
 <body>
+	<div class="navbar">
+        <a class="active" href="/">Menú Principal</a>
+        <a href="/explore">Explorar</a>
+        <a href="/alumnos/list">Alumnos</a>
+        <a href="/horarios/list">Horarios</a>
+        <a href="/docentes/list">Docentes</a>
+        <a href="/cursos/list">Cursos</a>
+    </div>
 
 	<center>
 		<h1>Perfil de {{alumno.nombre}} {{alumno.apellido}}</h1>
@@ -100,10 +108,10 @@
 		}).then(function(response){
 			return response.json()
 		}).then(function(jsonResponse) {
-			console.log(jsonResponse)                    
+			console.log(jsonResponse)
 			if (jsonResponse['success'] === true){
 				const liItem = document.createElement('li')
-				liItem.innerHTML = 
+				liItem.innerHTML =
 					'<a href='+jsonResponse['horario_url']+'> Horario '+jsonResponse['horario_titulo']+' (#'+jsonResponse['horario_id']+')</a>'
 				document.getElementById("list-horarios").appendChild(liItem)
 				document.getElementById("error-alert-create").className='hidden'
