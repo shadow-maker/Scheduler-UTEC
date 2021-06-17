@@ -498,6 +498,29 @@ def horarios_delete(id):
 
 
 #### ---CRUD api ----
+@app.route('/api/cursos/read', methods=['GET'])
+def api_cursos_read_filter():
+    error = False
+    response = {}
+
+    # Data de parametros
+    curso_curso = request.args.get(key='curso_curso', default="")
+
+    # Query
+    if not error:
+        cursos = Curso.query.filter(Curso.curso.startswith(curso_curso)).all()
+        response["cursos"] = [
+            {
+                "curso_codigo":c.codigo,
+                "curso_curso":c.curso,
+                "curso_url":url_for('cursos_view',id=c.codigo)
+            } for c in cursos]
+        response["empty"] = False if cursos else True
+
+    # Return
+    response["success"] = not error
+    return jsonify(response)
+
 @app.route('/api/docentes/read', methods=['GET'])
 def api_docentes_read_filter():
     error = False
