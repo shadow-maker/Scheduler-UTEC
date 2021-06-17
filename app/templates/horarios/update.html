@@ -236,9 +236,9 @@
                 const clase_action      = e.target.dataset['action']
                 // Request constants
                 const clase_id          = e.target.dataset['id']
-                const request_url       = (clase_action==="add") ? "{{url_for('horarios_update_add',id=horario.id)}}" : "{{url_for('horarios_update_delete',id=horario.id)}}"
-                const request_method    = (clase_action==="add") ? "UPDATE" : "DELETE"
-                // Result constants
+                const request_url       = (clase_action==="add") ? "{{url_for('api_horarios_update_add',id=horario.id)}}" : "{{url_for('api_horarios_update_delete',id=horario.id)}}"
+                const request_method    = "PUT"
+                // Result constants (para update del html)
                 const alternate_action  = (clase_action==="add") ?  "delete" : "add"
                 const alternate_html    = (clase_action==="add") ?  "Quitar" :"Agregar"
 

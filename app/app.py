@@ -175,6 +175,7 @@ class Horario(db.Model):
                                 return f'Colision con otra clase: {c.curso.curso} - {c.tipo.name} - {c.seccion}.{c.numero}'
         return False
 
+
 db.create_all() # Crear tablas en bd
 
 
@@ -507,10 +508,42 @@ def horarios_view(id):
 
 
 
-#### ---CRUD ----
-@app.route('/horarios/update/<id>/add', methods=['UPDATE'])
+#### ---CRUD api ----
+"""
+@app.route('/api/horarios/read')
+def horarios_read():
+    response = {}
+    response["horarios"] = {h.id:[h.alumno_codigo] for h in Horario.query.all()}
+    return jsonify(response)
+"""
+
+@app.route('/api/horarios/create/', methods=['POST'])
 @login_required
-def horarios_update_add(id):
+def api_horarios_create():
+    error = False
+    alumno_codigo = current_user.codigo
+    response = {}
+    try:
+        horario = Horario(alumno_codigo=alumno_codigo)
+        db.session.add(horario)
+        db.session.commit()
+        horario_id = horario.id
+        response["horario_url"] = url_for('horarios_update', id=horario_id)
+    except:
+        db.session.rollback()
+        print(sys.exc_info())
+        error = True
+        response["error_message"] = "No se pudo crear el Horario"
+    finally:
+        db.session.close()
+
+    response["success"] = not error
+    return jsonify(response)
+
+
+@app.route('/api/horarios/update/<id>/add-clase', methods=['PUT'])
+@login_required
+def api_horarios_update_add(id):
     error = False
     response = {}
     alumno = current_user
@@ -568,9 +601,9 @@ def horarios_update_add(id):
     return jsonify(response)
 
 
-@app.route('/horarios/update/<id>/delete', methods=['DELETE'])
+@app.route('/api/horarios/update/<id>/delete-clase', methods=['PUT'])
 @login_required
-def horarios_update_delete(id):
+def api_horarios_update_delete(id):
     error = False
     response = {}
     alumno = current_user
