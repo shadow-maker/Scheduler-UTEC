@@ -17,7 +17,7 @@ h1{
     letter-spacing: 10px;
     word-spacing: 8px;
     line-height: 150px;
-    
+
 }
 
 .container{
@@ -115,6 +115,28 @@ h1{
     opacity: 1;
     z-index: -1;
 }
+.navbar {
+  overflow: hidden;
+  background-color: darkcyan;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  background: #ddd;
+  color: black;
+}
+
 /*
  -- IMAGEN DE FONDO --
 body,html{
