@@ -41,8 +41,8 @@
 	<ul>
 		{% for sesion in clase.sesiones %}
 		<li>
-			{{['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'][sesion.dia-1]}} =>
-			{{sesion.hora_inicio}}:00 - {{sesion.hora_fin}}:00
+			<p> {{['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'][sesion.dia-1]}} =>
+			{{sesion.hora_inicio}}:00 - {{sesion.hora_fin}}:00 </p>
 		</li>
 		{% endfor %}
 	</ul>
