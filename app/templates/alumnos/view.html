@@ -45,7 +45,7 @@
     {% if alumno.favoritos %}
         <ul>
         {% for horario in alumno.favoritos %}
-            <li> <a href={{url_for('horarios_view', id=horario.id)}}> Horario #{{horario.id}}</a> </il>
+            <li> <a href={{url_for('horarios_view', id=horario.id)}}> Horario {{horario.titulo}} (#{{horario.id}})</a> </il>
         {% endfor %}
         </ul>
     {% else %}
