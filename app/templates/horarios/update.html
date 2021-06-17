@@ -13,8 +13,18 @@
     </style>
 </head>
 <body>
-    <h1> Actualizar Horario #{{horario.id}} </h1>
+    <h1> Visualizar Horario <div id="horario-titulo">{{horario.titulo}}</div> </h1>
+    <p> ID: #{{horario.id}}
     <p> Generado por <a href={{url_for('alumnos_view',id=horario.alumno.codigo)}}> {{horario.alumno.nombre}} {{horario.alumno.apellido}} </a> </p>
+
+    <alert class="hidden" id="error-alert-rename"> ERROR: <div id="error-rename"> </div> </alert>
+    <br>
+    <form id="form-rename">
+        <label for="new-titulo"> Renombrar </label>
+        <input type='texto' id="new-titulo" name='new-titulo' value="{{horario.titulo}}"/>
+        <input type="submit" id="submit-rename" value="Submit" />
+    </form>
+
     <table id="table_horario">
         <thead>
         <tr>
@@ -214,7 +224,36 @@
         {% endfor %}   
     </p>
 </body>
-
+    <script>
+        document.getElementById("form-rename").onsubmit = function(e){
+            e.preventDefault();
+            // Handeling Request
+            const new_titulo = document.getElementById("new-titulo").value
+            const request_url = "{{url_for('api_horarios_update_rename',id=horario.id)}}"
+            fetch( request_url, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    'new_titulo': new_titulo
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function(response){
+                return response.json()
+            }).then(function(jsonResponse) {
+                console.log(jsonResponse)                    
+                if (jsonResponse['success'] === true){
+                    document.getElementById("error-alert-rename").className='hidden'
+                    document.getElementById("horario-titulo").innerHTML = new_titulo
+                }
+                else {
+                    /*Error Handeling*/
+                    document.getElementById("error-alert-rename").className=''
+                    document.getElementById("error-rename").innerHTML = jsonResponse['error_message']
+                }
+            })
+        }
+    </script>
     <script>
         function UpdateTable(data){
             for (let i = 0; i < data.length; i++) {

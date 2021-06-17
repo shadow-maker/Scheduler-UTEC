@@ -115,6 +115,7 @@ class Sesion(db.Model):
 class Horario(db.Model):
     __tablaname__ = 'horario'
     id              = db.Column(db.Integer      , primary_key=True)
+    titulo          = db.Column(db.String(64)  , nullable=False)
     alumno_codigo   = db.Column(db.String(9)    , db.ForeignKey('alumno.codigo')    , nullable=False)
     #Agregar talvez tmb fecha de creacion?
     clases          = db.relationship('Clase', secondary=lista_clases, lazy='subquery', backref=db.backref('horarios', lazy=True) )
@@ -524,11 +525,14 @@ def api_horarios_create():
     alumno_codigo = current_user.codigo
     response = {}
     try:
-        horario = Horario(alumno_codigo=alumno_codigo)
+        horario_titulo = request.get_json()['horario_titulo']
+        horario = Horario(titulo=horario_titulo, alumno_codigo=alumno_codigo)
         db.session.add(horario)
         db.session.commit()
         horario_id = horario.id
-        response["horario_url"] = url_for('horarios_update', id=horario_id)
+        response["horario_url"] = url_for('horarios_view', id=horario_id)
+        response["horario_id"] = horario_id
+        response["horario_titulo"] = horario_titulo
     except:
         db.session.rollback()
         print(sys.exc_info())
@@ -537,6 +541,48 @@ def api_horarios_create():
     finally:
         db.session.close()
 
+    response["success"] = not error
+    return jsonify(response)
+
+@app.route('/api/horarios/update/<id>/rename', methods=['PUT'])
+@login_required
+def api_horarios_update_rename(id):
+    error = False
+    response = {}
+    alumno = current_user
+    new_titulo = request.get_json()['new_titulo']
+
+    # Get de objetos
+    try:
+        horario = Horario.query.get(id)
+    except:
+        print(sys.exc_info())
+        error = True
+        response["error_message"] = "Error inesperado de backend (H)"
+
+    # Validar
+    if not horario:
+        error = True
+        response["error_message"] = "No se pudo encontrar el horario que desea editar"
+
+    if not new_titulo:
+        error = True
+        response["error_message"] = "Titulo Invalido"
+
+    # Insercion y actualizacion de datos
+    if not error:
+        try:
+            horario.titulo = new_titulo
+            db.session.commit()
+        except:
+            db.session.rollback()
+            print(sys.exc_info())
+            response["error_message"] = "No se pudo editar el titulo del horario"
+            error = True
+        finally:
+            db.session.close()
+
+    # Return
     response["success"] = not error
     return jsonify(response)
 
@@ -574,7 +620,7 @@ def api_horarios_update_add(id):
         ret_message = horario.clase_colission(clase)
         if ret_message:
             error = True
-            response["error_message"] = "El curso ya se enceuntra en el horario"
+            response["error_message"] = ret_message
         
     # Insercion y actualizacion de datos
     if not error:

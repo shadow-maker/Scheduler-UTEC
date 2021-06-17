@@ -13,7 +13,8 @@
     </style>
 </head>
 <body>
-    <h1> Visualizar Horario #{{horario.id}} </h1>
+    <h1> Visualizar Horario <div id="horario-titulo">{{horario.titulo}}</div> </h1>
+    <p> ID: #{{horario.id}}
     <p> Generado por <a href={{url_for('alumnos_view',id=horario.alumno.codigo)}}> {{horario.alumno.nombre}} {{horario.alumno.apellido}} </a> </p>
     <table id="table_horario">
         <thead>

@@ -382,7 +382,8 @@ db.session.commit()
 
 # Horario
 h1=Horario(
-        alumno_codigo = '202010387'
+    alumno_codigo = '202010387',
+    titulo = "Horario 2020-Version1",
 )
 # Comit
 db.session.add_all([h1])
