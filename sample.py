@@ -47,7 +47,35 @@ alumnos = [
         nombre      ='Mauro',
         apellido    ='Bobadilla Castillo'
     ),
-] 
+    Alumno(
+        codigo      ='202010442',
+        correo      ='eduardo.arrospide@utec.edu.pe',
+        password    ='edupass',
+        nombre      ='Eduardo',
+        apellido    ='Arróspide González'
+    ),
+    Alumno(
+        codigo      ='202010324',
+        correo      ='carlos.montoro@utec.edu.pe',
+        password    ='carlospass',
+        nombre      ='Carlos Andrés',
+        apellido    ='Montoro'
+    ),
+    Alumno(
+        codigo      ='202056198',
+        correo      ='marcela.espinoza@utec.edu.pe',
+        password    ='marcelapass',
+        nombre      ='Marcela Fernanda',
+        apellido    ='Espinoza Herrera'
+    ),
+    Alumno(
+        codigo      ='202017936',
+        correo      ='edgar.chacon@utec.edu.pe',
+        password    ='edgarpass',
+        nombre      ='Edgar',
+        apellido    ='Chacón Arróspide'
+    ),
+]
 # Docentes
 docentes = [
     Docente(
@@ -80,6 +108,78 @@ docentes = [
         nombre      ='Rosulo',
         apellido    ='Perez Cupe'
     ),
+    Docente(
+        codigo      ='65582',
+        correo      ='jgonzalez@utec.edu.pe',
+        nombre      ='Jorge Luis',
+        apellido    ='González Reaño'
+    ),
+    Docente(
+        codigo      ='64526',
+        correo      ='nboljsakov@utec.edu.pe',
+        nombre      ='Natalija',
+        apellido    ='Boljsakov'
+    ),
+    Docente(
+        codigo      ='11262',
+        correo      ='hsanchez@utec.edu.pe',
+        nombre      ='Heider Ysaías',
+        apellido    ='Sánchez Enríquez'
+    ),
+    Docente(
+        codigo      ='10774',
+        correo      ='jfiestas@utec.edu.pe',
+        nombre      ='José Antonio',
+        apellido    ='Fiestas Iquira'
+    ),
+    Docente(
+        codigo      ='10696',
+        correo      ='jrenom@utec.edu.pe',
+        nombre      ='José Miguel',
+        apellido    ='Renom Andara'
+    ),
+    Docente(
+        codigo      ='10953',
+        correo      ='yserrano@utec.edu.pe',
+        nombre      ='Yamilet Rosario',
+        apellido    ='Serrano Llerena'
+    ),
+    Docente(
+        codigo      ='10748',
+        correo      ='rrivas@utec.edu.pe',
+        nombre      ='Rubén Demetrio',
+        apellido    ='Rivas Medina'
+    ),
+    Docente(
+        codigo      ='11374',
+        correo      ='jgutierreza@utec.edu.pe',
+        nombre      ='Juan Gabriel',
+        apellido    ='Gutiérrez Alva'
+    ),
+    Docente(
+        codigo      ='10920',
+        correo      ='lcaycho@utec.edu.pe',
+        nombre      ='Luis Oswaldo',
+        apellido    ='Caycho Chang'
+    ),
+    Docente(
+        codigo      ='67295',
+        correo      ='lbranez@utec.edu.pe',
+        nombre      ='Luz Elena',
+        apellido    ='Brañez Haro'
+    ),
+    Docente(
+        codigo      ='64518',
+        correo      ='preynoso@utec.edu.pe',
+        nombre      ='Patricia',
+        apellido    ='Reynoso Quispe'
+    ),
+    Docente(
+        codigo      ='10409',
+        correo      ='arios@utec.edu.pe',
+        nombre      ='Alejandro',
+        apellido    ='Ríos Cuadros'
+    ),
 ]
 # Cursos
 cursos = [
@@ -100,6 +200,97 @@ cursos = [
     Curso(
         codigo = 'EG0006',
         curso = 'Matemáticas III',
+        lab=True,
+        teoria=True,
+        teoria_virtual=False
+    ),
+    Curso(
+        codigo = 'CS2201',
+        curso = 'Arquitectura de computadoras',
+        lab=True,
+        teoria=True,
+        teoria_virtual=False
+    ),
+    Curso(
+        codigo = 'GH0008',
+        curso = 'Gestión de Empresas',
+        lab=True,
+        teoria=True,
+        teoria_virtual=False
+    ),
+    Curso(
+        codigo = 'CS2100',
+        curso = 'Algoritmos y Estructura de datos',
+        lab=True,
+        teoria=True,
+        teoria_virtual=False
+    ),
+    Curso(
+        codigo = 'IN0054',
+        curso = 'Estadística y Probabilidades',
+        lab=True,
+        teoria=True,
+        teoria_virtual=False
+    ),
+    Curso(
+        codigo = 'CS2101',
+        curso = 'Teoría de la computación',
+        lab=True,
+        teoria=True,
+        teoria_virtual=False
+    ),
+    Curso(
+        codigo = 'AM0037',
+        curso = 'Ciencia de los Materiales',
+        lab=True,
+        teoria=True,
+        teoria_virtual=False
+    ),
+    Curso(
+        codigo = 'GH1002',
+        curso = 'Arte y Tecnología',
+        lab=True,
+        teoria=False,
+        teoria_virtual=False
+    ),
+    Curso(
+        codigo = 'CD1D01',
+        curso = 'Estructuras Discretas I',
+        lab=True,
+        teoria=True,
+        teoria_virtual=False
+    ),
+    Curso(
+        codigo = 'CD1D02',
+        curso = 'Estructuras Discretas II',
+        lab=True,
+        teoria=True,
+        teoria_virtual=False
+    ),
+    Curso(
+        codigo = 'EG0005',
+        curso = 'Matemáticas II',
+        lab=True,
+        teoria=True,
+        teoria_virtual=False
+    ),
+    Curso(
+        codigo = 'CS1102',
+        curso = 'Programación Orientada a Objetos I',
+        lab=True,
+        teoria=True,
+        teoria_virtual=False
+    ),
+    Curso(
+        codigo = 'CS1103',
+        curso = 'Programación Orientada a Objetos II',
+        lab=True,
+        teoria=True,
+        teoria_virtual=False
+    ),
+    Curso(
+        codigo = 'CS1100',
+        curso = 'Introducción a la Ciencia de la Computación',
         lab=True,
         teoria=True,
         teoria_virtual=False
