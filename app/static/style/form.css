@@ -17,20 +17,19 @@
 	margin-bottom: 20px;
 }
 
+.form-register * {
+	color: var(--light);
+}
+
 .controls {
 	width: 100%;
-	background: #24303c;
-	color: var(--white);
+	background: var(--trans);
 	padding: 10px;
 	border-radius: 4px;
 	margin-bottom: 16px;
 	border: 1px solid var(--blue);
 	font-family: "Menlo";
 	font-size: 18px;
-}
-
-.controls {
-	color: var(--white);
 }
 
 .form-register p {
