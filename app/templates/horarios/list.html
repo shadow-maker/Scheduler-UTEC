@@ -17,12 +17,12 @@
 
 <body>
 	<div class="navbar">
-		<a class="active" href="/">Menú Principal</a>
-		<a href="/explore">Explorar</a>
-		<a href="/alumnos/list">Alumnos</a>
-		<a href="/horarios/list">Horarios</a>
-		<a href="/docentes/list">Docentes</a>
-		<a href="/cursos/list">Cursos</a>
+		<a class="active" href={{url_for("menu_inicio")}}>Menú Principal</a>
+        <a href={{url_for("explore")}}>Explorar</a>
+        <a href={{url_for("alumnos_list")}}>Alumnos</a>
+        <a href={{url_for("horarios_list")}}>Horarios</a>
+        <a href={{url_for("docentes_list")}}>Docentes</a>
+        <a href={{url_for("cursos_list")}}>Cursos</a>
 	</div>
 	<h1> Horarios </h1>
 	<alert class="hidden" id="error-alert-filter"> ERROR: <div id="error-filter"> </div>
