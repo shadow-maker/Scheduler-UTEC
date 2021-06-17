@@ -1,43 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="/static/style/single_form.css">
-  <title>Login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="/static/style/main.css">
+	<link rel="stylesheet" href="/static/style/single_form.css">
+	<title>Login</title>
 </head>
+
 <body>
-  <section class="form-register">
-    <h4>Loggeate: </h4>
+	<section class="form-register">
+		<h4>Loggeate: </h4>
 
-    <form method='POST' action="">
-      {% if error %}
-        <div class="alert-error">
-          <strong>{{error}}!</strong>
-        </div>
-      {% endif %}
-      {% for field in form.errors %}
-        {% for error in form.errors[field] %}
-            <div class="alert-error">
-                <strong>Error!</strong> {{error}}
-            </div>
-        {% endfor %}
-      {% endfor %}
+		<form method='POST' action="">
+			{% if error %}
+			<div class="alert-error">
+				<strong>{{error}}!</strong>
+			</div>
+			{% endif %}
+			{% for field in form.errors %}
+			{% for error in form.errors[field] %}
+			<div class="alert-error">
+				<strong>Error!</strong> {{error}}
+			</div>
+			{% endfor %}
+			{% endfor %}
 
-      {{form.hidden_tag()}}
-      {{form.id_utec(class="controls", placeholder="Ingrese su ID Utec")}}
-      {{form.password(class="controls", placeholder="Ingrese su contraseña")}}
+			{{form.hidden_tag()}}
+			{{form.id_utec(class="controls", placeholder="Ingrese su ID Utec")}}
+			{{form.password(class="controls", placeholder="Ingrese su contraseña")}}
 
-      <div>
-          {{form.submit(class="botons")}}
-      </div>
-    </form>
+			<div>
+				{{form.submit(class="botons")}}
+			</div>
+		</form>
 
-    <p><a href="/auth/register/">No tengo unacuenta UTEC</a></p>
+		<p><a href="/auth/register/">No tengo una cuenta UTEC</a></p>
 
-  </section>
-  
-  
+	</section>
+
+
 </body>
+
 </html>
