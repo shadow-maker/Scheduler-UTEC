@@ -47,14 +47,14 @@ class registerform(FlaskForm):
 
 class updatealumnoform(FlaskForm):
     name = StringField('name', validators=[
-        Length(min=1, max=64, message="Longitud de nombre invaldia (<=64)")
+        Length(min=1, max=64, message="Longitud de nombre invalida (<=64)")
         ])
     last_name = StringField('last_name', validators=[
-        Length(min=1, max=64, message="Longitud de apellido invaldia (<=64)")
+        Length(min=1, max=64, message="Longitud de apellido invalida (<=64)")
         ])
     correo = StringField('correo', validators=[
         Email(message="El correo ingresado no es un correo valido"),
-        Length(min=1, max=255, message="Longitud de correo invaldia (<=255)")
+        Length(min=1, max=255, message="Longitud de correo invalida (<=255)")
         ])
     submit = SubmitField('Submit')
 
@@ -67,4 +67,3 @@ class updatealumnoform(FlaskForm):
         alumno.nombre = self.name.data
         alumno.apellido = self.last_name.data
         alumno.correo = self.correo.data
-
