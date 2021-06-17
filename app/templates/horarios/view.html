@@ -6,19 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="../../static/style/main.css">
-	<link rel="stylesheet" href="../../static/style/form.css">
+	<link rel="stylesheet" href="../../static/style/table.css">
     <title>Horario</title>
-
-	<script src="jQuery.js"></script>
-
 	<style>
 		.hidden {
 			display: none;
 		}
 	</style>
-
-	<link rel="stylesheet" href="../../static/style/main.css">
-	<link rel="stylesheet" href="../../static/style/style_table.css">
 </head>
 
 <body>
@@ -207,11 +201,9 @@
 				</tr>
 			</tbody>
 		</table>
-
-		<h1>STATUS:<alert id="status">{{status}}</alert>
-		</h1>
-		<alert class="{%if not pending_cursos%}hidden{%endif%}" id="pending-alert"> Cursos incompletos: <div
-				id="pending-container"> {{pending_cursos}} </div>
+		
+		<p>STATUS: <alert id="status">{{status}}</alert></p>
+		<alert class="{%if not pending_cursos%}hidden{%endif%}" id="pending-alert"> Cursos incompletos: <span id="pending-container"> {{pending_cursos}}</span>
 		</alert>
 	</section>
 

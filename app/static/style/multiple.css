@@ -1,51 +1,13 @@
 html {
-    background: url('/static/images/single_form.jpg') no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
     margin: 30px;
 }
-*{
-    letter-spacing: 3px;
-}
+
 .center {
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 40%;
   }
-h1{
-    font-size: 40px;
-    font-style: italic;
-    font-weight: 20;
-    text-align: left;
-    color: #3700ffa8;
-    background: #ff030386;
-    letter-spacing: 6px;
-    word-spacing: 4px;
-    line-height: 60px;
-}
-h2{
-    font-size: 25px;
-    color: #ff0000a8;
-    font-weight: 40;
-}
-p{
-    font-size: 20px;
-    font-style: italic;
-    font-weight: 30;
-    text-align: left;
-    color: black;
-    letter-spacing: 2px;
-    word-spacing: 4px;
-    line-height: 10px;
-}
-a{
-    font-size: 20px;
-    font-style: italic;
-    color: purple;
-}
 
 .btn-1{
     width: 120px;

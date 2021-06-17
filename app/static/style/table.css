@@ -4,9 +4,6 @@ body {
 }
 
 body {
-	background: -webkit-linear-gradient(45deg, #49a09d, #5f2c82)no-repeat center center fixed;;
-	background: linear-gradient(45deg, #49a09d, #5f2c82)no-repeat center center fixed;;
-	font-family: sans-serif;
 	font-weight: 100;
 }
 
@@ -23,6 +20,7 @@ table {
 	width: 800px;
 	border-collapse: collapse;
 	overflow: hidden;
+	background-color: var(--dark);
 	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -60,22 +58,18 @@ tbody td:hover:before {
 	z-index: -1;
 }
 .fondo{
-	background-color: #970e0ead;
     padding: 3px;
 }
 .botons {
-	width: 8%;
-	background: #1f53c5;
-
+	background: var(--blue);
 	border: none;
-	padding: 3px;
-	color: white;
+	padding: 5px;
+	color: var(--light);
 	margin: 16px 0;
 	font-size: 16px;
 	transition-duration: 0.4s;
   }
 .botons:hover{
-	background-color:#4069c2;
-	color: white;
+	filter: saturate(0.5);
 }
   
