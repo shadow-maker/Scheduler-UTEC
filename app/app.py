@@ -291,7 +291,6 @@ def alumnos_update(id):
     
     return render_template('alumnos/update.html', alumno=alumno, form=form, error=error)
 
-# CORREGIR PARA QUE FUNCIONE CON METODO DELETE
 @app.route('/alumnos/<id>/delete', methods=['GET', 'POST'])
 def alumnos_delete(id):
     if current_user.codigo!=id:
@@ -386,6 +385,39 @@ def horarios_update(id):
         status, table_horario, pending_cursos = horario.get_status()
         return render_template('horarios/update.html', data=info, horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos)
 
+@app.route('/horarios/<id>/delete')
+@login_required
+def horarios_delete(id):
+    error =False
+    alumno_codigo = current_user.codigo
+
+    try:
+        horario = Horario.query.get(id)
+    except:
+        return 'Url no valida' # MEJORAR RESPUESTA DE ERROR
+
+    if horario == None:
+        return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
+    
+    if horario.alumno_codigo != alumno_codigo:
+        return 'No tiene permisos para eliminar este horario'
+
+    try:
+        horario_id = horario.id
+        db.session.delete(horario)
+        db.session.commit()
+    except:
+        db.session.rollback()
+        print(sys.exc_info())
+        error = True
+    finally:
+        db.session.close()
+
+    if error:
+        return 'No se pudo eliminar el horario' # MEJORAR RESPUESTA DE ERROR
+    else:
+        return f'Se elimino correctamente el horario {horario_id}' # MEJORAR RESPUESTA DE EXITO
+
 # --- Curso ---
 @app.route('/cursos/<id>', methods=['GET'])
 def cursos_view(id):
@@ -434,73 +466,6 @@ def docentes_view(id):
 def docentes_list():
     docentes = Docente.query.all()
     return render_template('docentes/list.html', docentes=docentes)
-
-
-
-
-
-
-
-
-
-
-"""
-@app.route('/horarios/create')
-@login_required
-def horarios_create():
-    error = False
-    alumno_codigo = current_user.codigo
-    try:
-        horario = Horario(alumno_codigo=alumno_codigo)
-        db.session.add(horario)
-        db.session.commit()
-        horario_id = horario.id
-    except:
-        db.session.rollback()
-        print(sys.exc_info())
-        error = True
-    finally:
-        db.session.close()
-
-    if error:
-        return 'No se pudo crear el horario' # MEJORAR RESPUESTA DE ERROR
-    else:
-        return redirect(  url_for('horarios_update', id=horario_id) )
-"""
-
-@app.route('/horarios/<id>/delete')
-@login_required
-def horarios_delete(id):
-    error =False
-    alumno_codigo = current_user.codigo
-
-    try:
-        horario = Horario.query.get(id)
-    except:
-        return 'Url no valida' # MEJORAR RESPUESTA DE ERROR
-
-    if horario == None:
-        return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
-    
-    if horario.alumno_codigo != alumno_codigo:
-        return 'No tiene permisos para eliminar este horario'
-
-    try:
-        horario_id = horario.id
-        db.session.delete(horario)
-        db.session.commit()
-    except:
-        db.session.rollback()
-        print(sys.exc_info())
-        error = True
-    finally:
-        db.session.close()
-
-    if error:
-        return 'No se pudo eliminar el horario' # MEJORAR RESPUESTA DE ERROR
-    else:
-        return f'Se elimino correctamente el horario {horario_id}' # MEJORAR RESPUESTA DE EXITO
-
 
 #### ---CRUD api ----
 @app.route('/api/cursos/read', methods=['GET'])
@@ -919,12 +884,3 @@ def api_favoritos_delete(id):
     # Return
     response["success"] = not error
     return jsonify(response)
-
-
-# Test
-#@app.route('/auth')
-#@login_required
-#def menu_registered():
-    return 'Solo los registrados entran aca'
-
-
