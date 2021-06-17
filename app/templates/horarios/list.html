@@ -27,6 +27,8 @@
 		<input class="botons" type="submit" id="submit-filter" value="Submit" />
 	</form>
 	<p class="{% if horarios%}hidden{%endif%}" id="empty-message"> No hay horarios </p>
+
+	<h2> Lista de horarios: </h2>
 	<ul id="horarios-list">
 		{% for horario in horarios %}
 		<li> <a href={{url_for('horarios_view',id=horario.id)}}> Horario {{horario.titulo}} (#{{horario.id}}) de
