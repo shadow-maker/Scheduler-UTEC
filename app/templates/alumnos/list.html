@@ -4,19 +4,77 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alumnos</title>
+    <style>
+            .hidden {
+                display: none;
+            }
+    </style>
 </head>
 <body>
 
 <body>
   <h1> Alumnos </h1>
-  {% if alumnos %}
-    <ul>
-    {% for alumno in alumnos %}
-        <li> <a href={{url_for('alumnos_view', id=alumno.codigo)}}> {{alumno.codigo}}:  {{alumno.nombre}} {{alumno.apellido}}</a> <br>
-    {% endfor %}
-    </ul>
-  {% else %}
-    <p> No hay alumnos actualmente </p>
-  {% endif %}
+    <alert class="hidden" id="error-alert-filter"> ERROR: <div id="error-filter"> </div> </alert>
+    <br>
+    <form id="form-filter">
+        <label for="filter-nombre"> Nombre </label>
+        <input type='texto' id="filter-nombre" name='filter-nombre' value=""/>
+        <label for="filter-apellido"> Apellido </label>
+        <input type='texto' id="filter-apellido" name='filter-apellido' value=""/>
+        <input type="submit" id="submit-filter" value="Submit" />
+    </form>
+
+
+  <p class="{% if alumnos%}hidden{%endif%}" id="empty-message"> No hay alumnos actualmente </p>
+  <ul id="alumnos-list">
+  {% for alumno in alumnos %}
+      <li> <a href={{url_for('alumnos_view', id=alumno.codigo)}}> {{alumno.codigo}}:  {{alumno.nombre}} {{alumno.apellido}}</a> <br>
+  {% endfor %}
+  </ul>
+  
 </body>
+<script>
+    document.getElementById("form-filter").onsubmit = function(e){
+        e.preventDefault();
+        // Handeling Request
+        const filter_nombre = document.getElementById("filter-nombre").value
+        const filter_apellido = document.getElementById("filter-apellido").value
+        const request_url = "{{url_for('api_alumnos_read_filter')}}"
+        fetch( request_url + '?' +new URLSearchParams({alumno_nombre:filter_nombre,alumno_apellido:filter_apellido}), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response){
+            return response.json()
+        }).then(function(jsonResponse) {
+            console.log(jsonResponse)                    
+            if (jsonResponse['success'] === true){
+                // Actualizar mensajes
+                document.getElementById("error-alert-filter").className='hidden'
+                if (jsonResponse['empty'] === true){
+                    document.getElementById("empty-message").className=''
+                }
+                else{
+                    document.getElementById("empty-message").className='hidden'
+                }
+                // Poblar lu
+                document.getElementById("alumnos-list").innerHTML = ''
+                const alumnso_list = jsonResponse['alumnos']
+                for (let i=0; i < alumnso_list.length; i++){
+                    const alumno = alumnso_list[i]
+                    const liItem = document.createElement('li')
+                    liItem.innerHTML = 
+                     '<a href='+alumno['alumno_url']+'> '+alumno['alumno_codigo']+': ' + alumno['alumno_nombre'] + ' ' + alumno['alumno_apellido']+'</a>'
+                     document.getElementById("alumnos-list").appendChild(liItem)
+                }
+            }
+            else {
+                /*Error Handeling*/
+                document.getElementById("error-alert-filter").className=''
+                document.getElementById("error-filter").innerHTML = jsonResponse['error_message']
+            }
+        })
+    }
+</script>
 </html>

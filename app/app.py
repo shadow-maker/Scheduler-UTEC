@@ -497,38 +497,39 @@ def horarios_view(id):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 #### ---CRUD api ----
-"""
-@app.route('/api/horarios/read')
-def horarios_read():
+@app.route('/api/alumnos/read', methods=['GET'])
+def api_alumnos_read_filter():
+    error = False
     response = {}
-    response["horarios"] = {h.id:[h.alumno_codigo] for h in Horario.query.all()}
+
+    # Data de parametros
+    alumno_nombre = request.args.get(key='alumno_nombre', default="")
+    alumno_apellido = request.args.get(key='alumno_apellido', default="")
+
+    # Query
+    if not error:
+        alumnos = Alumno.query.filter(Alumno.nombre.startswith(alumno_nombre)).filter(Alumno.apellido.startswith(alumno_apellido)).all()
+        response["alumnos"] = [
+            {
+                "alumno_codigo":a.codigo,
+                "alumno_nombre":a.nombre,
+                "alumno_apellido":a.apellido,
+                "alumno_url":url_for('alumnos_view',id=a.codigo)
+            } for a in alumnos]
+        response["empty"] = False if alumnos else True
+
+    # Return
+    response["success"] = not error
     return jsonify(response)
-"""
+
 @app.route('/api/horarios/read', methods=['GET'])
 def api_horarios_read_filter():
     error = False
     response = {}
 
-    # Data de json
-    try:
-        horario_titulo = request.args.get(key='horario_titulo')
-    except:
-        error = True
-        response["error_message"] = "ARGS incompleto"
+    # Data de parametros
+    horario_titulo = request.args.get(key='horario_titulo', default="")
 
     # Query
     if not error:
@@ -549,7 +550,7 @@ def api_horarios_read_filter():
 
 
 
-@app.route('/api/horarios/create/', methods=['POST'])
+@app.route('/api/horarios/create', methods=['POST'])
 @login_required
 def api_horarios_create():
     error = False
