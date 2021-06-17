@@ -225,7 +225,7 @@ def login():
         next = request.args.get('next')
         if not is_safe_url(next):
             # Por fines de seguridad cancela si el redirect no es seguro
-            return abort(400)
+            return abort(400, "Redirect inseguro")
         # Si existe
         if user:
             # Si es valido
@@ -250,10 +250,10 @@ def alumnos_view(id):
     try:
         alumno = Alumno.query.get(id)
     except:
-        return 'Error de backend' #MRE
+        return abort(500,'Error inesperado de backend (A)')
 
     if not alumno:
-        return 'El alumno que busca no existe' #MRE
+        return abort(404,'El alumno que busca no existe')
     else:
         return render_template('alumnos/view.html', alumno=alumno)
 
@@ -266,14 +266,14 @@ def alumnos_list():
 @app.route('/alumnos/<id>/update', methods=['GET','POST'])
 def alumnos_update(id):
     if current_user.codigo!=id:
-        return 'No tiene permisos para modificar este perfil' #MRE
+        return abort(401,'No tiene permisos para modificar este perfil')
     try:
         alumno = Alumno.query.get(id)
     except:
-        return 'Error de backend' #MRE
+        return abort(500,'Error inesperado de backend (A)')
 
     if not alumno:
-        return 'El alumno que busca no existe' #MRE
+        return abort(404,'El alumno que busca no existe')
     
     form=forms.updatealumnoform()
     error=False
@@ -295,14 +295,14 @@ def alumnos_update(id):
 @login_required
 def alumnos_delete(id):
     if current_user.codigo!=id:
-        return 'No tiene permisos para modificar este perfil' #MRE
+        return abort(401,'No tiene permisos para eliminar este alumno')
     try:
         alumno = Alumno.query.get(id)
     except:
-        return 'Error de backend' #MRE
+        return abort(500,'Error inesperado de backend (A)')
 
     if not alumno:
-        return 'El alumno que busca no existe' #MRE
+        return abort(404,'El alumno que busca no existe')
 
     return render_template('alumnos/delete.html', alumno=alumno)
 
@@ -320,24 +320,21 @@ def explore():
 # --- Horarios ---
 @app.route('/horarios/<id>', methods=['GET'])
 def horarios_view(id):
-    error =False
     try:
         horario = Horario.query.get(id)
     except:
-        error = True
+        return abort(500,'Error inesperado de backend (H)')
 
-    if error:
-        return 'Url no valida' #MRE
-    elif horario==None:
-        return 'El horario que se busca no existe' #MRE
+    if horario==None:
+        return abort(404,'El horario que busca no existe')
+
+    status, table_horario, pending_cursos = horario.get_status()
+    if current_user.is_authenticated:
+        in_favoritos = horario in current_user.favoritos
     else:
-        status, table_horario, pending_cursos = horario.get_status()
-        if current_user.is_authenticated:
-            in_favoritos = horario in current_user.favoritos
-        else:
-            in_favoritos = False
+        in_favoritos = False
 
-        return render_template('horarios/view.html', horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos, in_favoritos=in_favoritos)
+    return render_template('horarios/view.html', horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos, in_favoritos=in_favoritos)
 
 @app.route('/horarios/list', methods=['GET'])
 def horarios_list():
@@ -354,17 +351,16 @@ def horarios_update(id):
     try:
         horario = Horario.query.get(id)
     except:
-        error = True
+        return abort(500,'Error inesperado de backend (H)')
 
-    if error:
-        return 'Url no valida' #MRE
-    elif horario==None:
-        return 'El horario que se busca no existe' #MRE
-    elif horario.alumno_codigo != alumno_codigo:
-        return 'No tiene permisos para eliminar este horario'
-    else:
-        status, table_horario, pending_cursos = horario.get_status()
-        return render_template('horarios/update.html', data=info, horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos)
+    if horario==None:
+        return abort(404,'El horario que busca no existe')
+
+    if horario.alumno_codigo != alumno_codigo:
+        return abort(401, 'No tiene permisos para modificar este horario')
+
+    status, table_horario, pending_cursos = horario.get_status()
+    return render_template('horarios/update.html', data=info, horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos)
 
 @app.route('/horarios/<id>/delete', methods=['GET'])
 @login_required
@@ -372,13 +368,13 @@ def horarios_delete(id):
     try:
         horario = Horario.query.get(id)
     except:
-        return 'Error inesperado de backend (H)' #MRE
+        return abort(500,'Error inesperado de backend (H)')
 
-    if  not horario:
-        return 'El horario que se busca no existe' #MRE
+    if not horario:
+        return abort(404,'El horario que busca no existe')
 
     if current_user!=horario.alumno:
-        return 'No tiene permisos para modificar este horario' #MRE
+        return abort(401, 'No tiene permisos para eliminar este horario')
 
     return render_template('horarios/delete.html', horario=horario)
 
@@ -388,12 +384,11 @@ def cursos_view(id):
     try:
         curso = Curso.query.get(id)
     except:
-        return 'Error de backend' #MRE
-
+        return abort(500,'Error inesperado de backend (Cr)')
     if not curso:
-        return 'El curso que busca no existe' #MRE
-    else:
-        return render_template('cursos/view.html', curso=curso)
+        abort(404,'El curso que busca no existe')
+
+    return render_template('cursos/view.html', curso=curso)
 
 @app.route('/cursos/list', methods=['GET'])
 def cursos_list():
@@ -406,12 +401,12 @@ def clases_view(id):
     try:
         clase = Clase.query.get(id)
     except:
-        return 'Error de backend' #MRE
+        return abort(500,'Error inesperado de backend (Cl)')
 
     if not clase:
-        return 'El curso que busca no existe' #MRE
-    else:
-        return render_template('clases/view.html', clase=clase)
+        abort(404,'La clase que busca no existe')
+
+    return render_template('clases/view.html', clase=clase)
 
 # --- Docentes ---
 @app.route('/docentes/<id>', methods=['GET'])
@@ -419,12 +414,12 @@ def docentes_view(id):
     try:
         docente = Docente.query.get(id)
     except:
-        return 'Error de backend' #MRE
+        return abort(500,'Error inesperado de backend (D)')
 
     if not docente:
-        return 'El curso que busca no existe' #MRE
-    else:
-        return render_template('docentes/view.html', docente=docente)
+        abort(404,'El docente que busca no existe')
+
+    return render_template('docentes/view.html', docente=docente)
 
 @app.route('/docentes/list', methods=['GET'])
 def docentes_list():
@@ -909,7 +904,7 @@ def api_alumnos_delete(id):
             alumno = Alumno.query.get(id)
         except:
             error = True
-            response["error_message"] ='Error de backend'
+            response["error_message"] ='Error inesperado de backend'
 
     if not error:
         if not alumno:

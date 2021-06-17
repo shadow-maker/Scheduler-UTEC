@@ -116,5 +116,12 @@ El metodo de autenticacion empleado es basado en cookies. Esto se ha implementad
 
 Para poder autenticarse el cuenta con las vistas: Login, Register y Logout.
 
+## Codigos de estado
+- 200: SUCESS => Respuesta cuando la respuesta es exitosa. Para las llamadas CRUD no garantiza que estas se hallan realizado, esto se debe revisar en elemento 'success' dentro del JSON response (detalles del error se puede encontrar en 'error-message' en caso de que haya uno).
+- 400: BAD REQUEST => Usada para abortar cuando la request realizada no es segura (ej.: redireccionamiento inseguro en parametro next)
+- 401 UNAUTHORIZED => No tiene permisos para editar/eliminar ese elemento
+- 404 NOT FOUND => Recurso no encontrado
+- 500 INTERNAL SERVER ERROR => Error inesperado del servidor
+
 ## Ejecuccion del sistema
 La deployment script del sistema es run.py
