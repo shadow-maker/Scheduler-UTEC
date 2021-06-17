@@ -232,7 +232,7 @@
 		<ul>
 			{% for c in tipos.list %}
 			<li> <a href={{url_for('clases_view',id=c.id)}}> {{c.seccion}}.{{c.numero}} - {{c.tipo.name}} por
-					{{c.docente.nombre}} {{c.docente.apellido}} </a> <button class="botons" data-id="{{c.id}}"
+					{{c.docente.nombre}} {{c.docente.apellido}} </a> <button class="botons all-clases-buttons" data-id="{{c.id}}"
 					data-action="{% if c in horario.clases%}delete{%else%}add{%endif%}">
 					{% if c in horario.clases%}Quitar{%else%}Agregar{%endif%} </button>
 				{% endfor %}
@@ -289,7 +289,7 @@
 	const init_table = {{table_horario | tojson}}
 	UpdateTable(init_table)
 
-	const clases_buttons = document.querySelectorAll('.clases-buttons')
+	const clases_buttons = document.querySelectorAll('.all-clases-buttons')
 	for (let i = 0; i < clases_buttons.length; i++) {
 		const button = clases_buttons[i]
 		button.onclick = function (e) {
