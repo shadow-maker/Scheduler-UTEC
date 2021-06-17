@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Eliminar Horario</title>
+  <style>
+    .hidden {
+        display: none;
+    }
+  </style>
+</head>
+<body>
+  <section class="form-register">
+    <h1>Eliminar: </h4>
+    
+    <h2> Esta seguro que desea eliminar este horario? </p>
+    <div id="pregunta">
+      <alert class="hidden" id="error-alert-delete"> ERROR: <div id="error-delete"> </div> </alert>
+      <br>
+      <button name="delete-confirm" id="delete-confirm"> Si, quiero borra este horario </input>
+    </div>
+    <p  id="confirmacion" class="hidden"> Se elimino el horario con exito</p>
+
+    <div id="redirect">
+      <a href={{url_for('alumnos_view', id=current_user.codigo)}}> Regresar a mi perfil </a>
+    </div>
+  </section>
+</body>
+<script>
+  document.getElementById("delete-confirm").onclick = function(e){
+    e.preventDefault();
+    // Handeling Request
+    const request_url = "{{url_for('api_horarios_delete',id=horario.id)}}"
+    fetch( request_url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function(response){
+                return response.json()
+            }).then(function(jsonResponse) {
+                console.log(jsonResponse)                    
+                if (jsonResponse['success'] === true){
+                    document.getElementById('confirmacion').className = ''
+                    document.getElementById("pregunta").innerHTML = ''
+                }
+                else {
+                    /*Error Handeling*/
+                    document.getElementById("error-alert-delete").className=''
+                    document.getElementById("error-delete").innerHTML = jsonResponse['error_message']
+                }
+            })
+  }
+</script>
+</html>

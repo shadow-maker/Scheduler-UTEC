@@ -304,27 +304,7 @@ def alumnos_delete(id):
     if not alumno:
         return 'El alumno que busca no existe' # MEJORAR RESPUESTA DE ERROR
 
-    if request.method == 'POST':
-        error = False
-        try:
-            alumno_id = alumno.codigo
-            db.session.delete(alumno)
-            db.session.commit()
-        except:
-            db.session.rollback()
-            print(sys.exc_info())
-            error = True
-        finally:
-            db.session.close()
-        
-
-        if error:
-            return 'No se pudo eliminar el alumno' # MEJORAR RESPUESTA DE ERROR
-        else:
-            return redirect( url_for('menu_inicio') )
-            #return f'Se elimino correctamente el alumno {alumno_id}' # MEJORAR RESPUESTA DE EXITO
-    else:
-        return render_template('alumnos/delete.html', alumno=alumno)
+    return render_template('alumnos/delete.html', alumno=alumno)
 
 
 # --- Home & Explore ---
@@ -389,35 +369,18 @@ def horarios_update(id):
 @app.route('/horarios/<id>/delete')
 @login_required
 def horarios_delete(id):
-    error =False
-    alumno_codigo = current_user.codigo
-
     try:
         horario = Horario.query.get(id)
     except:
-        return 'Url no valida' # MEJORAR RESPUESTA DE ERROR
+        return 'Error inesperado de backend (H)' # MEJORAR RESPUESTA DE ERROR
 
-    if horario == None:
+    if  not horario:
         return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
-    
-    if horario.alumno_codigo != alumno_codigo:
-        return 'No tiene permisos para eliminar este horario'
 
-    try:
-        horario_id = horario.id
-        db.session.delete(horario)
-        db.session.commit()
-    except:
-        db.session.rollback()
-        print(sys.exc_info())
-        error = True
-    finally:
-        db.session.close()
+    if current_user!=horario.alumno:
+        return 'No tiene permisos para modificar este horario' # MEJORAR RESPUESTA DE ERROR
 
-    if error:
-        return 'No se pudo eliminar el horario' # MEJORAR RESPUESTA DE ERROR
-    else:
-        return f'Se elimino correctamente el horario {horario_id}' # MEJORAR RESPUESTA DE EXITO
+    return render_template('horarios/delete.html', horario=horario)
 
 # --- Curso ---
 @app.route('/cursos/<id>', methods=['GET'])
@@ -603,6 +566,50 @@ def api_horarios_create():
 
     response["success"] = not error
     return jsonify(response)
+
+@app.route('/api/horarios/delete/<id>', methods=['DELETE'])
+@login_required
+def api_horarios_delete(id):
+    error = False
+    alumno = current_user
+    response = {}
+
+    # Get de objetos
+    try:
+        horario = Horario.query.get(id)
+    except:
+        print(sys.exc_info())
+        error = True
+        response["error_message"] = "Error inesperado de backend (H)"
+
+    # Validar
+    if not error:
+        # Validar existencia de horario
+        if not horario:
+            error = True
+            response["error_message"] = "No se pudo encontrar el horario que desea eliminar"
+        # Validar permisos
+        elif alumno != horario.alumno:
+            error = True
+            response["error_message"] = "No tiene los permisos necesarios para modificar este horario"
+        
+    # Delicion y actualizacion de datos
+    if not error:
+        try:
+            db.session.delete(horario)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            print(sys.exc_info())
+            response["error_message"] = "No se pudo editar el titulo del horario"
+            error = True
+        finally:
+            db.session.close()
+
+    # Return
+    response["success"] = not error
+    return jsonify(response)
+
 
 @app.route('/api/horarios/update/<id>/rename', methods=['PUT'])
 @login_required
