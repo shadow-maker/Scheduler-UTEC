@@ -20,7 +20,7 @@
 </head>
 
 <body>
-	<h1>Vista de horario</h1>
+	<center><u><i><h1>Vista de horario</h1></i></u></center>
 	<h2>Nombre de horario: <span id="horario-titulo">{{horario.titulo}}</span></h2>
 	<p>Por: 
 		<a href={{url_for('alumnos_view',id=horario.alumno.codigo)}}>
@@ -206,15 +206,19 @@
 	</section>
 
     {% if current_user.is_authenticated %}
+		<h1 type="hidden">-------------------------</h1>
         {% if current_user.codigo == horario.alumno.codigo %}
-            <a href={{url_for('horarios_update', id=horario.id)}}>Editar horario</a>
-            <a href={{url_for('horarios_delete', id=horario.id)}}>Eliminar horario</a>
-        {% endif %}
+	
+            <a class="botons" type="button" href={{url_for('horarios_update', id=horario.id)}}>Editar horario</a>
+            <a class="botons" type="button" href={{url_for('horarios_delete', id=horario.id)}}>Eliminar horario</a>
+        
+			{% endif %}
+			<h1 type="hidden">-------------------------</h1>
     {% endif %}
 
     {% if current_user.is_authenticated %}
         <h2 id="favoritos-title"> {% if in_favoritos%}Quitar de tus Favoritos{%else%}Agregar a tus Favoritos{%endif%} </h3>
-            <button id="update-favoritos-boton" data-action="{% if in_favoritos%}delete{%else%}add{%endif%}">{% if in_favoritos%}Quitar{%else%}Agregar{%endif%}</button>
+            <button class="botons" id="update-favoritos-boton" data-action="{% if in_favoritos%}delete{%else%}add{%endif%}">{% if in_favoritos%}Quitar{%else%}Agregar{%endif%}</button>
             <alert class="hidden" id="error-alert-favoritos"> ERROR: <div id="error-favoritos"> </div> </alert>
             <br>
     {% endif %}

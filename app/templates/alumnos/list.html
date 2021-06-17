@@ -3,6 +3,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style/single_form.css">
     <title>Alumnos</title>
     <style>
             .hidden {
@@ -16,17 +17,17 @@
   <h1> Alumnos </h1>
     <alert class="hidden" id="error-alert-filter"> ERROR: <div id="error-filter"> </div> </alert>
     <br>
-    <form id="form-filter">
-        <label for="filter-nombre"> Nombre </label>
-        <input type='texto' id="filter-nombre" name='filter-nombre' value=""/>
-        <label for="filter-apellido"> Apellido </label>
-        <input type='texto' id="filter-apellido" name='filter-apellido' value=""/>
-        <input type="submit" id="submit-filter" value="Submit" />
+    <form class="form-register" id="form-filter">
+        <h4>Busca a un alumno: </h4>
+        <input class="controls" placeholder="Nombre" type='texto' id="filter-nombre" name='filter-nombre' value=""/>
+        <input class="controls" placeholder="Apellido"type='texto' id="filter-apellido" name='filter-apellido' value=""/>
+        <input class="botons" type="submit" id="submit-filter" value="Submit" />
     </form>
 
 
   <p class="{% if alumnos%}hidden{%endif%}" id="empty-message"> No hay alumnos actualmente </p>
   <ul id="alumnos-list">
+    <hr/>
   {% for alumno in alumnos %}
       <li> <a href={{url_for('alumnos_view', id=alumno.codigo)}}> {{alumno.codigo}}:  {{alumno.nombre}} {{alumno.apellido}}</a> <br>
   {% endfor %}

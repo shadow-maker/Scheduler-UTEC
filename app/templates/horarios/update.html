@@ -18,7 +18,7 @@
 </head>
 
 <body>
-	<h1>Editar horario</h1>
+	<h1 class="fondo">Editar horario</h1>
 	<h2>Titulo del horario: 
 		<span id="horario-titulo">{{horario.titulo}}</span>
 	</h2>
@@ -38,7 +38,7 @@
 	<form id="form-rename">
 		<label for="new-titulo">Renombrar</label>
 		<input type='texto' id="new-titulo" name='new-titulo' value="{{horario.titulo}}"/>
-		<input type="submit" id="submit-rename" value="Submit"/>
+		<input class="botons" type="submit" id="submit-rename" value="Submit"/>
 	</form>
 
 	<table id="table_horario">
@@ -217,9 +217,9 @@
 	<alert class="hidden" id="error-alert"> ERROR: <div id="error"> </div>
 	</alert>
 	<br>
-
-	<a href={{url_for('horarios_view', id=horario.id)}}> Retornar a vista normal </a>
-
+	<h1 type="hidden">-------------------</h1>
+	<a class="botons" type="button" href={{url_for('horarios_view', id=horario.id)}}> Retornar a vista normal </a>
+	<h1 type="hidden">-------------------</h1>
 	<h1> Cursos: </h1>
 	<p>
 		{% for curso in data %}
@@ -232,7 +232,7 @@
 		<ul>
 			{% for c in tipos.list %}
 			<li> <a href={{url_for('clases_view',id=c.id)}}> {{c.seccion}}.{{c.numero}} - {{c.tipo.name}} por
-					{{c.docente.nombre}} {{c.docente.apellido}} </a> <button class="clases-buttons" data-id="{{c.id}}"
+					{{c.docente.nombre}} {{c.docente.apellido}} </a> <button class="botons" data-id="{{c.id}}"
 					data-action="{% if c in horario.clases%}delete{%else%}add{%endif%}">
 					{% if c in horario.clases%}Quitar{%else%}Agregar{%endif%} </button>
 				{% endfor %}

@@ -11,9 +11,9 @@
 h1{
     font-size: 80px;
     font-style: italic;
-    font-weight: 100;
+    font-weight: 120;
     text-align: center;
-    color: #9a35eca8;
+    color: #aa55f0a8;
     letter-spacing: 10px;
     word-spacing: 8px;
     line-height: 150px;
@@ -29,7 +29,7 @@ h1{
     min-height: 35vh;
 }
 .btn-1{
-    width: 500px;
+    width: 480px;
     height: 180px;
     border: none;
     color: white;
@@ -41,12 +41,12 @@ h1{
     outline: none;
 }
 .btn-1:hover{
-    box-shadow: inset 500px 0 0 0 #409463;
+    box-shadow: inset 480px 0 0 0 #409463;
     cursor: pointer;
     color: #000;
 }
 .btn-2{
-    width: 500px;
+    width: 480px;
     height: 180px;
     border: none;
     color: white;
@@ -81,7 +81,7 @@ h1{
     z-index: -1;
 }
 .btn-3{
-    width: 500px;
+    width: 480px;
     height: 180px;
     border: none;
     color: white;

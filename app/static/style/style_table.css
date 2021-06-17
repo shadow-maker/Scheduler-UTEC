@@ -4,8 +4,8 @@ body {
 }
 
 body {
-	background: -webkit-linear-gradient(45deg, #49a09d, #5f2c82);
-	background: linear-gradient(45deg, #49a09d, #5f2c82);
+	background: -webkit-linear-gradient(45deg, #49a09d, #5f2c82)no-repeat center center fixed;;
+	background: linear-gradient(45deg, #49a09d, #5f2c82)no-repeat center center fixed;;
 	font-family: sans-serif;
 	font-weight: 100;
 }
@@ -59,3 +59,23 @@ tbody td:hover:before {
 	background-color: rgba(255, 255, 255, 0.2);
 	z-index: -1;
 }
+.fondo{
+	background-color: #970e0ead;
+    padding: 3px;
+}
+.botons {
+	width: 8%;
+	background: #1f53c5;
+
+	border: none;
+	padding: 3px;
+	color: white;
+	margin: 16px 0;
+	font-size: 16px;
+	transition-duration: 0.4s;
+  }
+.botons:hover{
+	background-color:#4069c2;
+	color: white;
+}
+  

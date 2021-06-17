@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="../../static/style/style_menu.css">
   <title>Eliminar Horario</title>
   <style>
     .hidden {
@@ -13,19 +14,21 @@
 </head>
 <body>
   <section class="form-register">
-    <h1>Eliminar: </h4>
-    
-    <h2> Esta seguro que desea eliminar este horario? </p>
+    <h1>Esta seguro de eliminar este horario? </h4>
+    <div class="container">
     <div id="pregunta">
       <alert class="hidden" id="error-alert-delete"> ERROR: <div id="error-delete"> </div> </alert>
       <br>
-      <button name="delete-confirm" id="delete-confirm"> Si, quiero borra este horario </input>
+      <button class="btn-1" name="delete-confirm" id="delete-confirm"> Acepto borrarlo</input>
     </div>
-    <p  id="confirmacion" class="hidden"> Se elimino el horario con exito</p>
+    <h2  style="color:white" id="confirmacion" class="hidden"> Se elimino el horario con exito</h2>
 
     <div id="redirect">
-      <a href={{url_for('alumnos_view', id=current_user.codigo)}}> Regresar a mi perfil </a>
+      <a href={{url_for('alumnos_view', id=current_user.codigo)}}> 
+        <button class="btn-2" type="button">Regresar a mi perfil </button>
+      </a>
     </div>
+  </div>
   </section>
 </body>
 <script>

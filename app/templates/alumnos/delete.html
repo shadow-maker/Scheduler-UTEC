@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/static/style/single_form.css">
   <title>Eliminar Alumno</title>
   <style>
     .hidden {
@@ -13,19 +14,17 @@
 </head>
 <body>
   <section class="form-register">
-    <h1>Eliminar: </h4>
-    
     <h2> Esta seguro que desea eliminar esta cuenta? </p>
     <div id="pregunta">
       <alert class="hidden" id="error-alert-delete"> ERROR: <div id="error-delete"> </div> </alert>
       <br>
-      <button name="delete-confirm" id="delete-confirm"> Si, quiero borra mi cuenta </input>
+      <button class="botons"name="delete-confirm" id="delete-confirm"> Si, quiero borra mi cuenta </input>
     </div>
     <p  id="confirmacion" class="hidden"> Se elimino la cuenta con exito</p>
-
+    <center>
     <div id="redirect">
       <a href={{url_for('alumnos_view', id=alumno.codigo)}}> Regresar a mi perfil </a>
-    </div>
+    </div></center>
   </section>
 </body>
 <script>
