@@ -73,7 +73,7 @@ Para poblar la base de datos se debe ejecutar la script sample.py que la inicial
 - '/auth/register/': GET=> Interfaz con form de registro; POST=> Creacion de Alumno
 - '/auth/login/': GET=> Interfaz con form de login; POST=> Login con el Alumno indicado
 - '/auth/logout/': GET=> Logout de alumno actual
-#### Alumno:
+#### Alumnos:
 - '/alumnos/\<id>': GET=> Vista de alumno con alumno.codigo=id
 - '/alumnos/list': GET=> Interfaz de listado y filtrado de alumnos
 - '/alumnos/\<id>/update': GET=> Interfaz con forms de update; POST => Actualizacion de alumno en base al form
@@ -83,13 +83,13 @@ Para poblar la base de datos se debe ejecutar la script sample.py que la inicial
 - '/horarios/list': GET=> Interfaz de listado y filtrado de alumnos
 - '/horarios/\<id>/update': GET=> Interfaz de edicion de horario
 - '/alumnos/\<id>/delete': GET=> Interfaz de eliminacion de horario
-#### Curso:
+#### Cursos:
 - '/cursos/\<id>': GET=> Vista de curso con curso.codigo=id
 - '/cursos/list': GET=> Interfaz de listado y filtrado de cursos
-#### Clase:
+#### Clases:
 - '/clases/\<id>': GET=> Vista de clase con clase.id=id
 - '/clases/list': GET=> Interfaz de listado y filtrado de clases
-#### Docente:
+#### Docentes:
 - '/docentes/\<id>': GET=> Vista de docente con docente.codigo=id
 - '/docentes/list': GET=> Interfaz de listado y filtrado de docentes
 
