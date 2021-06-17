@@ -19,18 +19,27 @@
 <body>
 
 	<body>
+		<div class="navbar">
+			<a class="active" href="/">Menú Principal</a>
+			<a href="/explore">Explorar</a>
+			<a href="/alumnos/list">Alumnos</a>
+			<a href="/horarios/list">Horarios</a>
+			<a href="/docentes/list">Docentes</a>
+			<a href="/cursos/list">Cursos</a>
+			<input type="text" placeholder="Search..">
+		</div>
 		<h1>Docentes</h1>
-		<alert class="hidden" id="error-alert-filter">ERROR: 
+		<alert class="hidden" id="error-alert-filter">ERROR:
 			<span id="error-filter"></span>
 		</alert>
 		<br>
 		<form class="form-register" id="form-filter">
 			<h4>Busca a un docente: </h4>
-			
+
 			<input class="controls" placeholder="Nombre del docente" type='texto' id="filter-nombre" name='filter-nombre' value="" />
-	
+
 			<input class="controls" placeholder="Apellidos del docente" type='texto' id="filter-apellido" name='filter-apellido' value="" />
-			
+
 			<input class="botons" type="submit" id="submit-filter" value="Submit" />
 		</form>
 
@@ -62,7 +71,7 @@
 			}).then(function(response){
 				return response.json()
 			}).then(function(jsonResponse) {
-				console.log(jsonResponse)                    
+				console.log(jsonResponse)
 				if (jsonResponse['success'] === true){
 					// Actualizar mensajes
 					document.getElementById("error-alert-filter").className='hidden'
@@ -78,7 +87,7 @@
 					for (let i=0; i < docentes_list.length; i++){
 						const docente = docentes_list[i]
 						const liItem = document.createElement('li')
-						liItem.innerHTML = 
+						liItem.innerHTML =
 						 '<a href='+docente['docente_url']+'> '+docente['docente_codigo']+': ' + docente['docente_nombre'] + ' ' + docente['docente_apellido']+'</a>'
 						 document.getElementById("docentes-list").appendChild(liItem)
 					}

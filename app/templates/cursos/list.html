@@ -19,6 +19,15 @@
 <body>
 
 	<body>
+		<div class="navbar">
+			<a class="active" href="/">Menú Principal</a>
+			<a href="/explore">Explorar</a>
+			<a href="/alumnos/list">Alumnos</a>
+			<a href="/horarios/list">Horarios</a>
+			<a href="/docentes/list">Docentes</a>
+			<a href="/cursos/list">Cursos</a>
+			<input type="text" placeholder="Search..">
+		</div>
 		<h1>Cursos</h1>
 		<alert class="hidden" id="error-alert-filter">
 			ERROR: <span id="error-filter"></span>
@@ -61,7 +70,7 @@
 			}).then(function(response){
 				return response.json()
 			}).then(function(jsonResponse) {
-				console.log(jsonResponse)                    
+				console.log(jsonResponse)
 				if (jsonResponse['success'] === true){
 					// Actualizar mensajes
 					document.getElementById("error-alert-filter").className='hidden'
@@ -77,7 +86,7 @@
 					for (let i=0; i < cursos_list.length; i++){
 						const curso = cursos_list[i]
 						const liItem = document.createElement('li')
-						liItem.innerHTML = 
+						liItem.innerHTML =
 						 '<a href='+curso['curso_url']+'> '+curso['curso_codigo']+': ' + curso['curso_curso']+'</a>'
 						 document.getElementById("cursos-list").appendChild(liItem)
 					}
