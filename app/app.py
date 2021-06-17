@@ -7,6 +7,7 @@ from enum import unique
 from flask import Flask, render_template, request, redirect, url_for, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from wtforms.validators import Length
 
 from . import config
 from . import forms
@@ -517,6 +518,36 @@ def horarios_read():
     response["horarios"] = {h.id:[h.alumno_codigo] for h in Horario.query.all()}
     return jsonify(response)
 """
+@app.route('/api/horarios/read', methods=['GET'])
+def api_horarios_read_filter():
+    error = False
+    response = {}
+
+    # Data de json
+    try:
+        horario_titulo = request.args.get(key='horario_titulo')
+    except:
+        error = True
+        response["error_message"] = "ARGS incompleto"
+
+    # Query
+    if not error:
+        horarios = Horario.query.filter(Horario.titulo.startswith(horario_titulo)).all()
+        response["horarios"] = [
+            {
+                "horario_id":h.id,
+                "horario_titulo":h.titulo,
+                "horario_url":url_for('horarios_view',id=h.id),
+                "horario_alumno_nombre":h.alumno.nombre,
+                "horario_alumno_apellido":h.alumno.apellido
+            } for h in horarios]
+        response["empty"] = False if horarios else True
+
+    # Return
+    response["success"] = not error
+    return jsonify(response)
+
+
 
 @app.route('/api/horarios/create/', methods=['POST'])
 @login_required
