@@ -62,14 +62,14 @@ alumnos = [
         apellido    ='Montoro'
     ),
     Alumno(
-        codigo      ='202056198',
+        codigo      ='202010250',
         correo      ='marcela.espinoza@utec.edu.pe',
         password    ='marcelapass',
         nombre      ='Marcela Fernanda',
         apellido    ='Espinoza Herrera'
     ),
     Alumno(
-        codigo      ='202017936',
+        codigo      ='201920112',
         correo      ='edgar.chacon@utec.edu.pe',
         password    ='edgarpass',
         nombre      ='Edgar',
