@@ -13,7 +13,7 @@
 
 <body>
 
-	<h1>Bienvenido a Scheduler UTEC</h1>
+	<h1 id="title">scheduler<span>UTEC</span></h1>
 
 	<div class="container">
 		{% if current_user.is_authenticated %}
@@ -32,6 +32,7 @@
 		</form>
 		{% endif %}
 	</div>
+
 	<div class="container">
 		<form action="{{url_for('explore')}}">
 			<button class="btn-3" type="submit">Explorar</button>
