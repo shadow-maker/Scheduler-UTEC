@@ -1,76 +1,91 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cursos</title>
-    <style>
-            .hidden {
-                display: none;
-            }
-    </style>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cursos</title>
+	<style>
+		.hidden {
+			display: none;
+		}
+	</style>
+
+	<link rel="stylesheet" href="../../static/style/main.css">
 </head>
-<body>
 
 <body>
-  <h1> Cursos </h1>
-  <alert class="hidden" id="error-alert-filter"> ERROR: <div id="error-filter"> </div> </alert>
-  <br>
-  <form id="form-filter">
-      <label for="filter-curso"> Nombre </label>
-      <input type='texto' id="filter-curso" name='filter-curso' value=""/>
-      <input type="submit" id="submit-filter" value="Submit" />
-  </form>
 
-  <p class="{% if cursos%}hidden{%endif%}" id="empty-message"> No hay cursos actualmente </p>
-  <ul id='cursos-list'>
-  {% for curso in cursos %}
-    <li> <a href={{url_for('cursos_view', id=curso.codigo)}}> {{curso.codigo}}:  {{curso.curso}}</a> <br>
-  {% endfor %}
-</body>
-<script>
-    document.getElementById("form-filter").onsubmit = function(e){
-        e.preventDefault();
-        // Handeling Request
-        const filter_curso = document.getElementById("filter-curso").value
-        const request_url = "{{url_for('api_cursos_read_filter')}}"
-        fetch( request_url + '?' +new URLSearchParams({curso_curso:filter_curso}), {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(function(response){
-            return response.json()
-        }).then(function(jsonResponse) {
-            console.log(jsonResponse)                    
-            if (jsonResponse['success'] === true){
-                // Actualizar mensajes
-                document.getElementById("error-alert-filter").className='hidden'
-                if (jsonResponse['empty'] === true){
-                    document.getElementById("empty-message").className=''
-                }
-                else{
-                    document.getElementById("empty-message").className='hidden'
-                }
-                // Poblar lu
-                document.getElementById("cursos-list").innerHTML = ''
-                const cursos_list = jsonResponse['cursos']
-                for (let i=0; i < cursos_list.length; i++){
-                    const curso = cursos_list[i]
-                    const liItem = document.createElement('li')
-                    liItem.innerHTML = 
-                     '<a href='+curso['curso_url']+'> '+curso['curso_codigo']+': ' + curso['curso_curso']+'</a>'
-                     document.getElementById("cursos-list").appendChild(liItem)
-                }
-            }
-            else {
-                /*Error Handeling*/
-                document.getElementById("error-alert-filter").className=''
-                document.getElementById("error-filter").innerHTML = jsonResponse['error_message']
-            }
-        })
-    }
-</script>
+	<body>
+		<h1>Cursos</h1>
+		<alert class="hidden" id="error-alert-filter">
+			ERROR: <span id="error-filter"></span>
+		</alert>
 
+		<br>
+
+		<form id="form-filter">
+			<label for="filter-curso">Nombre</label>
+			<input type='texto' id="filter-curso" name='filter-curso' value="" />
+			<input type="submit" id="submit-filter" value="Submit" />
+		</form>
+
+		<p class="{% if cursos%}hidden{%endif%}" id="empty-message">
+			No hay cursos actualmente
+		</p>
+	
+		<ul id='cursos-list'>
+			{% for curso in cursos %}
+			<li>
+				<a href={{url_for('cursos_view', id=curso.codigo)}}>
+					{{curso.codigo}}: {{curso.curso}}
+				</a>
+			</li>
+			{% endfor %}
+	</body>
+
+	<script>
+		document.getElementById("form-filter").onsubmit = function(e){
+			e.preventDefault();
+			// Handeling Request
+			const filter_curso = document.getElementById("filter-curso").value
+			const request_url = "{{url_for('api_cursos_read_filter')}}"
+			fetch( request_url + '?' +new URLSearchParams({curso_curso:filter_curso}), {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}).then(function(response){
+				return response.json()
+			}).then(function(jsonResponse) {
+				console.log(jsonResponse)                    
+				if (jsonResponse['success'] === true){
+					// Actualizar mensajes
+					document.getElementById("error-alert-filter").className='hidden'
+					if (jsonResponse['empty'] === true){
+						document.getElementById("empty-message").className=''
+					}
+					else{
+						document.getElementById("empty-message").className='hidden'
+					}
+					// Poblar lu
+					document.getElementById("cursos-list").innerHTML = ''
+					const cursos_list = jsonResponse['cursos']
+					for (let i=0; i < cursos_list.length; i++){
+						const curso = cursos_list[i]
+						const liItem = document.createElement('li')
+						liItem.innerHTML = 
+						 '<a href='+curso['curso_url']+'> '+curso['curso_codigo']+': ' + curso['curso_curso']+'</a>'
+						 document.getElementById("cursos-list").appendChild(liItem)
+					}
+				}
+				else {
+					/*Error Handeling*/
+					document.getElementById("error-alert-filter").className=''
+					document.getElementById("error-filter").innerHTML = jsonResponse['error_message']
+				}
+			})
+		}
+	</script>
 
 </html>

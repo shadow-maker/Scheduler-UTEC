@@ -1,38 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curso</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Curso</title>
+
+	<link rel="stylesheet" href="../../static/style/main.css">
 </head>
+
 <body>
-    
-    <h1> Datos de Curso: {{curso.curso}}</h1>
-    <p> Codigo: {{curso.codigo}} </p>
-    <p> Lab: {{curso.lab}} </p>
-    <p> Teoria: {{curso.teoria}} </p>
-    <p> Teoria Virtual: {{curso.teoria_virtual}} </p>
+
+	<h1>Datos de Curso: {{curso.curso}}</h1>
+	<p>Codigo: {{curso.codigo}} </p>
+	<p>Lab: {{curso.lab}} </p>
+	<p>Teoria: {{curso.teoria}} </p>
+	<p>Teoria Virtual: {{curso.teoria_virtual}} </p>
 
 
-    <h2> Clases: </h2>
-    {% if curso.clases %}
-        {% for secciones in curso.clases | groupby("seccion") %}
-            <p> SECCION {{ secciones.grouper }} : </p>
-        
-            {% for tipos in secciones.list | groupby("tipo") %}
-                <p> {{ tipos.grouper.name }} : </p>
-                <ul>
-                {% for c in tipos.list %}
-                    <li> <a href={{url_for('clases_view',id=c.id)}}> {{c.seccion}}.{{c.numero}} - {{c.tipo.name}} por {{c.docente.nombre}} {{c.docente.apellido}} </a>
-                {% endfor %}
-                </ul>
-            {% endfor %}
-            <br>
-        {% endfor %}
-    {% else %}
-        <p> Este curso no cuenta con secciones actualmente </p>
-    {% endif %}
+	<h2>Clases: </h2>
+	{% if curso.clases %}
+	{% for secciones in curso.clases | groupby("seccion") %}
+	<p>SECCION {{ secciones.grouper }} : </p>
+
+	{% for tipos in secciones.list | groupby("tipo") %}
+	<p>{{ tipos.grouper.name }} : </p>
+	<ul>
+		{% for c in tipos.list %}
+		<li>
+			<a href={{url_for('clases_view',id=c.id)}}>
+				{{c.seccion}}.{{c.numero}} - {{c.tipo.name}} por {{c.docente.nombre}} {{c.docente.apellido}}
+			</a>
+		</li>
+		{% endfor %}
+	</ul>
+	{% endfor %}
+	<br>
+	{% endfor %}
+	{% else %}
+	<p>Este curso no cuenta con secciones actualmente</p>
+	{% endif %}
 
 </body>
+
 </html>
