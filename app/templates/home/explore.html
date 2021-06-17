@@ -1,22 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explorar</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Explorar</title>
+
+	<link rel="stylesheet" href="../../static/style/main.css">
 </head>
+
 <body>
-    
-    <h1>Explorar</h1>
-    <h2> Alumnos <h2>
-    <a href={{url_for('alumnos_list')}}> Lista de alumnos </a>
-    <h2> Horarios <h2>
-    <a href={{url_for('horarios_list')}}> Lista de horarios </a>
-    <h2> Docentes <h2>
-    <a href={{url_for('docentes_list')}}> Lista de docentes </a>
-    <h2> Cursos <h2>
-    <a href={{url_for('cursos_list')}}> Lista de cursos </a>
-    
+
+	<h1>Explorar</h1>
+
+	<h2>Alumnos</h2>
+	<a href={{url_for('alumnos_list')}}>Lista de alumnos</a>
+
+	<h2>Horarios</h2>
+	<a href={{url_for('horarios_list')}}>Lista de horarios</a>
+
+	<h2>Docentes</h2>
+	<a href={{url_for('docentes_list')}}>Lista de docentes</a>
+
+	<h2>Cursos</h2>
+	<a href={{url_for('cursos_list')}}>Lista de cursos</a>
+
 </body>
+
 </html>
