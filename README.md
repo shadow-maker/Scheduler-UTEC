@@ -64,11 +64,52 @@ La informacion para la conexion con la base de datos se encuentra especificada e
 
 Para poblar la base de datos se debe ejecutar la script sample.py que la inicializa y rellena con los datos de ejemplo
 
+## API
+### Aplicacion Web
+#### Home & Explore
+- '/': GET => Landing page
+- '/explore': GET => Pagina con redirecciones a vistas de listas de recursos
+#### Autentificacion:
+- '/auth/register/': GET=> Interfaz con form de registro; POST=> Creacion de Alumno
+- '/auth/login/': GET=> Interfaz con form de login; POST=> Login con el Alumno indicado
+- '/auth/logout/': GET=> Logout de alumno actual
+#### Alumno:
+- '/alumnos/<id>': GET=> Vista de alumno con alumno.codigo=id
+- '/alumnos/list': GET=> Interfaz de listado y filtrado de alumnos
+- '/alumnos/<id>/update': GET=> Interfaz con forms de update; POST => Actualizacion de alumno en base al form
+- '/alumnos/<id>/delete': GET=> Interfaz de eliminacion de cuenta
+#### Horarios:
+- '/horarios/<id>': GET=> Vista de horario con horario.id=id
+- '/horarios/list': GET=> Interfaz de listado y filtrado de alumnos
+- '/horarios/<id>/update': GET=> Interfaz de edicion de horario
+- '/alumnos/<id>/delete': GET=> Interfaz de eliminacion de horario
+#### Curso:
+- '/cursos/<id>': GET=> Vista de curso con curso.codigo=id
+- '/cursos/list': GET=> Interfaz de listado y filtrado de cursos
+#### Clase:
+- '/clases/<id>': GET=> Vista de clase con clase.id=id
+- '/clases/list': GET=> Interfaz de listado y filtrado de clases
+#### Docente:
+- '/docentes/<id>': GET=> Vista de docente con docente.codigo=id
+- '/docentes/list': GET=> Interfaz de listado y filtrado de docentes
+
+### API CRUD
+- '/api/cursos/read': GET con Args{curso_curso(default="")} => JSON con listado de cursos cuyo nombre empieza con curso_curso
+- '/api/docentes/read': GET con Args{docente_nombre(default=""), docente_apellido(default="")} => JSON con listado de docentes cuyo nombre empieza con docente_nombre y apellido empieza con docente_apellido
+- '/api/alumnos/read': GET con Args{alumno_nombre(default=""), alumno_apellido(default="")} => JSON con listado de alumnos cuyo nombre empieza con alumno_nombre y apellido empieza con alumno_apellido
+- '/api/horarios/read': GET con Args{horario_titulo(default="")} => JSON con listado de horarios cuyo titulo empieza con horario_titulo y
+- '/api/horarios/create' : POST con {horario_titulo} => JSON del horario creado con horario.titulo=horario_titulo para el alumno actual 
+- '/api/horarios/delete/<id>' : DELETE => JSON con confirmacion del borrado del horario con horaio.id=id
+- '/api/horarios/update/<id>/rename' : PUT con {new_titulo} => JSON con confirmacion del cambio de nombre del horario con horario.id=id
+- '/api/horarios/update/<id>/add-clase' : PUT con {clase_id} => JSON con confirmacion de la adicion de la clase con clase.id=clase_id al horario con horario.id=id
+- '/api/horarios/update/<id>/delete-clase' : PUT con {clase_id} => JSON con confirmacion de la delicion de la clase con clase.id=clase_id del horario con horario.id=id
+- '/api/favoritos/add/<id>' : POST => JSON con confirmacion de la adicion del horario con horario.id=id a los favoritos del alumno actual
+- '/api/favoritos/delete/<id>' : DELETE => JSON con confirmacion de la eliminacion del horario con horario.id=id de los favoritos del alumno actual
+
 ## Hosts
 El host y configuracion de deployment se encuentra definida al inicio del archivo run.py. Por defecto, la aplicacion se correa en el host local en el puerto 8888 pero es posible modificar esto editando las variables de acuerdo a la necesidad
 
 ## Forma de Auteticacion
-
 En esta aplicacion web los usuarios son definidos por el modelo Alumno con su contraseña siendo la columna password y su identificador la columna codigo. 
 
 El metodo de autenticacion empleado es basado en cookies. Esto se ha implementado mediante la extension Flask-Login que maneja las sesiones con el objeto LoginManager() guardando las ID de los usuarios activos en la sesión, da restricciones para algunas paginas (útil para los que no se han loggeado) mediante el decorador @login_required, facilita el uso del “Remember me” que se utiliza mucho en sitios web y proteje las sesiones de los usuarios a ser robados por “cookie thieves”. Asimismo, facilita la identificacion del usuario actual en el backend mediante la variable current_user y prove funciones varias para la gestion de sesion (login, logout, etc.).

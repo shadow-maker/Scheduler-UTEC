@@ -309,7 +309,7 @@ def alumnos_delete(id):
 
 # --- Home & Explore ---
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def menu_inicio():
     return render_template('home/menu.html')
 
@@ -318,7 +318,7 @@ def explore():
     return render_template('home/explore.html')
 
 # --- Horarios ---
-@app.route('/horarios/<id>')
+@app.route('/horarios/<id>', methods=['GET'])
 def horarios_view(id):
     error =False
     try:
@@ -339,12 +339,12 @@ def horarios_view(id):
 
         return render_template('horarios/view.html', horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos, in_favoritos=in_favoritos)
 
-@app.route('/horarios/list')
+@app.route('/horarios/list', methods=['GET'])
 def horarios_list():
     horarios = Horario.query.all()
     return render_template('horarios/list.html',horarios=horarios)
 
-@app.route('/horarios/<id>/update')
+@app.route('/horarios/<id>/update', methods=['GET'])
 @login_required
 def horarios_update(id):
     error =False
@@ -366,7 +366,7 @@ def horarios_update(id):
         status, table_horario, pending_cursos = horario.get_status()
         return render_template('horarios/update.html', data=info, horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos)
 
-@app.route('/horarios/<id>/delete')
+@app.route('/horarios/<id>/delete', methods=['GET'])
 @login_required
 def horarios_delete(id):
     try:
