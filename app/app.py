@@ -250,10 +250,10 @@ def alumnos_view(id):
     try:
         alumno = Alumno.query.get(id)
     except:
-        return 'Error de backend' # MEJORAR RESPUESTA DE ERROR
+        return 'Error de backend' #MRE
 
     if not alumno:
-        return 'El alumno que busca no existe' # MEJORAR RESPUESTA DE ERROR
+        return 'El alumno que busca no existe' #MRE
     else:
         return render_template('alumnos/view.html', alumno=alumno)
 
@@ -266,14 +266,14 @@ def alumnos_list():
 @app.route('/alumnos/<id>/update', methods=['GET','POST'])
 def alumnos_update(id):
     if current_user.codigo!=id:
-        return 'No tiene permisos para modificar este perfil' # MEJORAR RESPUESTA DE ERROR
+        return 'No tiene permisos para modificar este perfil' #MRE
     try:
         alumno = Alumno.query.get(id)
     except:
-        return 'Error de backend' # MEJORAR RESPUESTA DE ERROR
+        return 'Error de backend' #MRE
 
     if not alumno:
-        return 'El alumno que busca no existe' # MEJORAR RESPUESTA DE ERROR
+        return 'El alumno que busca no existe' #MRE
     
     form=forms.updatealumnoform()
     error=False
@@ -295,14 +295,14 @@ def alumnos_update(id):
 @login_required
 def alumnos_delete(id):
     if current_user.codigo!=id:
-        return 'No tiene permisos para modificar este perfil' # MEJORAR RESPUESTA DE ERROR
+        return 'No tiene permisos para modificar este perfil' #MRE
     try:
         alumno = Alumno.query.get(id)
     except:
-        return 'Error de backend' # MEJORAR RESPUESTA DE ERROR
+        return 'Error de backend' #MRE
 
     if not alumno:
-        return 'El alumno que busca no existe' # MEJORAR RESPUESTA DE ERROR
+        return 'El alumno que busca no existe' #MRE
 
     return render_template('alumnos/delete.html', alumno=alumno)
 
@@ -327,9 +327,9 @@ def horarios_view(id):
         error = True
 
     if error:
-        return 'Url no valida' # MEJORAR RESPUESTA DE ERROR
+        return 'Url no valida' #MRE
     elif horario==None:
-        return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
+        return 'El horario que se busca no existe' #MRE
     else:
         status, table_horario, pending_cursos = horario.get_status()
         if current_user.is_authenticated:
@@ -357,9 +357,9 @@ def horarios_update(id):
         error = True
 
     if error:
-        return 'Url no valida' # MEJORAR RESPUESTA DE ERROR
+        return 'Url no valida' #MRE
     elif horario==None:
-        return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
+        return 'El horario que se busca no existe' #MRE
     elif horario.alumno_codigo != alumno_codigo:
         return 'No tiene permisos para eliminar este horario'
     else:
@@ -372,13 +372,13 @@ def horarios_delete(id):
     try:
         horario = Horario.query.get(id)
     except:
-        return 'Error inesperado de backend (H)' # MEJORAR RESPUESTA DE ERROR
+        return 'Error inesperado de backend (H)' #MRE
 
     if  not horario:
-        return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
+        return 'El horario que se busca no existe' #MRE
 
     if current_user!=horario.alumno:
-        return 'No tiene permisos para modificar este horario' # MEJORAR RESPUESTA DE ERROR
+        return 'No tiene permisos para modificar este horario' #MRE
 
     return render_template('horarios/delete.html', horario=horario)
 
@@ -388,10 +388,10 @@ def cursos_view(id):
     try:
         curso = Curso.query.get(id)
     except:
-        return 'Error de backend' # MEJORAR RESPUESTA DE ERROR
+        return 'Error de backend' #MRE
 
     if not curso:
-        return 'El curso que busca no existe' # MEJORAR RESPUESTA DE ERROR
+        return 'El curso que busca no existe' #MRE
     else:
         return render_template('cursos/view.html', curso=curso)
 
@@ -406,10 +406,10 @@ def clases_view(id):
     try:
         clase = Clase.query.get(id)
     except:
-        return 'Error de backend' # MEJORAR RESPUESTA DE ERROR
+        return 'Error de backend' #MRE
 
     if not clase:
-        return 'El curso que busca no existe' # MEJORAR RESPUESTA DE ERROR
+        return 'El curso que busca no existe' #MRE
     else:
         return render_template('clases/view.html', clase=clase)
 
@@ -419,10 +419,10 @@ def docentes_view(id):
     try:
         docente = Docente.query.get(id)
     except:
-        return 'Error de backend' # MEJORAR RESPUESTA DE ERROR
+        return 'Error de backend' #MRE
 
     if not docente:
-        return 'El curso que busca no existe' # MEJORAR RESPUESTA DE ERROR
+        return 'El curso que busca no existe' #MRE
     else:
         return render_template('docentes/view.html', docente=docente)
 
