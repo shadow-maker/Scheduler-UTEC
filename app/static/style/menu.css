@@ -10,6 +10,11 @@
 	width: 40%;
 }
 
+h1 {
+	margin: 0;
+	padding-bottom: 20px;
+}
+
 #title {
 	color: var(--red);
 	font-size: 80px;
@@ -152,15 +157,3 @@
 	background: #ddd;
 	color: black;
 }
-
-/*
- -- IMAGEN DE FONDO --
-body,html{
-    min-height: 100%;
-}
-body{
-    background-image:url(../static/fondo.jpg) ;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-*/
