@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Eliminar Alumno</title>
+  <title>Eliminar Horario</title>
   <style>
     .hidden {
         display: none;
@@ -15,16 +15,16 @@
   <section class="form-register">
     <h1>Eliminar: </h4>
     
-    <h2> Esta seguro que desea eliminar esta cuenta? </p>
+    <h2> Esta seguro que desea eliminar este horario? </p>
     <div id="pregunta">
       <alert class="hidden" id="error-alert-delete"> ERROR: <div id="error-delete"> </div> </alert>
       <br>
-      <button name="delete-confirm" id="delete-confirm"> Si, quiero borra mi cuenta </input>
+      <button name="delete-confirm" id="delete-confirm"> Si, quiero borra este horario </input>
     </div>
-    <p  id="confirmacion" class="hidden"> Se elimino la cuenta con exito</p>
+    <p  id="confirmacion" class="hidden"> Se elimino el horario con exito</p>
 
     <div id="redirect">
-      <a href={{url_for('alumnos_view', id=alumno.codigo)}}> Regresar a mi perfil </a>
+      <a href={{url_for('alumnos_view', id=current_user.codigo)}}> Regresar a mi perfil </a>
     </div>
   </section>
 </body>
@@ -32,7 +32,7 @@
   document.getElementById("delete-confirm").onclick = function(e){
     e.preventDefault();
     // Handeling Request
-    const request_url = "{{url_for('api_alumnos_delete',id=alumno.codigo)}}"
+    const request_url = "{{url_for('api_horarios_delete',id=horario.id)}}"
     fetch( request_url, {
                 method: 'DELETE',
                 headers: {
@@ -44,7 +44,6 @@
                 console.log(jsonResponse)                    
                 if (jsonResponse['success'] === true){
                     document.getElementById('confirmacion').className = ''
-                    document.getElementById('redirect').innerHTML = '<a href='+jsonResponse['redirect']+'> Regresar al menu </a>'
                     document.getElementById("pregunta").innerHTML = ''
                 }
                 else {
