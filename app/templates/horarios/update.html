@@ -254,21 +254,25 @@
                 }).then(function(response){
                     return response.json()
                 }).then(function(jsonResponse) {
-                    console.log(jsonResponse)
-                    document.getElementById("status").innerHTML = jsonResponse['status_horario']
-                    document.getElementById("pending-container").innerHTML = jsonResponse['pending_cursos']
-                    if(jsonResponse['status_horario'] === "Pending"){
-                        document.getElementById("pending-alert").className=''
-                    }
-                    else{
-                        document.getElementById("pending-alert").className='hidden'
-                    }
+                    console.log(jsonResponse)                    
                     if (jsonResponse['success'] === true){
-                        /*Actualizacion*/
+                        /*Actualizacion de Datos*/
+                        // Eliminacion de error
                         document.getElementById("error-alert").className='hidden'
+                        // Update de tabla
                         UpdateTable(jsonResponse['table_horario'])
+                        // Actualizacion de botones
                         e.target.dataset['action'] = alternate_action 
                         e.target.innerHTML = alternate_html
+                        // Actualizacion de status
+                        document.getElementById("status").innerHTML = jsonResponse['status_horario']
+                        document.getElementById("pending-container").innerHTML = jsonResponse['pending_cursos']
+                        if(jsonResponse['status_horario'] === "Pending"){
+                            document.getElementById("pending-alert").className=''
+                        }
+                        else{
+                            document.getElementById("pending-alert").className='hidden'
+                        }
                     }
                     else {
                         /*Error Handeling*/

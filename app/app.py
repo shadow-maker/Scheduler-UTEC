@@ -11,7 +11,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from . import config
 from . import forms
 
-from .utils import is_safe_url, status_horario, TipoClaseEnum
+from .utils import is_safe_url, TipoClaseEnum
 # -------------------
 # Configuracion Flask
 # -------------------
@@ -122,6 +122,58 @@ class Horario(db.Model):
     def __repr__(self):
         return f'<Clase: {self.id}>'
 
+    def get_status(self):
+        horario_dict = {}
+        horario_table = [
+            #L ,M ,M ,J ,V ,S ,D
+            ['','','','','','',''], #7-8
+            ['','','','','','',''], #8-8
+            ['','','','','','',''], #9-9
+            ['','','','','','',''], #10-10
+            ['','','','','','',''], #11-12
+            ['','','','','','',''], #12-13
+            ['','','','','','',''], #13-14
+            ['','','','','','',''], #14-15
+            ['','','','','','',''], #15-16
+            ['','','','','','',''], #16-17
+            ['','','','','','',''], #17-18
+            ['','','','','','',''], #18-19
+            ['','','','','','',''], #19-20
+            ['','','','','','',''], #20-21
+            ['','','','','','',''], #21-22
+        ] 
+        for c in self.clases:
+            for s in c.sesiones:
+                for hora in range(s.hora_inicio, s.hora_fin):
+                    horario_table[hora-7][s.dia-1] = c.curso.codigo
+
+            if c.curso.codigo in horario_dict:
+                horario_dict[c.curso.codigo][0] += 2**c.tipo.value
+            else:
+                horario_dict[c.curso.codigo] = [2**c.tipo.value, c.curso.lab * 2**TipoClaseEnum.lab.value + c.curso.teoria * 2**TipoClaseEnum.teoria.value + c.curso.teoria_virtual * 2**TipoClaseEnum.teoria_virtual.value]
+        status = "Complete"
+        cursos_pendientes = []
+        for c in horario_dict:
+            if horario_dict[c][0] != horario_dict[c][1]:
+                status = "Pending"
+                cursos_pendientes.append(c)
+        return status, horario_table, ",".join(cursos_pendientes)
+
+    def clase_colission(self, clase):
+        if clase in self.clases:
+            return "El curso ya se enceuntra en el horario"
+        for c in self.clases:
+                if c.curso.curso == clase.curso.curso:
+                    if c.tipo == clase.tipo:
+                        return f'Ya existe otra clase de {c.tipo.name} del mismo curso con otra clase: {c.curso.curso} - {c.tipo.name} - {c.seccion}.{c.numero}'
+                    elif c.seccion != clase.seccion:
+                        return f'Ya esta suscrito a otra seccion en el curso {c.curso}: {c.curso.curso} - {c.tipo.name} - {c.seccion}.{c.numero}'
+                for s in c.sesiones:
+                    for sesion in clase.sesiones:
+                        if s.dia == sesion.dia:
+                            if (s.hora_inicio<=sesion.hora_inicio and s.hora_fin>sesion.hora_fin) or (sesion.hora_inicio<=s.hora_inicio and sesion.hora_fin>s.hora_fin):
+                                return f'Colision con otra clase: {c.curso.curso} - {c.tipo.name} - {c.seccion}.{c.numero}'
+        return False
 
 db.create_all() # Crear tablas en bd
 
@@ -388,7 +440,7 @@ def horarios_update(id):
     elif horario.alumno_codigo != alumno_codigo:
         return 'No tiene permisos para eliminar este horario'
     else:
-        status, table_horario, pending_cursos = status_horario(horario)
+        status, table_horario, pending_cursos = horario.get_status()
         return render_template('horarios/update.html', data=info, horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos)
 
 @app.route('/horarios/<id>/delete')
@@ -437,7 +489,7 @@ def horarios_view(id):
     elif horario==None:
         return 'El horario que se busca no existe' # MEJORAR RESPUESTA DE ERROR
     else:
-        status, table_horario, pending_cursos = status_horario(horario)
+        status, table_horario, pending_cursos = horario.get_status()
         return render_template('horarios/view.html', horario=horario, status = status, table_horario=table_horario, pending_cursos=pending_cursos)
 
 
@@ -455,13 +507,13 @@ def horarios_view(id):
 
 
 
-#### CRUD - Corregir AUTH
-
+#### ---CRUD ----
 @app.route('/horarios/update/<id>/add', methods=['UPDATE'])
+@login_required
 def horarios_update_add(id):
     error = False
     response = {}
-    alumno_codigo = str(202010387) # TEMPORAL: El codigo de alumno debe salir del auth actual
+    alumno = current_user
     
     # Get de objetos
     try:
@@ -478,58 +530,50 @@ def horarios_update_add(id):
         error = True
         response["error_message"] = "Error inesperado de backend (H)"
 
+    # Logica de permisos
     if not error:
-        # Logica de validacion
-        if clase in horario.clases:
-            error=True
-            response["error_message"] = "El curso ya se enceuntra en el horario"
-        else:
-            for c in horario.clases:
-                if c.curso.curso == clase.curso.curso:
-                    if c.tipo == clase.tipo:
-                        error = True
-                        response["error_message"] = f'Ya existe otra clase de {c.tipo.name} del mismo curso con otra clase: {c.curso.curso} - {c.tipo.name} - {c.seccion}.{c.numero}'
-                        break
-                    elif c.seccion != clase.seccion:
-                        error = True
-                        response["error_message"] = f'Ya esta suscrito a otra seccion en el curso {c.curso}: {c.curso.curso} - {c.tipo.name} - {c.seccion}.{c.numero}'
-                        break
-                for s in c.sesiones:
-                    for sesion in clase.sesiones:
-                        if s.dia == sesion.dia:
-                            if (s.hora_inicio<=sesion.hora_inicio and s.hora_fin>sesion.hora_fin) or (sesion.hora_inicio<=s.hora_inicio and sesion.hora_fin>s.hora_fin):
-                                error = True
-                                response["error_message"] = f'Colision con otra clase: {c.curso.curso} - {c.tipo.name} - {c.seccion}.{c.numero}'
-                                break
-                if error:
-                    break
-            if not error:
-                try:
-                    horario.clases.append(clase)
-                    db.session.commit()
-                    #response["success_message"] = "Se agrego correctamente la clase"
-                except:
-                    db.session.rollback()
-                    print(sys.exc_info())
-                    response["error_message"] = "Error inesperado de backend"
-                    error = True
+        if alumno != horario.alumno:
+            error = True
+            response["error_message"] = "No tiene los permisos necesarios para modificar este horario"
 
-        # Status del horario
-        status, table_horario, pending_cursos = status_horario(horario)
-        db.session.close()
-        # Return
-        response["success"] = not error
-        response["status_horario"] = status
-        response["table_horario"] = table_horario
-        response["pending_cursos"] = pending_cursos
+    # Logica de validacion de cambios
+    if not error:
+        ret_message = horario.clase_colission(clase)
+        if ret_message:
+            error = True
+            response["error_message"] = "El curso ya se enceuntra en el horario"
+        
+    # Insercion y actualizacion de datos
+    if not error:
+        try:
+            # Adicion
+            horario.clases.append(clase)
+            db.session.commit()
+            # Status del horario
+            status, table_horario, pending_cursos = horario.get_status()
+            response["status_horario"] = status
+            response["table_horario"]  = table_horario
+            response["pending_cursos"] = pending_cursos
+        except:
+            # Error
+            db.session.rollback()
+            print(sys.exc_info())
+            error = True
+            response["error_message"] = "Error inesperado de backend"
+        finally:
+            db.session.close()
+
+    # Return
+    response["success"] = not error
     return jsonify(response)
 
 
 @app.route('/horarios/update/<id>/delete', methods=['DELETE'])
+@login_required
 def horarios_update_delete(id):
     error = False
     response = {}
-    alumno_codigo = str(202010387) # TEMPORAL: El codigo de alumno debe salir del auth actual
+    alumno = current_user
     
     # Get de objetos
     try:
@@ -546,26 +590,38 @@ def horarios_update_delete(id):
         error = True
         response["error_message"] = "Error inesperado de backend (H)"
 
+    # Logica de permisos
     if not error:
-        # Logica de validacion
+        if alumno != horario.alumno:
+            error = True
+            response["error_message"] = "No tiene los permisos necesarios para modificar este horario"
+
+    # Logica de validacion de cambios
+    if not error:
+        if clase not in horario.clases:
+            error = True
+            response["error_message"] = "El curso que intenta eliminar no forma parte de este horario"
+
+    # Insercion y actualizacion de datos
+    if not error:
         try:
             horario.clases.remove(clase)
             db.session.commit()
-            #response["success_message"] = "Se agrego correctamente la clase"
+            # Status del horario
+            status, table_horario, pending_cursos = horario.get_status()
+            response["status_horario"] = status
+            response["table_horario"] = table_horario
+            response["pending_cursos"] = pending_cursos
         except:
             db.session.rollback()
             print(sys.exc_info())
             response["error_message"] = "Error inesperado de backend"
             error = True
+        finally:
+            db.session.close()
 
-        # Status del horario
-        status, table_horario, pending_cursos = status_horario(horario)
-        db.session.close()
-        # Return
-        response["success"] = not error
-        response["status_horario"] = status
-        response["table_horario"] = table_horario
-        response["pending_cursos"] = pending_cursos
+    # Return
+    response["success"] = not error
     return jsonify(response)
 
 # Test
