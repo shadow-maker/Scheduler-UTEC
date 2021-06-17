@@ -13,7 +13,7 @@
 		}
 	</style>
 
-	<link rel="stylesheet" href="../../static/style/main.css">
+	<link rel="stylesheet" href="/static/style/main.css">
 </head>
 
 <body>
@@ -26,14 +26,15 @@
 		<input class="controls" placeholder="Nombre del horario" type='texto' id="filter-titulo" name='filter-titulo' value="" />
 		<input class="botons" type="submit" id="submit-filter" value="Submit" />
 	</form>
-	<p class="{% if horarios%}hidden{%endif%}" id="empty-message"> No hay horarios </p>
-
+	
+	<br>
 	<h2> Lista de horarios: </h2>
+	<p class="{% if horarios%}hidden{%endif%}" id="empty-message"> No hay horarios </p>	
 	<ul id="horarios-list">
 		{% for horario in horarios %}
 		<li> <a href={{url_for('horarios_view',id=horario.id)}}> Horario {{horario.titulo}} (#{{horario.id}}) de
 				{{horario.alumno.nombre}} {{horario.alumno.apellido}}</a> <br>
-			{% endfor %}
+		{% endfor %}
 	</ul>
 </body>
 

@@ -10,6 +10,8 @@
                 display: none;
             }
     </style>
+
+    <link rel="stylesheet" href="/static/style/main.css">
 </head>
 <body>
 
@@ -24,10 +26,10 @@
         <input class="botons" type="submit" id="submit-filter" value="Submit" />
     </form>
 
-
+  <br>
+  <h2> Lista de alumnos: </h2>
   <p class="{% if alumnos%}hidden{%endif%}" id="empty-message"> No hay alumnos actualmente </p>
   <ul id="alumnos-list">
-    <hr/>
   {% for alumno in alumnos %}
       <li> <a href={{url_for('alumnos_view', id=alumno.codigo)}}> {{alumno.codigo}}:  {{alumno.nombre}} {{alumno.apellido}}</a> <br>
   {% endfor %}

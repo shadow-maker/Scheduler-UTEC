@@ -12,7 +12,7 @@
 		}
 	</style>
 
-	<link rel="stylesheet" href="../../static/style/main.css">
+	<link rel="stylesheet" href="/static/style/main.css">
 </head>
 
 <body>
@@ -33,6 +33,8 @@
 			<input class="botons" type="submit" id="submit-filter" value="Submit" />
 		</form>
 
+		<br>
+		<h2> Lista de docentes: </h2>
 		<p class="{% if docentes%}hidden{%endif%}" id="empty-message">No hay docentes actualmente </p>
 		<ul id='docentes-list'>
 			{% for docente in docentes %}

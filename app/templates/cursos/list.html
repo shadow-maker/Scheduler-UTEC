@@ -31,10 +31,11 @@
 			<input class="botons" type="submit" id="submit-filter" value="Submit" />
 		</form>
 
+		<br>
+		<h2> Lista de cursos: </h2>
 		<p class="{% if cursos%}hidden{%endif%}" id="empty-message">
 			No hay cursos actualmente
 		</p>
-	
 		<ul id='cursos-list'>
 			{% for curso in cursos %}
 			<li>
