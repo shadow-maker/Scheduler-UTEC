@@ -571,10 +571,10 @@ sesiones = [
 db.session.add_all(sesiones)
 db.session.commit()
 
-# Horario 1
+# --- Horario 1
 h1=Horario(
     alumno_codigo = '202010387',
-    titulo = "Horario 2020-Version1",
+    titulo = "Verano 2020-Opcion1",
 )
 # Comit
 db.session.add_all([h1])
@@ -590,13 +590,91 @@ h1.clases.append(Clase.query.get(12))
 db.session.add(h1)
 db.session.commit()
 
+# --- Horario 2
+h2=Horario(
+    alumno_codigo = '202010387',
+    titulo = "Verano 2020-Opcion2",
+)
+# Comit
+db.session.add_all([h2])
+db.session.commit()
 
-# FAVORITOS
+# Lista
+h2.clases.append(Clase.query.get(1))
+h2.clases.append(Clase.query.get(2))
+h2.clases.append(Clase.query.get(3))
+h2.clases.append(Clase.query.get(4))
+db.session.add(h2)
+db.session.commit()
+
+# --- Horario 3
+h3=Horario(
+    alumno_codigo = '202010387',
+    titulo = "Verano 2020-Opcion3",
+)
+# Comit
+db.session.add_all([h3])
+db.session.commit()
+
+# Lista
+h3.clases.append(Clase.query.get(5))
+h3.clases.append(Clase.query.get(6))
+db.session.add(h3)
+db.session.commit()
+
+# --- Horario 4
+h4=Horario(
+    alumno_codigo = '201810312',
+    titulo = "SIoSI",
+)
+# Comit
+db.session.add_all([h4])
+db.session.commit()
+
+# Lista
+h4.clases.append(Clase.query.get(1))
+h4.clases.append(Clase.query.get(2))
+h4.clases.append(Clase.query.get(3))
+h4.clases.append(Clase.query.get(4))
+h4.clases.append(Clase.query.get(7))
+h4.clases.append(Clase.query.get(12))
+db.session.add(h4)
+db.session.commit()
+
+# --- Horario 5
+h5=Horario(
+    alumno_codigo = '202010434',
+    titulo = "MiOpcion",
+)
+# Comit
+db.session.add_all([h5])
+db.session.commit()
+
+# Lista
+h5.clases.append(Clase.query.get(1))
+h5.clases.append(Clase.query.get(2))
+h5.clases.append(Clase.query.get(7))
+h5.clases.append(Clase.query.get(12))
+db.session.add(h5)
+db.session.commit()
+
+# --- FAVORITOS ---
 a1 = Alumno.query.get('201810312')
 a2 = Alumno.query.get('202010114')
+a3 = Alumno.query.get('202010442')
 a1.favoritos.append(h1)
-a2.favoritos.append(h1)
+a1.favoritos.append(h2)
+a1.favoritos.append(h3)
+a2.favoritos.append(h2)
+a2.favoritos.append(h3)
+a2.favoritos.append(h4)
+a3.favoritos.append(h1)
+a3.favoritos.append(h2)
+a3.favoritos.append(h3)
+a3.favoritos.append(h4)
+a3.favoritos.append(h5)
 db.session.add(a1)
 db.session.add(a2)
+db.session.add(a3)
 db.session.commit()
 db.session.close()
