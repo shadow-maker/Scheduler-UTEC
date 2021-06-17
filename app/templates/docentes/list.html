@@ -23,12 +23,14 @@
 			<span id="error-filter"></span>
 		</alert>
 		<br>
-		<form id="form-filter">
-			<label for="filter-nombre">Nombre </label>
-			<input type='texto' id="filter-nombre" name='filter-nombre' value="" />
-			<label for="filter-apellido">Apellido </label>
-			<input type='texto' id="filter-apellido" name='filter-apellido' value="" />
-			<input type="submit" id="submit-filter" value="Submit" />
+		<form class="form-register" id="form-filter">
+			<h4>Busca a un docente: </h4>
+			
+			<input class="controls" placeholder="Nombre del docente" type='texto' id="filter-nombre" name='filter-nombre' value="" />
+	
+			<input class="controls" placeholder="Apellidos del docente" type='texto' id="filter-apellido" name='filter-apellido' value="" />
+			
+			<input class="botons" type="submit" id="submit-filter" value="Submit" />
 		</form>
 
 		<p class="{% if docentes%}hidden{%endif%}" id="empty-message">No hay docentes actualmente </p>

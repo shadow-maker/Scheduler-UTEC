@@ -21,10 +21,10 @@
 	<alert class="hidden" id="error-alert-filter"> ERROR: <div id="error-filter"> </div>
 	</alert>
 	<br>
-	<form id="form-filter">
-		<label for="filter-titulo"> Titulo </label>
-		<input type='texto' id="filter-titulo" name='filter-titulo' value="" />
-		<input type="submit" id="submit-filter" value="Submit" />
+	<form class="form-register" id="form-filter">
+		<h4>Busca un horario: </h4>
+		<input class="controls" placeholder="Nombre del horario" type='texto' id="filter-titulo" name='filter-titulo' value="" />
+		<input class="botons" type="submit" id="submit-filter" value="Submit" />
 	</form>
 	<p class="{% if horarios%}hidden{%endif%}" id="empty-message"> No hay horarios </p>
 	<ul id="horarios-list">

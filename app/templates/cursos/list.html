@@ -25,10 +25,10 @@
 
 		<br>
 
-		<form id="form-filter">
-			<label for="filter-curso">Nombre</label>
-			<input type='texto' id="filter-curso" name='filter-curso' value="" />
-			<input type="submit" id="submit-filter" value="Submit" />
+		<form class="form-register" id="form-filter">
+			<h4>Busca un curso: </h4>
+			<input class="controls" placeholder="Nombre del curso" type='texto' id="filter-curso" name='filter-curso' value="" />
+			<input class="botons" type="submit" id="submit-filter" value="Submit" />
 		</form>
 
 		<p class="{% if cursos%}hidden{%endif%}" id="empty-message">
