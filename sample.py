@@ -571,7 +571,7 @@ sesiones = [
 db.session.add_all(sesiones)
 db.session.commit()
 
-# Horario
+# Horario 1
 h1=Horario(
     alumno_codigo = '202010387',
     titulo = "Horario 2020-Version1",
