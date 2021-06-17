@@ -1,98 +1,119 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="../../static/style/main.css">
-    <link rel="stylesheet" href="../../static/style/multiple.css">
-    <title>Menu</title>
-    <style>
-            .hidden {
-                display: none;
-            }
-    </style>
+	<link rel="stylesheet" href="../../static/style/multiple.css">
+	<title>Menu</title>
+	<style>
+		.hidden {
+			display: none;
+		}
+	</style>
 </head>
+
 <body>
-    
-    <center><h1> Perfil de {{alumno.nombre}} {{alumno.apellido}}</h1></center>
-    <p> Codigo: {{alumno.codigo}} </p>
-    
-    <h2> Horarios: </h2>
-        
-    <p class="{% if alumno.horarios%}hidden{%endif%}"> Este alumno aun no tiene horarios </p>
-    <ul id="list-horarios">
-        {% if alumno.horarios %}
-            {% for horario in alumno.horarios %}
-                <li> <a href={{url_for('horarios_view', id=horario.id)}}> Horario {{horario.titulo}} (#{{horario.id}})</a> </il>
-            {% endfor %}
-        {% endif %}
-    </ul>
 
-    {% if current_user.is_authenticated %}
-        {% if current_user.codigo == alumno.codigo %}
-        <h3> Nuevo Horario </h3>
-            <alert class="hidden" id="error-alert-create"> ERROR: <div id="error-create"> </div> </alert>
-            <br>
-            <form id="form-create-horario">
-                <label for="horario-titulo"> Titulo </label>
-                <input type='texto' id="horario-titulo" name='horario-titulo'/>
-                <button type="submit">Crear</button>
-            </form>
-        {% endif %}
-    {% endif %}
+	<center>
+		<h1>Perfil de {{alumno.nombre}} {{alumno.apellido}}</h1>
+	</center>
 
-    <h2> Favoritos: </h2>
-    {% if alumno.favoritos %}
-        <ul>
-        {% for horario in alumno.favoritos %}
-            <li> <a href={{url_for('horarios_view', id=horario.id)}}> Horario {{horario.titulo}} (#{{horario.id}})</a> </il>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p> Este alumno aun no tiene horarios favoritos </p>
-    {% endif %}
+	<p>Codigo: {{alumno.codigo}}</p>
 
-    {% if current_user.is_authenticated %}
-        {% if current_user.codigo == alumno.codigo %}
-            <h2> Modificar </h2>
-            <a href={{url_for('alumnos_update', id=alumno.codigo)}}> Modifica tu informacion </a>
-            <h2> Eliminar </h2>
-            <a href={{url_for('alumnos_delete', id=alumno.codigo)}}> Eliminar tu cuenta </a>
-        {% endif %}
-    {% endif %}
+	<h2>Horarios:</h2>
+
+	<p class="{% if alumno.horarios%}hidden{%endif%}">
+		Este alumno aun no tiene horarios
+	</p>
+	<ul id="list-horarios">
+		{% if alumno.horarios %}
+		{% for horario in alumno.horarios %}
+		<li>
+			<a href={{url_for('horarios_view', id=horario.id)}}>
+				Horario {{horario.titulo}} (#{{horario.id}})
+			</a>
+		</il>
+		{% endfor %}
+		{% endif %}
+	</ul>
+
+	{% if current_user.is_authenticated %}
+	{% if current_user.codigo == alumno.codigo %}
+	<h3>Nuevo Horario</h3>
+	<alert class="hidden" id="error-alert-create">
+		ERROR: <span id="error-create"></span>
+	</alert>
+	<br>
+	<form id="form-create-horario">
+		<label for="horario-titulo"> Titulo </label>
+		<input type='texto' id="horario-titulo" name='horario-titulo' />
+		<button type="submit">Crear</button>
+	</form>
+	{% endif %}
+	{% endif %}
+
+	<h2> Favoritos: </h2>
+	{% if alumno.favoritos %}
+	<ul>
+		{% for horario in alumno.favoritos %}
+		<li>
+			<a href={{url_for('horarios_view', id=horario.id)}}>
+				Horario {{horario.titulo}} (#{{horario.id}})
+			</a>
+		</il>
+		{% endfor %}
+	</ul>
+	{% else %}
+	<p>Este alumno aun no tiene horarios favoritos</p>
+	{% endif %}
+
+	{% if current_user.is_authenticated %}
+	{% if current_user.codigo == alumno.codigo %}
+	<h2> Modificar </h2>
+	<a href={{url_for('alumnos_update', id=alumno.codigo)}}>
+		Modifica tu informacion
+	</a>
+	<h2> Eliminar </h2>
+	<a href={{url_for('alumnos_delete', id=alumno.codigo)}}>
+		Eliminar tu cuenta
+	</a>
+	{% endif %}
+	{% endif %}
 </body>
-    <script>
-        document.getElementById("form-create-horario").onsubmit = function(e){
-            e.preventDefault();
-            // Handeling Request
-            const horario_titulo = document.getElementById("horario-titulo").value
-            const request_url = "{{url_for('api_horarios_create')}}"
-            fetch( request_url, {
-                method: 'POST',
-                body: JSON.stringify({
-                    'horario_titulo': horario_titulo
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(function(response){
-                return response.json()
-            }).then(function(jsonResponse) {
-                console.log(jsonResponse)                    
-                if (jsonResponse['success'] === true){
-                    const liItem = document.createElement('li')
-                    liItem.innerHTML = 
-                     '<a href='+jsonResponse['horario_url']+'> Horario '+jsonResponse['horario_titulo']+' (#'+jsonResponse['horario_id']+')</a>'
-                    document.getElementById("list-horarios").appendChild(liItem)
-                    document.getElementById("error-alert-create").className='hidden'
-                }
-                else {
-                    /*Error Handeling*/
-                    document.getElementById("error-alert-create").className=''
-                    document.getElementById("error-create").innerHTML = jsonResponse['error_message']
-                }
-            })
-        }
-    </script>
+<script>
+	document.getElementById("form-create-horario").onsubmit = function(e){
+		e.preventDefault();
+		// Handeling Request
+		const horario_titulo = document.getElementById("horario-titulo").value
+		const request_url = "{{url_for('api_horarios_create')}}"
+		fetch( request_url, {
+			method: 'POST',
+			body: JSON.stringify({
+				'horario_titulo': horario_titulo
+			}),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}).then(function(response){
+			return response.json()
+		}).then(function(jsonResponse) {
+			console.log(jsonResponse)                    
+			if (jsonResponse['success'] === true){
+				const liItem = document.createElement('li')
+				liItem.innerHTML = 
+					'<a href='+jsonResponse['horario_url']+'> Horario '+jsonResponse['horario_titulo']+' (#'+jsonResponse['horario_id']+')</a>'
+				document.getElementById("list-horarios").appendChild(liItem)
+				document.getElementById("error-alert-create").className='hidden'
+			}
+			else {
+				/*Error Handeling*/
+				document.getElementById("error-alert-create").className=''
+				document.getElementById("error-create").innerHTML = jsonResponse['error_message']
+			}
+		})
+	}
+</script>
 </html>
