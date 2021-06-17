@@ -48,186 +48,187 @@
 		<input class="botons" type="submit" id="submit-rename" value="Submit"/>
 	</form>
 
-	<table id="table_horario">
-		<thead>
-			<tr>
-				<th scope="col">Hora</th>
-				<th scope="col">Lunes</th>
-				<th scope="col">Martes</th>
-				<th scope="col">Miercoles</th>
-				<th scope="col">Jueves</th>
-				<th scope="col">Viernes</th>
-				<th scope="col">Sabado</th>
-				<th scope="col">Domingo</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<th scope="row">7:00 - 8:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-			<tr>
-				<th scope="row">8:00 - 9:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-			<tr>
-				<th scope="row">9:00 - 10:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-
-			</tr>
-			<tr>
-				<th scope="row">10:00 - 11:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-			<tr>
-				<th scope="row">11:00 - 12:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-			<tr>
-				<th scope="row">12:00 - 13:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-			<tr>
-				<th scope="row">13:00 - 14:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-			<tr>
-				<th scope="row">14:00 - 15:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-			<tr>
-				<th scope="row">15:00 - 16:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-			<tr>
-				<th scope="row">16:00 - 17:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-			<tr>
-				<th scope="row">17:00 - 18:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-			<tr>
-				<th scope="row">18:00 - 19:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-			<tr>
-				<th scope="row">19:00 - 20:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-			<tr>
-				<th scope="row">20:00 - 21:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-			<tr>
-				<th scope="row">21:00 - 22:00</th>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<h1> STATUS: <alert id="status">{{status}}</alert>
-	</h1>
-	<alert class="{%if not pending_cursos%}hidden{%endif%}" id="pending-alert"> Cursos incompletos:
-		<div id="pending-container">{{pending_cursos}}</div>
-	</alert>
+	<section id="table">
+		<table id="table_horario">
+			<thead>
+				<tr>
+					<th scope="col">Hora</th>
+					<th scope="col">Lunes</th>
+					<th scope="col">Martes</th>
+					<th scope="col">Miercoles</th>
+					<th scope="col">Jueves</th>
+					<th scope="col">Viernes</th>
+					<th scope="col">Sabado</th>
+					<th scope="col">Domingo</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th scope="row">7:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+				<tr>
+					<th scope="row">8:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+				<tr>
+					<th scope="row">9:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+		
+				</tr>
+				<tr>
+					<th scope="row">10:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+				<tr>
+					<th scope="row">11:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+				<tr>
+					<th scope="row">12:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+				<tr>
+					<th scope="row">13:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+				<tr>
+					<th scope="row">14:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+				<tr>
+					<th scope="row">15:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+				<tr>
+					<th scope="row">16:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+				<tr>
+					<th scope="row">17:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+				<tr>
+					<th scope="row">18:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+				<tr>
+					<th scope="row">19:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+				<tr>
+					<th scope="row">20:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+				<tr>
+					<th scope="row">21:00</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<p>STATUS: <alert id="status">{{status}}</alert></p>
+		<alert class="{%if not pending_cursos%}hidden{%endif%}" id="pending-alert"> Cursos incompletos: <span id="pending-container"> {{pending_cursos}}</span>
+		</alert>
+	</section>
+	
 	<alert class="hidden" id="error-alert"> ERROR: <div id="error"> </div>
 	</alert>
 	<br>
 	<h1 type="hidden">-------------------</h1>
 	<a class="botons" type="button" href={{url_for('horarios_view', id=horario.id)}}> Retornar a vista normal </a>
 	<h1 type="hidden">-------------------</h1>
-	<h1> Cursos: </h1>
+	<h2>Cursos: </h2>
 	<p>
 		{% for curso in data %}
 		<h3> {{curso.codigo}} - {{ curso.curso }} </h3>
