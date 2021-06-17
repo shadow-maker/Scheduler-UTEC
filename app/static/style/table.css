@@ -1,12 +1,3 @@
-html,
-body {
-	height: 100%;
-}
-
-body {
-	font-weight: 100;
-}
-
 .container {
 	position: relative;
 	top: 45%;
@@ -21,14 +12,17 @@ table {
 	border-collapse: collapse;
 	overflow: hidden;
 	background-color: var(--dark);
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+	box-shadow: var(--shadow);
+	border-radius: 20px;
+}
+
+table * {
+	color: var(--light);
 }
 
 th,
 td {
 	padding: 15px;
-	background-color: rgba(255, 255, 255, 0.2);
-	color: #fff;
 }
 
 th {
@@ -36,7 +30,7 @@ th {
 }
 
 thead th {
-	background-color: #55608f;
+	background-color: var(--blueD);
 }
 
 tbody tr:hover {
@@ -54,22 +48,6 @@ tbody td:hover:before {
 	right: 0;
 	top: -9999px;
 	bottom: -9999px;
-	background-color: rgba(255, 255, 255, 0.2);
+	background-color: var(--shadow);
 	z-index: -1;
 }
-.fondo{
-    padding: 3px;
-}
-.botons {
-	background: var(--blue);
-	border: none;
-	padding: 5px;
-	color: var(--light);
-	margin: 16px 0;
-	font-size: 16px;
-	transition-duration: 0.4s;
-  }
-.botons:hover{
-	filter: saturate(0.5);
-}
-  
