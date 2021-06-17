@@ -1,90 +1,101 @@
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../static/style/main.css">
-    <link rel="stylesheet" href="../../static/style/form.css">
-    <title>Alumnos</title>
-    <style>
-            .hidden {
-                display: none;
-            }
-    </style>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../../static/style/main.css">
+	<link rel="stylesheet" href="../../static/style/form.css">
+	<title>Alumnos</title>
+	<style>
+		.hidden {
+			display: none;
+		}
+	</style>
 </head>
-<body>
 
 <body>
-    <div class="navbar">
-        <a class="active" href={{url_for("menu_inicio")}}>Menú Principal</a>
-        <a href={{url_for("explore")}}>Explorar</a>
-        <a href={{url_for("alumnos_list")}}>Alumnos</a>
-        <a href={{url_for("horarios_list")}}>Horarios</a>
-        <a href={{url_for("docentes_list")}}>Docentes</a>
-        <a href={{url_for("cursos_list")}}>Cursos</a>
-    </div>
-  <h1> Alumnos </h1>
-    <alert class="hidden" id="error-alert-filter"> ERROR: <div id="error-filter"> </div> </alert>
-    <br>
-    <form class="form-register" id="form-filter">
-        <h4>Busca a un alumno: </h4>
-        <input class="controls" placeholder="Nombre" type='texto' id="filter-nombre" name='filter-nombre' value=""/>
-        <input class="controls" placeholder="Apellido"type='texto' id="filter-apellido" name='filter-apellido' value=""/>
-        <input class="botons" type="submit" id="submit-filter" value="Submit" />
-    </form>
 
-  <br>
-  <h2> Lista de alumnos: </h2>
-  <p class="{% if alumnos%}hidden{%endif%}" id="empty-message"> No hay alumnos actualmente </p>
-  <ul id="alumnos-list">
-  {% for alumno in alumnos %}
-      <li> <a href={{url_for('alumnos_view', id=alumno.codigo)}}> {{alumno.codigo}}:  {{alumno.nombre}} {{alumno.apellido}}</a> <br>
-  {% endfor %}
-  </ul>
+	<body>
+		<div class="navbar">
+			<a class="active" href={{url_for("menu_inicio")}}>Menú Principal</a>
+			<a href={{url_for("explore")}}>Explorar</a>
+			<a href={{url_for("alumnos_list")}}>Alumnos</a>
+			<a href={{url_for("horarios_list")}}>Horarios</a>
+			<a href={{url_for("docentes_list")}}>Docentes</a>
+			<a href={{url_for("cursos_list")}}>Cursos</a>
+		</div>
+		<h1> Alumnos </h1>
+		<alert class="hidden" id="error-alert-filter">
+			ERROR: <span id="error-filter"></span>
+		</alert>
+		<form class="form-register" id="form-filter">
+			<h4>Busca a un alumno: </h4>
+			<input class="controls" placeholder="Nombre" type='texto' id="filter-nombre" name='filter-nombre' value="" />
+			<input class="controls" placeholder="Apellido" type='texto' id="filter-apellido" name='filter-apellido' value=""/>
+			<input class="botons" type="submit" id="submit-filter" value="Submit"/>
+		</form>
 
-</body>
-<script>
-    document.getElementById("form-filter").onsubmit = function(e){
-        e.preventDefault();
-        // Handeling Request
-        const filter_nombre = document.getElementById("filter-nombre").value
-        const filter_apellido = document.getElementById("filter-apellido").value
-        const request_url = "{{url_for('api_alumnos_read_filter')}}"
-        fetch( request_url + '?' +new URLSearchParams({alumno_nombre:filter_nombre,alumno_apellido:filter_apellido}), {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(function(response){
-            return response.json()
-        }).then(function(jsonResponse) {
-            console.log(jsonResponse)
-            if (jsonResponse['success'] === true){
-                // Actualizar mensajes
-                document.getElementById("error-alert-filter").className='hidden'
-                if (jsonResponse['empty'] === true){
-                    document.getElementById("empty-message").className=''
-                }
-                else{
-                    document.getElementById("empty-message").className='hidden'
-                }
-                // Poblar lu
-                document.getElementById("alumnos-list").innerHTML = ''
-                const alumnso_list = jsonResponse['alumnos']
-                for (let i=0; i < alumnso_list.length; i++){
-                    const alumno = alumnso_list[i]
-                    const liItem = document.createElement('li')
-                    liItem.innerHTML =
-                     '<a href='+alumno['alumno_url']+'> '+alumno['alumno_codigo']+': ' + alumno['alumno_nombre'] + ' ' + alumno['alumno_apellido']+'</a>'
-                     document.getElementById("alumnos-list").appendChild(liItem)
-                }
-            }
-            else {
-                /*Error Handeling*/
-                document.getElementById("error-alert-filter").className=''
-                document.getElementById("error-filter").innerHTML = jsonResponse['error_message']
-            }
-        })
-    }
-</script>
+		<br>
+		<h2>Lista de alumnos: </h2>
+		<p class="{% if alumnos%}hidden{%endif%}" id="empty-message">
+			No hay alumnos actualmente
+		</p>
+		<ul id="alumnos-list">
+			{% for alumno in alumnos %}
+			<li>
+				<a href={{url_for('alumnos_view', id=alumno.codigo)}}>
+					{{alumno.codigo}}: {{alumno.nombre}}
+					{{alumno.apellido}}
+				</a>
+			</li>
+			{% endfor %}
+		</ul>
+
+	</body>
+
+	<script>
+		document.getElementById("form-filter").onsubmit = function(e){
+			e.preventDefault();
+			// Handeling Request
+			const filter_nombre = document.getElementById("filter-nombre").value
+			const filter_apellido = document.getElementById("filter-apellido").value
+			const request_url = "{{url_for('api_alumnos_read_filter')}}"
+			fetch( request_url + '?' +new URLSearchParams({alumno_nombre:filter_nombre,alumno_apellido:filter_apellido}), {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}).then(function(response){
+				return response.json()
+			}).then(function(jsonResponse) {
+				console.log(jsonResponse)
+				if (jsonResponse['success'] === true){
+					// Actualizar mensajes
+					document.getElementById("error-alert-filter").className='hidden'
+					if (jsonResponse['empty'] === true){
+						document.getElementById("empty-message").className=''
+					}
+					else{
+						document.getElementById("empty-message").className='hidden'
+					}
+					// Poblar lu
+					document.getElementById("alumnos-list").innerHTML = ''
+					const alumnso_list = jsonResponse['alumnos']
+					for (let i=0; i < alumnso_list.length; i++){
+						const alumno = alumnso_list[i]
+						const liItem = document.createElement('li')
+						liItem.innerHTML =
+						 '<a href='+alumno['alumno_url']+'> '+alumno['alumno_codigo']+': ' + alumno['alumno_nombre'] + ' ' + alumno['alumno_apellido']+'</a>'
+						 document.getElementById("alumnos-list").appendChild(liItem)
+					}
+				}
+				else {
+					/*Error Handeling*/
+					document.getElementById("error-alert-filter").className=''
+					document.getElementById("error-filter").innerHTML = jsonResponse['error_message']
+				}
+			})
+		}
+	</script>
 </html>

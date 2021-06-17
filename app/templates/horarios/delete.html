@@ -14,6 +14,14 @@
   </style>
 </head>
 <body>
+    <div class="navbar">
+        <a class="active" href={{url_for("menu_inicio")}}>Menú Principal</a>
+        <a href={{url_for("explore")}}>Explorar</a>
+        <a href={{url_for("alumnos_list")}}>Alumnos</a>
+        <a href={{url_for("horarios_list")}}>Horarios</a>
+        <a href={{url_for("docentes_list")}}>Docentes</a>
+        <a href={{url_for("cursos_list")}}>Cursos</a>
+    </div>
   <section class="form-register">
     <h1>Esta seguro de eliminar este horario? </h4>
     <div class="container">
@@ -25,7 +33,7 @@
     <h2  style="color:white" id="confirmacion" class="hidden"> Se elimino el horario con exito</h2>
 
     <div id="redirect">
-      <a href={{url_for('alumnos_view', id=current_user.codigo)}}> 
+      <a href={{url_for('alumnos_view', id=current_user.codigo)}}>
         <button class="btn-2" type="button">Regresar a mi perfil </button>
       </a>
     </div>
@@ -45,7 +53,7 @@
             }).then(function(response){
                 return response.json()
             }).then(function(jsonResponse) {
-                console.log(jsonResponse)                    
+                console.log(jsonResponse)
                 if (jsonResponse['success'] === true){
                     document.getElementById('confirmacion').className = ''
                     document.getElementById("pregunta").innerHTML = ''

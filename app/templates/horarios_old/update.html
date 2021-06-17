@@ -5,10 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
     rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 </head>
 <body>
+    <div class="navbar">
+        <a class="active" href={{url_for("menu_inicio")}}>Menú Principal</a>
+        <a href={{url_for("explore")}}>Explorar</a>
+        <a href={{url_for("alumnos_list")}}>Alumnos</a>
+        <a href={{url_for("horarios_list")}}>Horarios</a>
+        <a href={{url_for("docentes_list")}}>Docentes</a>
+        <a href={{url_for("cursos_list")}}>Cursos</a>
+    </div>
     <div class="container-fluid">
         <div class="row justify-content-center align-items-center">
             <div class="col">
@@ -17,7 +25,7 @@
         </div>
         <div class="row justify-content-center align-items-center">
             <div class="col-10">
-                
+
                 <table class="table table-dark m-4">
                     <thead>
                     <tr>
@@ -61,7 +69,7 @@
                         <td>Cell</td>
                         <td>Cell</td>
                         <td>Cell</td>
-                    
+
                     </tr>
                     <tr>
                         <th scope="row">10:00 - 11:00</th>
@@ -208,8 +216,8 @@
                                             <div class="col-12">
                                                 <p> Sesiones: </p>
                                                     {% for sesion in clase.sesiones %}
-                                                        <p> 
-                                                        {{ sesion.dia }} :  
+                                                        <p>
+                                                        {{ sesion.dia }} :
                                                         {{ sesion.hora_inicio }} -
                                                         {{ sesion.hora_fin }}
                                                         </p>
@@ -217,22 +225,22 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
 
-                                    
-                                    
-                                    
+
+
+
+
                                 </li>
                             {% endfor %}
                             </ul>
                     {% endfor %}
-                    
+
                 </p>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 </body>
 </html>

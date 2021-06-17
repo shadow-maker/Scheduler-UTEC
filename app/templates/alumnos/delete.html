@@ -16,6 +16,14 @@
 </head>
 
 <body>
+	<div class="navbar">
+        <a class="active" href={{url_for("menu_inicio")}}>Menú Principal</a>
+        <a href={{url_for("explore")}}>Explorar</a>
+        <a href={{url_for("alumnos_list")}}>Alumnos</a>
+        <a href={{url_for("horarios_list")}}>Horarios</a>
+        <a href={{url_for("docentes_list")}}>Docentes</a>
+        <a href={{url_for("cursos_list")}}>Cursos</a>
+    </div>
 	<section class="form-register">
 		<h2>Esta seguro que desea eliminar esta cuenta?</p>
 			<div id="pregunta">
@@ -50,7 +58,7 @@
 			  }).then(function(response){
 				  return response.json()
 			  }).then(function(jsonResponse) {
-				  console.log(jsonResponse)                    
+				  console.log(jsonResponse)
 				  if (jsonResponse['success'] === true){
 					  document.getElementById('confirmacion').className = ''
 					  document.getElementById('redirect').innerHTML = '<a href='+jsonResponse['redirect']+'> Regresar al menu </a>'

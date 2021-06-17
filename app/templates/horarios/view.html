@@ -6,19 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="../../static/style/main.css">
-	<link rel="stylesheet" href="../../static/style/form.css">
+	<link rel="stylesheet" href="../../static/style/table.css">
     <title>Horario</title>
-
-	<script src="jQuery.js"></script>
-
 	<style>
 		.hidden {
 			display: none;
 		}
 	</style>
-
-	<link rel="stylesheet" href="../../static/style/main.css">
-	<link rel="stylesheet" href="../../static/style/style_table.css">
 </head>
 
 <body>
@@ -207,7 +201,7 @@
 				</tr>
 			</tbody>
 		</table>
-
+		
 		<h1>STATUS:<alert id="status">{{status}}</alert>
 		</h1>
 		<alert class="{%if not pending_cursos%}hidden{%endif%}" id="pending-alert"> Cursos incompletos: <div
@@ -216,14 +210,14 @@
 	</section>
 
     {% if current_user.is_authenticated %}
-		<h1 type="hidden">-------------------------</h1>
+		<h2 type="hidden">-------------------------</h2>
         {% if current_user.codigo == horario.alumno.codigo %}
 
             <a class="botons" type="button" href={{url_for('horarios_update', id=horario.id)}}>Editar horario</a>
             <a class="botons" type="button" href={{url_for('horarios_delete', id=horario.id)}}>Eliminar horario</a>
 
 			{% endif %}
-			<h1 type="hidden">-------------------------</h1>
+			<h2 type="hidden">-------------------------</h2>
     {% endif %}
 
     {% if current_user.is_authenticated %}
