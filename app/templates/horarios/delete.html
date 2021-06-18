@@ -1,69 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="/static/style/main.css">
-  <link rel="stylesheet" href="/static/style/menu.css">
-  <title>Eliminar Horario</title>
-  <style>
-    .hidden {
-        display: none;
-    }
-  </style>
-</head>
-<body>
-    <div class="navbar">
-        <a class="active" href={{url_for("menu_inicio")}}>Menú Principal</a>
-        <a href={{url_for("explore")}}>Explorar</a>
-        <a href={{url_for("alumnos_list")}}>Alumnos</a>
-        <a href={{url_for("horarios_list")}}>Horarios</a>
-        <a href={{url_for("docentes_list")}}>Docentes</a>
-        <a href={{url_for("cursos_list")}}>Cursos</a>
-    </div>
-  <section class="form-register">
-    <h1>Esta seguro de eliminar este horario? </h4>
-    <div class="container">
-    <div id="pregunta">
-      <alert class="hidden" id="error-alert-delete"> ERROR: <div id="error-delete"> </div> </alert>
-      <br>
-      <button class="btn-1" name="delete-confirm" id="delete-confirm"> Acepto borrarlo</input>
-    </div>
-    <h2  style="color:white" id="confirmacion" class="hidden"> Se elimino el horario con exito</h2>
 
-    <div id="redirect">
-      <a href={{url_for('alumnos_view', id=current_user.codigo)}}>
-        <button class="btn-2" type="button">Regresar a mi perfil </button>
-      </a>
-    </div>
-  </div>
-  </section>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="/static/style/main.css">
+	<link rel="stylesheet" href="/static/style/menu.css">
+	<title>Eliminar Horario</title>
+	<style>
+		.hidden {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<section class="form-register">
+		<h1>Esta seguro de eliminar este horario?</h1>
+			<div class="container">
+				<div id="pregunta">
+					<alert class="hidden" id="error-alert-delete">
+						ERROR: <span id="error-delete"></span>
+					</alert>
+					<br>
+					<button class="btn btn-1" name="delete-confirm" id="delete-confirm">
+						Acepto borrarlo
+					</button>
+				</div>
+				<h2 style="color:white" id="confirmacion" class="hidden">Se elimino el horario con exito</h2>
+				<div id="redirect">
+					<a href={{url_for('alumnos_view', id=current_user.codigo)}}>
+						<button class="btn btn-2" type="button">
+							Regresar a mi perfil
+						</button>
+					</a>
+				</div>
+			</div>
+	</section>
 </body>
 <script>
-  document.getElementById("delete-confirm").onclick = function(e){
-    e.preventDefault();
-    // Handeling Request
-    const request_url = "{{url_for('api_horarios_delete',id=horario.id)}}"
-    fetch( request_url, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(function(response){
-                return response.json()
-            }).then(function(jsonResponse) {
-                console.log(jsonResponse)
-                if (jsonResponse['success'] === true){
-                    document.getElementById('confirmacion').className = ''
-                    document.getElementById("pregunta").innerHTML = ''
-                }
-                else {
-                    /*Error Handeling*/
-                    document.getElementById("error-alert-delete").className=''
-                    document.getElementById("error-delete").innerHTML = jsonResponse['error_message']
-                }
-            })
-  }
+	document.getElementById("delete-confirm").onclick = function (e) {
+		e.preventDefault();
+		// Handeling Request
+		const request_url = "{{url_for('api_horarios_delete',id=horario.id)}}"
+		fetch(request_url, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}).then(function (response) {
+			return response.json()
+		}).then(function (jsonResponse) {
+			console.log(jsonResponse)
+			if (jsonResponse['success'] === true) {
+				document.getElementById('confirmacion').className = ''
+				document.getElementById("pregunta").innerHTML = ''
+			} else {
+				/*Error Handeling*/
+				document.getElementById("error-alert-delete").className = ''
+				document.getElementById("error-delete").innerHTML = jsonResponse['error_message']
+			}
+		})
+	}
 </script>
+
 </html>

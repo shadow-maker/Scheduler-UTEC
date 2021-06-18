@@ -24,7 +24,7 @@
 }
 
 body {
-	margin: 2%;
+	margin: 8% 2% 2% 2%;
 	background-color: var(--light);
 }
 
@@ -35,7 +35,7 @@ h1 {
 	color: var(--dark);
 	letter-spacing: 0px;
 	line-height: 60px;
-	margin: 80px 0 20px 0;
+	margin: 20px 0 20px 0;
 }
 
 h2 {
