@@ -24,10 +24,10 @@
         <a href={{url_for("docentes_list")}}>Docentes</a>
         <a href={{url_for("cursos_list")}}>Cursos</a>
     </div>
-	<center><u><i><h1>Vista de horario</h1></i></u></center>
+	<center><h1>Vista de horario</h1></center>
 	<h2>Nombre de horario: <span id="horario-titulo">{{horario.titulo}}</span></h2>
-	<p>Por:
-		<a href={{url_for('alumnos_view',id=horario.alumno.codigo)}}>
+	<p>
+		Por: <a href={{url_for('alumnos_view',id=horario.alumno.codigo)}}>
 			{{horario.alumno.nombre}}
 			{{horario.alumno.apellido}}
 		</a>

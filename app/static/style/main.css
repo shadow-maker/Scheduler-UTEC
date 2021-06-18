@@ -39,6 +39,7 @@ h1 {
 }
 
 h2 {
+	margin-top: 20px;
 	font-size: 25px;
 	color: var(--red);
 	font-weight: 40;
@@ -48,15 +49,16 @@ h2 {
 p {
 	font-size: 20px;
 	font-style: italic;
-	font-weight: 30;
 	text-align: left;
 	font-weight: 400;
+	margin-left: 20px;
 }
 
 a {
 	font-size: 20px;
 	font-style: italic;
 	color: var(--blue);
+	margin-left: 20px;
 }
 
 ul,
