@@ -39,7 +39,7 @@ Para el manejo de las Request y Response se ha usado especificamente la Fetch AP
 
 ### Back-end
 
-[Diagrama modelo entidad-relación de la base de datos](https://drive.google.com/file/d/11JkNTHSAbAOZf8_7-TSd_0hAK1-1RmMO/view)
+[Diagrama modelo entidad-relación de la base de datos](https://drive.google.com/file/d/11JkNTHSAbAOZf8_7-TSd_0hAK1-1RmMO/view?usp=sharing)
 
 #### Flask
 Flask es un framework de backend que provee una estructura basica para implementar servidores con la estructura MVC. Este framework utiliza la libreria Jinja para la creacion de templates y SQLAlchemy para la comunicacion con la base de datos.
