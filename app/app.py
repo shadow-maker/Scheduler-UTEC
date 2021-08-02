@@ -8,6 +8,7 @@ from flask import Flask, render_template, request, redirect, url_for, abort, jso
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from wtforms.validators import Length
+from flask_migrate import Migrate
 
 from . import config
 from . import forms
@@ -22,6 +23,7 @@ app.config['SECRET_KEY']='projectodb'
 app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config.SQLALCHEMY_TRACK_MODIFICATIONS
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 login_manager =LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -104,11 +106,10 @@ class Sesion(db.Model):
     __tablename__ = 'sesion'
     id              = db.Column(db.Integer      , primary_key=True)
     clase_id        = db.Column(db.Integer , db.ForeignKey('clase.id'), nullable=False)
-    # Numeracion de sesion? #REVISAR
-    dia             = db.Column(db.Integer      , nullable=False) #Cambiar formato?
-    hora_inicio     = db.Column(db.Integer      , nullable=False) #Cambiar formato?
-    hora_fin        = db.Column(db.Integer      , nullable=False) #Cambiar formato?
-    # Implementar frecuencia tambien?
+    dia             = db.Column(db.Integer      , nullable=False)
+    hora_inicio     = db.Column(db.Integer      , nullable=False) 
+    hora_fin        = db.Column(db.Integer      , nullable=False)
+
 
     def __repr__(self):
         return f'<Clase: {self.id} de Clase {self.clase_id}>'
