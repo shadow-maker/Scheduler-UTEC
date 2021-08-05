@@ -930,3 +930,66 @@ def api_alumnos_delete(id):
     response["success"] = not error
     return jsonify(response)
 
+#### New  endpoints
+@app.route('/api/cursos/read/por-horario/<id>', methods=['GET'])
+def api_cursos_por_horario(id):
+    print("TEST")
+    error = False
+    response = {}
+
+    # Get de horario
+    try:
+        horario = Horario.query.get(id)
+    except:
+        print(sys.exc_info())
+        error = True
+        response["error_message"] = "Error inesperado de backend (H)"
+
+    # Lista de cursos
+    if not error:
+        cursos = Curso.query.all()
+        cursos_por_horario = [
+            {
+                "codigo": c.codigo,
+                "curso" : c.curso,
+                "secciones" : [
+                    {
+                        "seccion" : seccion,
+                        "labs" : [
+                            {
+                                "id":clase.id,
+                                "numero":clase.numero,
+                                "docente_nombre":clase.docente.nombre,
+                                "docente_apellido":clase.docente.apellido,
+                                "inscrito": (clase in horario.clases)
+                            } for clase in c.clases if (clase.seccion == seccion and clase.tipo == TipoClaseEnum.lab)
+                        ],
+                        "teorias" : [
+                            {
+                                "id":clase.id,
+                                "numero":clase.numero,
+                                "docente_nombre":clase.docente.nombre,
+                                "docente_apellido":clase.docente.apellido,
+                                "inscrito": (clase in horario.clases)
+                            } for clase in c.clases if (clase.seccion == seccion and clase.tipo == TipoClaseEnum.teoria)
+                        ],
+                        "teorias_virtuales" : [
+                            {
+                                "id":clase.id,
+                                "numero":clase.numero,
+                                "docente_nombre":clase.docente.nombre,
+                                "docente_apellido":clase.docente.apellido,
+                                "inscrito": (clase in horario.clases)
+                            } for clase in c.clases if (clase.seccion == seccion and clase.tipo == TipoClaseEnum.teoria_virtual)
+                        ]
+                    } for seccion in {clase.seccion for clase  in c.clases}
+                ],
+
+            } for c in cursos
+        ]
+        response["cursos"] = cursos_por_horario
+        response["empty"] = False if cursos_por_horario else True
+
+    # Return
+    response["success"] = not error
+    return jsonify(response)
