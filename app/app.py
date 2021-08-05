@@ -974,6 +974,44 @@ def api_alumnos_get(id):
     response["success"] = not error
     return jsonify(response)
 
+@app.route('/api/horarios/read/<id>', methods=['GET'])
+def api_horarios_get(id):
+    error = False
+    response = {}
+
+    try:
+        horario = Horario.query.get(id)
+    except:
+        print(sys.exc_info())
+        error = True
+        response["error_message"] = "Error inesperado de backend (H)"
+
+    if not horario:
+        error = True
+        response["error_message"] = "El horario que busca no existe"
+
+    if not error:
+        status, table_horario, pending_cursos = horario.get_status()
+        if current_user.is_authenticated:
+            in_favoritos = horario in current_user.favoritos
+        else:
+            in_favoritos = False
+        
+        response["horario_id"] = horario.id
+        response["horario_alumno_id"] = horario.alumno.codigo
+        response["horario_alumno_apellido"] = horario.alumno.apellido
+        response["horario_alumno_nombre"] = horario.alumno.nombre
+        response["favorito"] = in_favoritos
+        response["horario_titulo"] = horario.titulo
+        response["horario_tabla"] = table_horario
+        response["horario_status"] = status
+        response["horario_cursos_pendientes"] = pending_cursos
+
+    # Return
+    response["success"] = not error
+    return jsonify(response)
+
+
 @app.route('/api/cursos/read/por-horario/<id>', methods=['GET'])
 def api_cursos_por_horario(id):
     error = False
@@ -986,6 +1024,11 @@ def api_cursos_por_horario(id):
         print(sys.exc_info())
         error = True
         response["error_message"] = "Error inesperado de backend (H)"
+
+    # Validar horario
+    if not horario:
+        error = True
+        response["error_message"] = "El horario que busca no existe"
 
     # Lista de cursos
     if not error:
