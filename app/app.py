@@ -931,9 +931,51 @@ def api_alumnos_delete(id):
     return jsonify(response)
 
 #### New  endpoints
+@app.route('/api/alumnos/read/<id>', methods=['GET'])
+def api_alumnos_get(id):
+    error = False
+    response = {}
+
+    # Get objeto de alumno
+    try:
+        alumno = Alumno.query.get(id)
+    except:
+        print(sys.exc_info())
+        error = True
+        response["error_message"] = "Error inesperado de backend (A)"
+
+    # Get data de alumno
+    if not alumno:
+        error = True
+        response["error_message"] = "El alumno que busca no existe"
+    else:
+        response["alumno_id"] = alumno.codigo
+        response["alumno_nombre"]= alumno.nombre
+        response["alumno_apellido"]= alumno.apellido
+        response["horarios"] = [
+            {
+                "horario_id":h.id,
+                "horario_titulo":h.titulo,
+                "horario_url":url_for('horarios_view',id=h.id),
+                "horario_alumno_nombre":h.alumno.nombre,
+                "horario_alumno_apellido":h.alumno.apellido
+            } for h in alumno.horarios
+        ]
+        response["favoritos"] = [
+            {
+                "horario_id":h.id,
+                "horario_titulo":h.titulo,
+                "horario_url":url_for('horarios_view',id=h.id),
+                "horario_alumno_nombre":h.alumno.nombre,
+                "horario_alumno_apellido":h.alumno.apellido
+            } for h in alumno.favoritos
+        ]
+    # Return
+    response["success"] = not error
+    return jsonify(response)
+
 @app.route('/api/cursos/read/por-horario/<id>', methods=['GET'])
 def api_cursos_por_horario(id):
-    print("TEST")
     error = False
     response = {}
 
