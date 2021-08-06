@@ -56,6 +56,12 @@ Es una extension del framework Flask que permite la abstraccion y automatizacion
 
 Esta tecnologia se emplea especialmente en los forms de Login y Register para validar sus inputs y extraer la informacion en el back-end con facilidad.
 
+#### Flask-Migrate
+Es una extension del framework Flask que permite trackear y gestionar las versiones de la base de datos a la cual se conecta flask mediant SQLAlchemy. Los archivos necesarios para realizar estas actividades se almacenan en una carpeta "migrations" dentro del proyecto.
+
+Esta tecnologia se ha empleado para gestionar las versiones de la base de datos postgres a la cual se conecta este proyecto.
+
+
 ### Base de datos
 
 #### PostgreSQL
@@ -108,6 +114,10 @@ Para poblar la base de datos se debe ejecutar la script sample.py que la inicial
 - '/api/horarios/update/\<id>/delete-clase' : PUT con {clase_id} => JSON con confirmacion de la delicion de la clase con clase.id=clase_id del horario con horario.id=id
 - '/api/favoritos/add/\<id>' : POST => JSON con confirmacion de la adicion del horario con horario.id=id a los favoritos del alumno actual
 - '/api/favoritos/delete/\<id>' : DELETE => JSON con confirmacion de la eliminacion del horario con horario.id=id de los favoritos del alumno actual
+- '/api/cursos/read/por-horario/<id>' : GET => JSON con listado de todos los cursos donde se incluyen sus clases ordenadas por seccion y tipo, y cada clase tiene un atributo inscrito que especifica si esta incluida en el horario dado por id
+- '/api/alumnos/read/\<id>' : GET => JSON del alumno correspondiente a la id (codigo) proveida
+- '/api/horarios/read/\<id>' : GET => JSON del horario correspondiente a la id proveida
+  
 
 ## Hosts
 El host y configuracion de deployment se encuentra definida al inicio del archivo run.py. Por defecto, la aplicacion se correa en el host local en el puerto 8888 pero es posible modificar esto editando las variables de acuerdo a la necesidad
